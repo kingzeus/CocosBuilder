@@ -30,6 +30,8 @@
 #import "ResourceManager.h"
 #import "ResourceManagerUtil.h"
 #import "CocosBuilderAppDelegate.h"
+#import "PlayerConnection.h"
+#import "PlayerDeviceInfo.h"
 
 @implementation ProjectSettingsGeneratedSpriteSheet
 
@@ -147,6 +149,8 @@
     self.publishResolutionHTML5_height = 320;
     self.publishResolutionHTML5_scale = 1;
     
+    breakpoints = [[NSMutableDictionary dictionary] retain];
+    
     generatedSpriteSheets = [[NSMutableDictionary dictionary] retain];
     
     // Load available exporters
@@ -243,6 +247,7 @@
     self.exporter = NULL;
     self.availableExporters = NULL;
     [generatedSpriteSheets release];
+    [breakpoints release];
     [super dealloc];
 }
 
@@ -353,8 +358,11 @@
 
 - (NSString*) publishCacheDirectory
 {
+    NSString* uuid = [PlayerConnection sharedPlayerConnection].selectedDeviceInfo.uuid;
+    NSAssert(uuid, @"No uuid for selected device");
+    
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    return [[[[paths objectAtIndex:0] stringByAppendingPathComponent:@"com.cocosbuilder.CocosBuilder"] stringByAppendingPathComponent:@"publish"]stringByAppendingPathComponent:self.projectPathHashed];
+    return [[[[[paths objectAtIndex:0] stringByAppendingPathComponent:@"com.cocosbuilder.CocosBuilder"] stringByAppendingPathComponent:@"publish"]stringByAppendingPathComponent:self.projectPathHashed] stringByAppendingPathComponent:uuid];
 }
 
 - (NSString*) tempSpriteSheetCacheDirectory
@@ -404,6 +412,35 @@
 - (ProjectSettingsGeneratedSpriteSheet*) smartSpriteSheetForSubPath:(NSString*) relPath
 {
     return [generatedSpriteSheets objectForKey:relPath];
+}
+
+- (void) toggleBreakpointForFile:(NSString*)file onLine:(int)line
+{
+    // Get breakpoints for file
+    NSMutableSet* bps = [breakpoints objectForKey:file];
+    if (!bps)
+    {
+        bps = [NSMutableSet set];
+        [breakpoints setObject:bps forKey:file];
+    }
+    
+    NSNumber* num = [NSNumber numberWithInt:line];
+    if ([bps containsObject:num])
+    {
+        [bps removeObject:num];
+    }
+    else
+    {
+        [bps addObject:num];
+    }
+}
+
+- (NSSet*) breakpointsForFile:(NSString*)file
+{
+    NSSet* bps = [breakpoints objectForKey:file];
+    if (!bps) bps = [NSSet set];
+    
+    return bps;
 }
 
 @end

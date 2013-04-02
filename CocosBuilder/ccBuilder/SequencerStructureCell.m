@@ -35,6 +35,20 @@
 
 - (void) drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
+    if (!imagesLoaded)
+    {
+        imgRowBgChannel = [[NSImage imageNamed:@"seq-row-channel-bg.png"] retain];
+        imagesLoaded = YES;
+    }
+    
+    if (!node)
+    {
+        NSRect rowRect = NSMakeRect(0, /*cellFrame.origin.x,*/ cellFrame.origin.y, cellFrame.size.width+16, kCCBSeqDefaultRowHeight);
+        [imgRowBgChannel drawInRect:rowRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1];
+        [super drawWithFrame:cellFrame inView:controlView];
+        return;
+    }
+    
     // Only draw property names if cell is expanded
     if ([node seqExpanded])
     {
@@ -79,7 +93,7 @@
         
         [@"Visible" drawInRect:propNameRect withAttributes:attrib];
         */
-        NSArray* props = node.plugIn.animatableProperties;
+        NSArray* props = [node.plugIn animatablePropertiesForNode:node];
         int i=0;
         for (NSString* prop in props)
         {
@@ -131,6 +145,7 @@
 - (void) dealloc
 {
     //self.node = NULL;
+    [imgRowBgChannel release];
     [super dealloc];
 }
 

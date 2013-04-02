@@ -28,6 +28,7 @@
 
 // Network status states
 typedef enum {
+    kCCBNetworkUninitialized = -1,
 	kCCBNetworkStatusWaiting,
 	kCCBNetworkStatusTooMany,
 	kCCBNetworkStatusConnected,
@@ -36,6 +37,7 @@ typedef enum {
 
 // Player status states
 typedef enum {
+    kCCBPlayerStatuskUninitialized = -1,
 	kCCBPlayerStatusIdle,
 	kCCBPlayerStatusPlay,
 	kCCBPlayerStatusUnzip,
@@ -88,5 +90,6 @@ extern NSString *kCCBPlayerStatusStringScript;
 - (void) sendDeviceName;
 - (void) sendResultString:(NSString*) str;
 - (void) sendLog:(NSString*)log;
+- (void) sendFileList;
 
 @end

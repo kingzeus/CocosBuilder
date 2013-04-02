@@ -114,6 +114,45 @@
 		</dict>
 		<dict>
 			<key>defaultSerialization</key>
+			<integer>0</integer>
+			<key>animatable</key>
+			<true/>
+			<key>type</key>
+			<string>Degrees</string>
+			<key>name</key>
+			<string>rotationX</string>
+			<key>displayName</key>
+			<string>RotationX</string>
+		</dict>
+		<dict>
+			<key>defaultSerialization</key>
+			<integer>0</integer>
+			<key>animatable</key>
+			<true/>
+			<key>type</key>
+			<string>Degrees</string>
+			<key>name</key>
+			<string>rotationY</string>
+			<key>displayName</key>
+			<string>RotationY</string>
+		</dict>
+		<dict>
+			<key>animatable</key>
+			<true/>
+			<key>defaultSerialization</key>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+			</array>
+			<key>type</key>
+			<string>FloatXY</string>
+			<key>name</key>
+			<string>skew</string>
+			<key>displayName</key>
+			<string>Skew</string>
+		</dict>
+		<dict>
+			<key>defaultSerialization</key>
 			<integer>-1</integer>
 			<key>type</key>
 			<string>Integer</string>
