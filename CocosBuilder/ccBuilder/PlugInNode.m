@@ -23,6 +23,8 @@
  */
 
 #import "PlugInNode.h"
+#import "CocosBuilderAppDelegate.h"
+#import "CCNode+NodeInfo.h"
 
 @implementation PlugInNode
 
@@ -167,11 +169,17 @@
     return @"position";
 }
 
-- (NSArray*) readablePropertiesForType:(NSString*)type
+- (NSArray*) readablePropertiesForType:(NSString*)type node:(CCNode*)node
 {
+    BOOL useFlashSkew = [node usesFlashSkew];
+    
     NSMutableArray* props = [NSMutableArray array];
     for (NSDictionary* propInfo in nodeProperties)
     {
+        if (useFlashSkew && [[propInfo objectForKey:@"name"] isEqualToString:@"rotation"]) continue;
+        if (!useFlashSkew && [[propInfo objectForKey:@"name"] isEqualToString:@"rotationX"]) continue;
+        if (!useFlashSkew && [[propInfo objectForKey:@"name"] isEqualToString:@"rotationY"]) continue;
+        
         if ([[propInfo objectForKey:@"type"] isEqualToString:type] && ![[propInfo objectForKey:@"readOnly"] boolValue])
         {
             [props addObject:[propInfo objectForKey:@"name"]];
@@ -180,27 +188,36 @@
     return props;
 }
 
-- (NSArray*) animatableProperties
+- (NSArray*) animatablePropertiesForNode:(CCNode*)node
 {
-    if (cachedAnimatableProperties) return cachedAnimatableProperties;
+    BOOL useFlashSkew = [node usesFlashSkew];
+    
+    if (!useFlashSkew && cachedAnimatableProperties) return cachedAnimatableProperties;
+    if (useFlashSkew && cachedAnimatablePropertiesFlashSkew) return cachedAnimatablePropertiesFlashSkew;
     
     NSMutableArray* props = [NSMutableArray array];
     
     for (NSDictionary* propInfo in nodeProperties)
     {
+        if (useFlashSkew && [[propInfo objectForKey:@"name"] isEqualToString:@"rotation"]) continue;
+        if (!useFlashSkew && [[propInfo objectForKey:@"name"] isEqualToString:@"rotationX"]) continue;
+        if (!useFlashSkew && [[propInfo objectForKey:@"name"] isEqualToString:@"rotationY"]) continue;
+        
         if ([[propInfo objectForKey:@"animatable"] boolValue])
         {
             [props addObject:[propInfo objectForKey:@"name"]];
         }
     }
-    cachedAnimatableProperties = [props retain];
     
-    return cachedAnimatableProperties;
+    if (!useFlashSkew) cachedAnimatableProperties = [props retain];
+    else cachedAnimatablePropertiesFlashSkew = [props retain];
+    
+    return props;
 }
 
-- (BOOL) isAnimatableProperty:(NSString*)prop
+- (BOOL) isAnimatableProperty:(NSString*)prop node:(CCNode*)node
 {
-    for (NSString* animProp in [self animatableProperties])
+    for (NSString* animProp in [self animatablePropertiesForNode:node])
     {
         if ([animProp isEqualToString:prop])
         {

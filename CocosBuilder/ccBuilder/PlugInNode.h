@@ -23,6 +23,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "cocos2d.h"
 
 @interface PlugInNode : NSObject
 {
@@ -47,6 +48,7 @@
     NSArray* requireChildClass;
     
     NSArray* cachedAnimatableProperties;
+    NSArray* cachedAnimatablePropertiesFlashSkew;
 }
 
 @property (nonatomic,readonly) NSString* nodeClassName;
@@ -62,16 +64,16 @@
 @property (nonatomic,readonly) NSString* requireParentClass;
 @property (nonatomic,readonly) NSArray* requireChildClass;
 @property (nonatomic,readonly) NSString* positionProperty;
-@property (nonatomic,readonly) NSArray* animatableProperties;
 @property (nonatomic,retain) NSImage* icon;
 
 - (BOOL) dontSetInEditorProperty: (NSString*) prop;
 
 - (id) initWithBundle:(NSBundle*) b;
 
-- (NSArray*) readablePropertiesForType:(NSString*)type;
+- (NSArray*) readablePropertiesForType:(NSString*)type node:(CCNode*)node;
+- (NSArray*) animatablePropertiesForNode:(CCNode*)node;
 - (NSString*) propertyTypeForProperty:(NSString*)property;
 
-- (BOOL) isAnimatableProperty:(NSString*)prop;
+- (BOOL) isAnimatableProperty:(NSString*)prop node:(CCNode*)node;
 
 @end

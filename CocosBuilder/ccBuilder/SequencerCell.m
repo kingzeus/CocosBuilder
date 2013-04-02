@@ -31,10 +31,12 @@
 #import "SequencerKeyframe.h"
 #import "SequencerKeyframeEasing.h"
 #import "SequencerTimelineDrawDelegate.h"
+#import "SequencerChannel.h"
 
 @implementation SequencerCell
 
 @synthesize node;
+@synthesize channel;
 
 - (id) init
 {
@@ -62,9 +64,7 @@
     {
         [imgRowBgN drawInRect:rowRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1];
     }
-                                
-    
-    
+
     
     SequencerNodeProperty* nodeProp = [node sequenceNodeProperty:propName sequenceId:seq.sequenceId];
     
@@ -150,15 +150,34 @@
     }
 }
 
-- (void) drawPropertyRow:(int) row property:(NSString*)propName withFrame:(NSRect)cellFrame inView:(NSView*)controlView
+- (BOOL) shouldDrawSelectedKeyframe:(SequencerKeyframe*)kf forNodeProp:(SequencerNodeProperty*)nodeProp
 {
-    SequencerSequence* seq = [SequencerHandler sharedHandler].currentSequence;
-    
-    SequencerNodeProperty* nodeProp = [node sequenceNodeProperty:propName sequenceId:seq.sequenceId];
-    
+    if (kf.type == kCCBKeyframeTypeCallbacks
+        || kf.type == kCCBKeyframeTypeSoundEffects)
+    {
+        NSArray* kfsAtTime = [nodeProp keyframesAtTime:kf.time];
+        for (SequencerKeyframe* kfAtTime in kfsAtTime)
+        {
+            if (kfAtTime.selected) return YES;
+        }
+        
+        return NO;
+    }
+    else
+    {
+        return kf.selected;
+    }
+}
+
+- (void) drawPropertyRowForSeq:(SequencerSequence*) seq nodeProp:(SequencerNodeProperty*)nodeProp row:(int)row withFrame:(NSRect)cellFrame inView:(NSView*)controlView isChannel:(BOOL) isChannel
+{
     // Draw background
     NSRect rowRect = NSMakeRect(cellFrame.origin.x, cellFrame.origin.y+row*kCCBSeqDefaultRowHeight, cellFrame.size.width, kCCBSeqDefaultRowHeight);
-    if (row == 0)
+    if (isChannel)
+    {
+        [imgRowBgChannel drawInRect:rowRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1];
+    } 
+    else if (row == 0)
     {
         [imgRowBg0 drawInRect:rowRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1];
     }
@@ -172,7 +191,7 @@
     }
     
     if (nodeProp)
-    {        
+    {
         // Draw keyframes & interpolation lines
         NSArray* keyframes = nodeProp.keyframes;
         for (int i = 0; i < [keyframes count]; i++)
@@ -242,7 +261,7 @@
             
             // Draw keyframe
             NSImage* img = NULL;
-            if (keyframe.selected)
+            if ([self shouldDrawSelectedKeyframe:keyframe forNodeProp:nodeProp])
             {
                 img = imgKeyframeSel;
             }
@@ -251,9 +270,24 @@
                 img = imgKeyframe;
             }
             
-            [img drawAtPoint:NSMakePoint(cellFrame.origin.x + xPos-3, cellFrame.origin.y+kCCBSeqDefaultRowHeight*row+2) fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1];
+            if (isChannel)
+            {
+                [img drawAtPoint:NSMakePoint(cellFrame.origin.x + xPos-3, cellFrame.origin.y+kCCBSeqDefaultRowHeight*row) fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1];
+            }
+            else
+            {
+                [img drawAtPoint:NSMakePoint(cellFrame.origin.x + xPos-3, cellFrame.origin.y+kCCBSeqDefaultRowHeight*row+2) fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1];
+            }
         }
     }
+}
+
+- (void) drawPropertyRow:(int) row property:(NSString*)propName withFrame:(NSRect)cellFrame inView:(NSView*)controlView
+{
+    SequencerSequence* seq = [SequencerHandler sharedHandler].currentSequence;
+    SequencerNodeProperty* nodeProp = [node sequenceNodeProperty:propName sequenceId:seq.sequenceId];
+    
+    [self drawPropertyRowForSeq:seq nodeProp:nodeProp row:row withFrame:cellFrame inView:controlView isChannel:NO];
 }
 
 - (void) drawCollapsedProps:(NSArray*)props withFrame:(NSRect)cellFrame inView:(NSView*)controlView
@@ -311,6 +345,9 @@
         imgRowBgN = [[NSImage imageNamed:@"seq-row-n-bg.png"] retain];
         [imgRowBgN setFlipped:YES];
         
+        imgRowBgChannel = [[NSImage imageNamed:@"seq-row-channel-bg.png"] retain];
+        [imgRowBgN setFlipped:YES];
+        
         imgInterpol = [[NSImage imageNamed:@"seq-keyframe-interpol.png"] retain];
         [imgInterpol setFlipped:YES];
         
@@ -339,23 +376,33 @@
         [imgKeyframeHint setFlipped:YES];
     }
     
-    
-    NSArray* props = node.plugIn.animatableProperties;
-    for (int i = 0; i < [props count]; i++)
+    if (node)
     {
-        if (i==0 || (node.seqExpanded)) {
-            NSString *propName = [props objectAtIndex:i];
-            NSString *propType = [node.plugIn propertyTypeForProperty:propName];
-            if ([@"Check" isEqualToString:propType]) {
-                [self drawPropertyRowToggle:i property:[props objectAtIndex:i] withFrame:cellFrame inView:controlView];
-            } else {
-                [self drawPropertyRow:i property:[props objectAtIndex:i] withFrame:cellFrame inView:controlView];
+        NSArray* props = [node.plugIn animatablePropertiesForNode:node];
+        for (int i = 0; i < [props count]; i++)
+        {
+            if (i==0 || (node.seqExpanded)) {
+                NSString *propName = [props objectAtIndex:i];
+                NSString *propType = [node.plugIn propertyTypeForProperty:propName];
+                if ([@"Check" isEqualToString:propType]) {
+                    [self drawPropertyRowToggle:i property:[props objectAtIndex:i] withFrame:cellFrame inView:controlView];
+                } else {
+                    [self drawPropertyRow:i property:[props objectAtIndex:i] withFrame:cellFrame inView:controlView];
+                }
             }
         }
+        // collapsed props are all animatable exept the first one!
+        NSArray *collapsedProps = [props subarrayWithRange:NSMakeRange(1, [props count]-1)];
+        [self drawCollapsedProps:collapsedProps withFrame:cellFrame inView:controlView];
     }
-    // collapsed props are all animatable exept the first one!
-    NSArray *collapsedProps = [props subarrayWithRange:NSMakeRange(1, [props count]-1)];
-    [self drawCollapsedProps:collapsedProps withFrame:cellFrame inView:controlView];
+    else if (channel)
+    {
+        [self drawPropertyRowForSeq:[SequencerHandler sharedHandler].currentSequence nodeProp:channel.seqNodeProp row:0 withFrame:cellFrame inView:controlView isChannel:YES];
+    }
+    else
+    {
+        NSLog(@"Undefined row type!");
+    }
     
     [gc restoreGraphicsState];
 }

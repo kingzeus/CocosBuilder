@@ -25,9 +25,12 @@
 #import <AppKit/AppKit.h>
 #import "cocos2d.h"
 
+@class SequencerChannel;
+
 @interface SequencerCell : NSCell
 {
     CCNode* node;
+    SequencerChannel* channel;
     
     BOOL imagesLoaded;
     
@@ -37,6 +40,7 @@
     NSImage* imgRowBg0;
     NSImage* imgRowBg1;
     NSImage* imgRowBgN;
+    NSImage* imgRowBgChannel;
     
     NSImage* imgInterpol;
     NSImage* imgEaseIn;
@@ -52,5 +56,6 @@
 }
 
 @property (nonatomic,assign) CCNode* node;
+@property (nonatomic,assign) SequencerChannel* channel;
 
 @end
