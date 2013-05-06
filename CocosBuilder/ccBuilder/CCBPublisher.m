@@ -38,11 +38,14 @@
 #import "Tupac.h"
 #import "CCBPublisherTemplate.h"
 #import "CCBDirectoryComparer.h"
+#import "ResourceManager.h"
+#import "ResourceManagerUtil.h"
 
 @implementation CCBPublisher
 
 @synthesize publishFormat;
 @synthesize runAfterPublishing;
+@synthesize browser;
 
 - (id) initWithProjectSettings:(ProjectSettings*)settings warnings:(CCBWarnings*)w
 {
@@ -174,13 +177,17 @@
         // Skip sprite sheets that are already published
         NSString* spriteSheetDir = [outDir stringByDeletingLastPathComponent];
         NSString* spriteSheetName = [outDir lastPathComponent];
+        
+        NSString *subPath = [[ResourceManagerUtil relativePathFromAbsolutePath:srcFile] stringByDeletingLastPathComponent];
+        
+        ProjectSettingsGeneratedSpriteSheet* ssSettings = [projectSettings smartSpriteSheetForSubPath:subPath];
 
         NSString* spriteSheetFile = NULL;
         if (publishToSingleResolution) spriteSheetFile = outDir;
         else spriteSheetFile = [[spriteSheetDir stringByAppendingPathComponent:[NSString stringWithFormat:@"resources-%@", resolution]] stringByAppendingPathComponent:spriteSheetName];
         
         NSDate* dstDate = [CCBFileUtil modificationDateForFile:[spriteSheetFile stringByAppendingPathExtension:@"plist"]];
-        if (dstDate && [dstDate isEqualToDate:srcDate])
+        if (dstDate && [dstDate isEqualToDate:srcDate] && !ssSettings.isDirty)
         {
             return YES;
         }
@@ -403,6 +410,12 @@
             // Skip generated sprite sheets
             if (isGeneratedSpriteSheet) continue;
             
+            // Skip the empty folder
+            if ([[fm contentsOfDirectoryAtPath:filePath error:NULL] count] == 0)  continue;
+            
+            // Skip the fold no .ccb files when onlyPublishCCBs is true
+            if(projectSettings.onlyPublishCCBs && ![self containsCCBFile:filePath]) continue;
+            
             [self publishDirectory:filePath subPath:childPath];
         }
         else
@@ -522,7 +535,8 @@
         // Sprite files should have been saved to the temp cache directory, now actually generate the sprite sheets
         NSString* spriteSheetDir = [outDir stringByDeletingLastPathComponent];
         NSString* spriteSheetName = [outDir lastPathComponent];
-        
+        ProjectSettingsGeneratedSpriteSheet* ssSettings = [projectSettings smartSpriteSheetForSubPath:subPath];
+
         // Check if sprite sheet needs to be re-published
         for (NSString* res in publishForResolutions)
         {
@@ -537,28 +551,32 @@
             
             // Skip publish if sprite sheet exists and is up to date
             NSDate* dstDate = [CCBFileUtil modificationDateForFile:[spriteSheetFile stringByAppendingPathExtension:@"plist"]];
-            if (dstDate && [dstDate isEqualToDate:srcSpriteSheetDate])
+            if (dstDate && [dstDate isEqualToDate:srcSpriteSheetDate] && !ssSettings.isDirty)
             {
                 continue;
             }
-            
+                        
             Tupac* packer = [Tupac tupac];
             packer.outputName = spriteSheetFile;
             packer.outputFormat = TupacOutputFormatCocos2D;
             
-            if (targetType == kCCBPublisherTargetTypeHTML5)
+            if (targetType == kCCBPublisherTargetTypeIPhone)
             {
-                // Only publish PNG files
-                packer.imageFormat = kTupacImageFormatPNG;
-            }
-            else
-            {
-                // Use settings
-                ProjectSettingsGeneratedSpriteSheet* ssSettings = [projectSettings smartSpriteSheetForSubPath:subPath];
-                
                 packer.imageFormat = ssSettings.textureFileFormat;
                 packer.compress = ssSettings.compress;
                 packer.dither = ssSettings.dither;
+            }
+            else if (targetType == kCCBPublisherTargetTypeAndroid)
+            {
+                packer.imageFormat = ssSettings.textureFileFormatAndroid;
+                packer.compress = NO;
+                packer.dither = ssSettings.ditherAndroid;
+            }
+            else if (targetType == kCCBPublisherTargetTypeHTML5)
+            {
+                packer.imageFormat = ssSettings.textureFileFormatHTML5;
+                packer.compress = NO;
+                packer.dither = ssSettings.ditherHTML5;
             }
             
             // Update progress
@@ -575,9 +593,43 @@
         
         [publishedResources addObject:[subPath stringByAppendingPathExtension:@"plist"]];
         [publishedResources addObject:[subPath stringByAppendingPathExtension:@"png"]];
+        
+        if (ssSettings.isDirty) {
+            ssSettings.isDirty = NO;
+            [projectSettings store];
+        }
     }
     
     return YES;
+}
+
+- (BOOL) containsCCBFile:(NSString*) dir
+{
+    NSFileManager* fm = [NSFileManager defaultManager];
+    ResourceManager* resManager = [ResourceManager sharedManager];
+    NSArray* files = [fm contentsOfDirectoryAtPath:dir error:NULL];
+    NSArray* resIndependentDirs = [resManager resIndependentDirs];
+    
+    for (NSString* file in files) {
+        BOOL isDirectory;
+        NSString* filePath = [dir stringByAppendingPathComponent:file];
+        
+        if([fm fileExistsAtPath:filePath isDirectory:&isDirectory]){
+            if(isDirectory){
+                // Skip resource independent directories
+                if ([resIndependentDirs containsObject:file]) {
+                    continue;
+                }else if([self containsCCBFile:filePath]){
+                    return YES;
+                }
+            }else{
+                if([[file lowercaseString] hasSuffix:@"ccb"]){
+                    return YES;
+                }
+            }
+        }
+    }
+    return NO;
 }
 
 // Currently only checks top level of resource directories
@@ -593,6 +645,7 @@
     return NO;
 }
 
+/*
 - (void) addFilesWithExtension:(NSString*)ext inDirectory:(NSString*)dir toArray:(NSMutableArray*)array subPath:(NSString*)subPath
 {
     NSArray* files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:dir error:NULL];
@@ -632,7 +685,7 @@
     }
     
     return files;
-}
+}*/
 
 - (void) publishGeneratedFiles
 {
@@ -653,7 +706,7 @@
             && ![self fileExistInResourcePaths:@"main.js"])
         {
             // Find all jsFiles
-            NSArray* jsFiles = [self filesInResourcePathsWithExtension:@"js"];
+            NSArray* jsFiles = [CCBFileUtil filesInResourcePathsWithExtension:@"js"];
             NSString* mainFile = [outputDir stringByAppendingPathComponent:@"main.js"];
             
             // Generate file from template
@@ -679,7 +732,7 @@
         // Generate boot-html5.js file
         
         NSString* bootFile = [outputDir stringByAppendingPathComponent:@"boot-html5.js"];
-        NSArray* jsFiles = [self filesInResourcePathsWithExtension:@"js"];
+        NSArray* jsFiles = [CCBFileUtil filesInResourcePathsWithExtension:@"js"];
         
         tmpl = [CCBPublisherTemplate templateWithFile:@"boot-html5.txt"];
         [tmpl setStrings:jsFiles forMarker:@"REQUIRED_FILES" prefix:@"    '" suffix:@"',\n"];
@@ -775,12 +828,8 @@
         if (![self publishDirectory:dir subPath:NULL]) return NO;
     }
     
-    //NSLog(@"publishedResources: %@", publishedResources);
-    
     // Publish generated files
     [self publishGeneratedFiles];
-    
-    //NSLog(@"Renamed files: %@", renamedFiles);
     
     // Yiee Haa!
     return YES;
@@ -820,8 +869,6 @@
     CCBDirectoryComparer* dc = [[[CCBDirectoryComparer alloc] init] autorelease];
     [dc loadDirectory:outputDir];
     NSArray* fileList = [dc diffWithFiles:diffFiles];
-    
-    NSLog(@"fileList: %@", fileList);
     
     // Zip it up!
     NSTask* zipTask = [[NSTask alloc] init];

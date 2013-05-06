@@ -83,16 +83,16 @@ NSString *kCCBPlayerStatusStringScript = @"Action: Executing script";
 
 #pragma mark Redirection of std out
 
-- (void) redirectStdErr
+- (void) redirectStdOut
 {
-    return;
+    //return;
     
     NSPipe* pipe = [NSPipe pipe];
     pipeReadHandle = [pipe fileHandleForReading];
     
     [pipeReadHandle readInBackgroundAndNotify];
     
-    int err = dup2([[pipe fileHandleForWriting] fileDescriptor], STDERR_FILENO);
+    int err = dup2([[pipe fileHandleForWriting] fileDescriptor], STDOUT_FILENO);
     if (!err) NSLog(@"ConsoleWindow: Failed to redirect stderr");
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readData:) name:NSFileHandleReadCompletionNotification object:pipeReadHandle];
@@ -116,7 +116,7 @@ NSString *kCCBPlayerStatusStringScript = @"Action: Executing script";
         [server start];
         
         // Redirect std out
-        [self redirectStdErr];
+        [self redirectStdOut];
     }
 }
 
@@ -303,6 +303,8 @@ NSString *kCCBPlayerStatusStringScript = @"Action: Executing script";
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 		self.playerStatus = kCCBPlayerStatusPlay;
 		[self runJSApp];
+        
+        [self sendRunning];
 	});
 
 }
@@ -555,6 +557,14 @@ NSString *kCCBPlayerStatusStringScript = @"Action: Executing script";
     NSMutableDictionary* msg = [NSMutableDictionary dictionary];
     [msg setObject:@"filelist" forKey:@"cmd"];
     [msg setObject:dirFiles forKey:@"filelist"];
+    
+    [self sendMessage:msg];
+}
+
+- (void) sendRunning
+{
+    NSMutableDictionary* msg = [NSMutableDictionary dictionary];
+    [msg setObject:@"running" forKey:@"cmd"];
     
     [self sendMessage:msg];
 }

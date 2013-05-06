@@ -25,6 +25,8 @@
 #import "PlayerConnection.h"
 #import "ProjectSettings.h"
 #import "PlayerDeviceInfo.h"
+#import "DebuggerConnection.h"
+#import "CocosBuilderAppDelegate.h"
 
 static PlayerConnection* sharedPlayerConnection;
 
@@ -32,11 +34,50 @@ static PlayerConnection* sharedPlayerConnection;
 
 @synthesize delegate;
 @synthesize selectedServer;
+@synthesize dbgConnection;
 
 + (PlayerConnection*) sharedPlayerConnection
 {
     return  sharedPlayerConnection;
 }
+
+#pragma mark Handle Debugger Connections
+
+- (void) setupDebugConnection
+{
+    NSLog(@"updatedDebugConnectionForServer: %@", selectedServer);
+    
+    if (dbgConnection)
+    {
+        // Shut down old connection
+        self.dbgConnection = NULL;
+    }
+    
+    // Start a new dbg connection
+    NSString* deviceIP = [[selectedServer componentsSeparatedByString:@":"] objectAtIndex:0];
+    
+    self.dbgConnection = [[DebuggerConnection alloc] initWithPlayerConnection:self deviceIP:deviceIP];
+    [self.dbgConnection connect];
+}
+
+- (void) debugSendBreakpoints:(NSDictionary*) breakpoints
+{
+    [dbgConnection sendBreakpoints:breakpoints];
+}
+
+- (void) debugConnectionStarted
+{
+    // Send list of breakpoints
+    [dbgConnection sendBreakpoints: [CocosBuilderAppDelegate appDelegate].projectSettings.breakpoints];
+}
+
+- (void) debugConnectionLost
+{
+    NSLog(@"debugConnectionLost");
+    self.dbgConnection = NULL;
+}
+
+#pragma mark Server Configuration
 
 - (NSString*) protocolIdentifier
 {
@@ -96,6 +137,7 @@ static PlayerConnection* sharedPlayerConnection;
 
 - (void) dealloc
 {
+    [dbgConnection release];
     [connectedServers release];
     [selectedServer release];
     [client release];
@@ -248,6 +290,11 @@ static PlayerConnection* sharedPlayerConnection;
         
         NSLog(@"Received filelist: %@", deviceInfo.fileList);
     }
+    else if ([cmd isEqualToString:@"running"])
+    {
+        // Player is now running program, connect debugger
+        [self performSelector:@selector(setupDebugConnection) withObject:NULL afterDelay:1.0];
+    }
 }
 
 - (BOOL) connected
@@ -291,11 +338,15 @@ static PlayerConnection* sharedPlayerConnection;
 
 - (void) sendJavaScript:(NSString*)script
 {
+    [dbgConnection sendMessage: script];
+    
+    /*
     NSMutableDictionary* msg = [NSMutableDictionary dictionary];
     [msg setObject:@"script" forKey:@"cmd"];
     [msg setObject:script forKey:@"script"];
     
     [self sendMessage:msg];
+     */
 }
 
 - (void) sendProjectSettings:(ProjectSettings*)settings
@@ -303,12 +354,30 @@ static PlayerConnection* sharedPlayerConnection;
     NSMutableDictionary* msg = [NSMutableDictionary dictionary];
     [msg setObject:@"settings" forKey:@"cmd"];
     
+    // Orientations
     NSMutableArray* orientations = [NSMutableArray arrayWithCapacity:4];
     [orientations addObject:[NSNumber numberWithBool:settings.deviceOrientationPortrait]];
     [orientations addObject:[NSNumber numberWithBool:settings.deviceOrientationUpsideDown]];
     [orientations addObject:[NSNumber numberWithBool:settings.deviceOrientationLandscapeLeft]];
     [orientations addObject:[NSNumber numberWithBool:settings.deviceOrientationLandscapeRight]];
     [msg setObject:orientations forKey:@"orientations"];
+    
+    // Initial break points
+    NSDictionary* files = settings.breakpoints;
+    NSMutableDictionary* outFiles = [NSMutableDictionary dictionary];
+    for (NSString* file in files)
+    {
+        NSSet* bps = [files objectForKey:file];
+        NSMutableArray* outBps = [NSMutableArray array];
+        for (NSNumber* bp in bps)
+        {
+            [outBps addObject:bp];
+        }
+        
+        [outFiles setObject:outBps forKey:file];
+    }
+    [msg setObject:outFiles forKey:@"breakpoints"];
+    NSLog(@"BREAKPOINTS: %@", outFiles);
     
     [self sendMessage:msg];
 }
@@ -321,6 +390,9 @@ static PlayerConnection* sharedPlayerConnection;
     
     NSLog(@"Sending run command!");
     [self sendMessage:msg];
+    
+    // Connect debugger
+    //[self performSelector:@selector(setupDebugConnection) withObject:NULL afterDelay:2];
 }
 
 - (void) sendStopCommand
@@ -330,6 +402,9 @@ static PlayerConnection* sharedPlayerConnection;
     
     NSLog(@"Sending stop command!");
     [self sendMessage:msg];
+    
+    // Also stop debugger connection
+    [dbgConnection shutdown];
 }
 
 @end

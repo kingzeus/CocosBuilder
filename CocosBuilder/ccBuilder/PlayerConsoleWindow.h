@@ -25,8 +25,7 @@
 #import <Cocoa/Cocoa.h>
 #import "PlayerConnection.h"
 
-@class MGSFragaria;
-@class SMLTextView;
+@class DebuggerTextField;
 
 @interface PlayerConsoleWindow : NSWindowController <PlayerConnectionDelegate,NSWindowDelegate>
 {
@@ -39,21 +38,20 @@
     IBOutlet NSTextView* textView;
     BOOL scrolledToBottomWhenResizing;
     
-    // Javascript editor
-    IBOutlet NSView* jsView;
-    
-    MGSFragaria* fragaria;
-    SMLTextView* fragariaTextView;
+    IBOutlet DebuggerTextField* textInput;
 }
 
 @property (nonatomic,readonly) PlayerConnection* playerConnection;
 
 - (void) writeToConsole:(NSString*) str bold:(BOOL)bold;
+- (void) writeToConsole:(NSString*) str bold:(BOOL)bold color:(NSColor*) color;
 - (void) cleanConsole;
 
 - (IBAction)pressedPlay:(id)sender;
 - (IBAction)pressedStop:(id)sender;
 - (IBAction)pressedSendJSCode:(id)sender;
 - (IBAction)pressedPairing:(id)sender;
+- (IBAction)pressedContinue:(id)sender;
+- (IBAction)pressedStep:(id)sender;
 
 @end

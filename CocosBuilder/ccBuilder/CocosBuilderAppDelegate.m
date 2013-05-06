@@ -90,9 +90,13 @@
 #import "NodeGraphPropertySetter.h"
 #import "CCBSplitHorizontalView.h"
 #import "SpriteSheetSettingsWindow.h"
-
+#import "AboutWindow.h"
+#import "CCBHTTPServer.h"
+#import "JavaScriptAutoCompleteHandler.h"
+#import "CCBFileUtil.h"
 
 #import <ExceptionHandling/NSExceptionHandler.h>
+
 
 @implementation CocosBuilderAppDelegate
 
@@ -241,6 +245,14 @@ static CocosBuilderAppDelegate* sharedAppDelegate;
     [window addChildWindow:guiWindow ordered:NSWindowAbove];
 }
 
+- (void) setupAutoCompleteHandler
+{
+    JavaScriptAutoCompleteHandler* handler = [JavaScriptAutoCompleteHandler sharedAutoCompleteHandler];
+    
+    NSString* dir = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"autoCompleteDefinitions"];
+    
+    [handler loadGlobalFilesFromDirectory:dir];
+}
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
@@ -251,6 +263,8 @@ static CocosBuilderAppDelegate* sharedAppDelegate;
     loadedSelectedNodes = [[NSMutableArray alloc] init];
     
     sharedAppDelegate = self;
+    
+    [self setupAutoCompleteHandler];
     
     [[NSExceptionHandler defaultExceptionHandler] setExceptionHandlingMask: NSLogUncaughtExceptionMask | NSLogUncaughtSystemExceptionMask | NSLogUncaughtRuntimeErrorMask];
     
@@ -284,6 +298,7 @@ static CocosBuilderAppDelegate* sharedAppDelegate;
     [cs setStageBorder:0];
     [self updateCanvasBorderMenu];
     [self updateJSControlledMenu];
+    [self updateDefaultBrowser];
     
     // Load plug-ins
     plugInManager = [PlugInManager sharedManager];
@@ -864,6 +879,10 @@ static BOOL hideAllToNextSeparator;
         CCBDocument* doc = [(NSTabViewItem*)[docs objectAtIndex:i] identifier];
         if (doc.isDirty) return YES;
     }
+    if ([[NSDocumentController sharedDocumentController] hasEditedDocuments])
+    {
+        return YES;
+    }
     return NO;
 }
 
@@ -1242,6 +1261,13 @@ static BOOL hideAllToNextSeparator;
         }
     }
     
+    [[JavaScriptAutoCompleteHandler sharedAutoCompleteHandler] removeLocalFiles];
+    
+    [window setTitle:@"CocosBuilder"];
+
+    // Stop local web server
+    [[CCBHTTPServer sharedHTTPServer] stop];
+    
     // Remove resource paths
     self.projectSettings = NULL;
     [resManager removeAllDirectories];
@@ -1277,6 +1303,20 @@ static BOOL hideAllToNextSeparator;
     BOOL success = [self checkForTooManyDirectoriesInCurrentProject];
     
     if (!success) return NO;
+    
+    // Load autocompletions for all JS files
+    NSArray* jsFiles = [CCBFileUtil filesInResourcePathsWithExtension:@"js"];
+    for (NSString* jsFile in jsFiles)
+    {
+        [[JavaScriptAutoCompleteHandler sharedAutoCompleteHandler] loadLocalFile:[resManager toAbsolutePath:jsFile]];
+    }
+    
+    // Update the title of the main window
+    [window setTitle:[NSString stringWithFormat:@"CocosBuilder - %@", [fileName lastPathComponent]]];
+
+    // Start local web server
+    NSString* docRoot = [projectSettings.publishDirectoryHTML5 absolutePathFromBaseDirPath:[projectSettings.projectPath stringByDeletingLastPathComponent]];
+    [[CCBHTTPServer sharedHTTPServer] start:docRoot];
     
     // Open ccb file for project if there is only one
     NSArray* resPaths = project.absoluteResourcePaths;
@@ -1516,6 +1556,11 @@ static BOOL hideAllToNextSeparator;
 
 - (void) openJSFile:(NSString*) fileName
 {
+    [self openJSFile:fileName highlightLine:0];
+}
+
+- (void) openJSFile:(NSString*) fileName highlightLine:(int)line
+{
     NSURL* docURL = [[[NSURL alloc] initFileURLWithPath:fileName] autorelease];
     
     JavaScriptDocument* jsDoc = [[NSDocumentController sharedDocumentController] documentForURL:docURL];
@@ -1528,6 +1573,17 @@ static BOOL hideAllToNextSeparator;
     }
     
     [jsDoc showWindows];
+    [jsDoc setHighlightedLine:line];
+}
+
+- (void) resetJSFilesLineHighlight
+{
+    NSArray* jsDocs = [[NSDocumentController sharedDocumentController] documents];
+    for (int i = 0; i < [jsDocs count]; i++)
+    {
+        JavaScriptDocument* doc = [jsDocs objectAtIndex:i];
+        [doc setHighlightedLine:0];
+    }
 }
 
 #pragma mark Undo
@@ -2038,18 +2094,22 @@ static BOOL hideAllToNextSeparator;
     [saveDlg beginSheetModalForWindow:window completionHandler:^(NSInteger result){
         if (result == NSOKButton)
         {
-            [[[CCDirector sharedDirector] view] lockOpenGLContext];
-            
-            // Save file to new path
-            [self saveFile:[[saveDlg URL] path]];
-            
-            // Close document
-            [tabView removeTabViewItem:[self tabViewItemFromDoc:currentDocument]];
-            
-            // Open newly created document
-            [self openFile:[[saveDlg URL] path]];
-            
-            [[[CCDirector sharedDirector] view] unlockOpenGLContext];
+            NSString *filename = [[saveDlg URL] path];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0),
+                           dispatch_get_current_queue(), ^{
+                [[[CCDirector sharedDirector] view] lockOpenGLContext];
+                
+                // Save file to new path
+                [self saveFile:filename];
+                
+                // Close document
+                [tabView removeTabViewItem:[self tabViewItemFromDoc:currentDocument]];
+                
+                // Open newly created document
+                [self openFile:filename];
+                
+                [[[CCDirector sharedDirector] view] unlockOpenGLContext];
+            });
         }
         [limter release];
     }];
@@ -2067,7 +2127,36 @@ static BOOL hideAllToNextSeparator;
     }
 }
 
-- (void) publishAndRun:(BOOL)run
+- (IBAction) saveAllDocuments:(id)sender
+{
+    // Save all JS files
+    //[[NSDocumentController sharedDocumentController] saveAllDocuments:sender]; //This API have no effects
+    NSArray* JSDocs = [[NSDocumentController sharedDocumentController] documents];
+    for (int i = 0; i < [JSDocs count]; i++)
+    {
+        NSDocument* doc = [JSDocs objectAtIndex:i];
+        if (doc.isDocumentEdited)
+        {
+            [doc saveDocument:sender];
+        }
+    }
+    
+    // Save all CCB files
+    CCBDocument* oldCurDoc = currentDocument;
+    NSArray* docs = [tabView tabViewItems];
+    for (int i = 0; i < [docs count]; i++)
+    {
+        CCBDocument* doc = [(NSTabViewItem*)[docs objectAtIndex:i] identifier];
+         if (doc.isDirty)
+         {
+             [self switchToDocument:doc forceReload:NO];
+             [self saveDocument:sender];
+         }
+    }
+    [self switchToDocument:oldCurDoc forceReload:NO];
+}
+
+- (void) publishAndRun:(BOOL)run runInBrowser:(NSString *)browser
 {
     if (!projectSettings.publishEnabledAndroid
         && !projectSettings.publishEnablediPhone
@@ -2089,13 +2178,35 @@ static BOOL hideAllToNextSeparator;
     // Setup publisher, publisher is released in publisher:finishedWithWarnings:
     CCBPublisher* publisher = [[CCBPublisher alloc] initWithProjectSettings:projectSettings warnings:warnings];
     publisher.runAfterPublishing = run;
+    publisher.browser = browser;
     
-    // Open progress window and publish
-    
-    [publisher publish];
-    
-    [self modalStatusWindowStartWithTitle:@"Publishing"];
-    [self modalStatusWindowUpdateStatusText:@"Starting up..."];
+    // Check if there are unsaved documents
+    if ([self hasDirtyDocument])
+    {
+        NSAlert* alert = [NSAlert alertWithMessageText:@"Publish Project" defaultButton:@"Save All" alternateButton:@"Cancel" otherButton:@"Don't Save" informativeTextWithFormat:@"There are unsaved documents. Do you want to save before publishing?"];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        NSInteger result = [alert runModal];
+        switch (result) {
+            case NSAlertDefaultReturn:
+                [self saveAllDocuments:nil];
+                // Falling through to publish
+            case NSAlertOtherReturn:
+                // Open progress window and publish
+                [publisher publish];
+                [self modalStatusWindowStartWithTitle:@"Publishing"];
+                [self modalStatusWindowUpdateStatusText:@"Starting up..."];
+                break;
+            default:
+                break;
+        }
+    }
+    else
+    {
+        // Open progress window and publish
+        [publisher publish];
+        [self modalStatusWindowStartWithTitle:@"Publishing"];
+        [self modalStatusWindowUpdateStatusText:@"Starting up..."];
+    }
 }
 
 - (void) publisher:(CCBPublisher*)publisher finishedWithWarnings:(CCBWarnings*)warnings
@@ -2113,6 +2224,12 @@ static BOOL hideAllToNextSeparator;
     
     [[publishWarningsWindow window] setIsVisible:(warnings.warnings.count > 0)];
     
+    if (![publisher.browser isEqual:@""])
+    {
+        [[CCBHTTPServer sharedHTTPServer] openBrowser:publisher.browser];
+    }
+
+    [self updateDefaultBrowser];
     if (publisher.runAfterPublishing)
     {
         [self runProject:self];
@@ -2146,12 +2263,18 @@ static BOOL hideAllToNextSeparator;
 
 - (IBAction) menuPublishProject:(id)sender
 {
-    [self publishAndRun:NO];
+    [self publishAndRun:NO runInBrowser:@""];
 }
 
 - (IBAction) menuPublishProjectAndRun:(id)sender
 {
-    [self publishAndRun:YES];
+    [self publishAndRun:YES runInBrowser:@""];
+}
+
+- (IBAction)menuPublishProjectAndRunInBrowser:(id)sender
+{
+    NSMenuItem* item = (NSMenuItem *)sender;
+    [self publishAndRun:NO runInBrowser:item.title];
 }
 
 - (IBAction) menuCleanCacheDirectories:(id)sender
@@ -2169,29 +2292,32 @@ static BOOL hideAllToNextSeparator;
     [openDlg beginSheetModalForWindow:window completionHandler:^(NSInteger result){
         if (result == NSOKButton)
         {
-            [[[CCDirector sharedDirector] view] lockOpenGLContext];
-            
             NSArray* files = [openDlg URLs];
             
-            for (int i = 0; i < [files count]; i++)
-            {
-                NSString* dirName = [[files objectAtIndex:i] path];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0),
+                           dispatch_get_current_queue(), ^{
+                [[[CCDirector sharedDirector] view] lockOpenGLContext];
                 
-                NSArray* arr = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:dirName error:NULL];
-                for(NSString* file in arr)
+                for (int i = 0; i < [files count]; i++)
                 {
-                    if ([file hasSuffix:@".ccb"])
+                    NSString* dirName = [[files objectAtIndex:i] path];
+                    
+                    NSArray* arr = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:dirName error:NULL];
+                    for(NSString* file in arr)
                     {
-                        NSString* absPath = [dirName stringByAppendingPathComponent:file];
-                        [self openFile:absPath];
-                        [self saveFile:absPath];
-                        //[self publishDocument:NULL];
-                        [self performClose:sender];
+                        if ([file hasSuffix:@".ccb"])
+                        {
+                            NSString* absPath = [dirName stringByAppendingPathComponent:file];
+                            [self openFile:absPath];
+                            [self saveFile:absPath];
+                            //[self publishDocument:NULL];
+                            [self performClose:sender];
+                        }
                     }
                 }
-            }
-            
-            [[[CCDirector sharedDirector] view] unlockOpenGLContext];
+                
+                [[[CCDirector sharedDirector] view] unlockOpenGLContext];
+            });
         }
     }];
 }
@@ -2241,12 +2367,14 @@ static BOOL hideAllToNextSeparator;
         if (result == NSOKButton)
         {
             NSArray* files = [openDlg URLs];
-            
-            for (int i = 0; i < [files count]; i++)
-            {
-                NSString* fileName = [[files objectAtIndex:i] path];
-                [self openProject:fileName];
-            }
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0),
+                           dispatch_get_current_queue(), ^{
+                for (int i = 0; i < [files count]; i++)
+                {
+                    NSString* fileName = [[files objectAtIndex:i] path];
+                    [self openProject:fileName];
+                }
+            });
         }
     }];
 }
@@ -2270,14 +2398,18 @@ static BOOL hideAllToNextSeparator;
             [[NSFileManager defaultManager] createDirectoryAtPath:fileName withIntermediateDirectories:NO attributes:NULL error:NULL];
             NSString* projectName = [fileName lastPathComponent];
             fileName = [[fileName stringByAppendingPathComponent:projectName] stringByAppendingPathExtension:@"ccbproj"];
-            if ([self createProject: fileName])
-            {
-                [self openProject:fileName];
-            }
-            else
-            {
-                [self modalDialogTitle:@"Failed to Create Project" message:@"Failed to create the project, make sure you are saving it to a writable directory."];
-            }
+
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0),
+                           dispatch_get_current_queue(), ^{
+                if ([self createProject: fileName])
+                {
+                    [self openProject:fileName];
+                }
+                else
+                {
+                    [self modalDialogTitle:@"Failed to Create Project" message:@"Failed to create the project, make sure you are saving it to a writable directory."];
+                }
+            });
         }
     }];
 }
@@ -2303,7 +2435,12 @@ static BOOL hideAllToNextSeparator;
         [saveDlg beginSheetModalForWindow:window completionHandler:^(NSInteger result){
             if (result == NSOKButton)
             {
-                [self newFile:[[saveDlg URL] path] type:wc.rootObjectType resolutions:wc.availableResolutions];
+                NSString *type = wc.rootObjectType;
+                NSMutableArray *resolutions = wc.availableResolutions;
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0),
+                               dispatch_get_current_queue(), ^{
+                    [self newFile:[[saveDlg URL] path] type:type resolutions:resolutions];
+                });
             }
             [wc release];
             [limiter release];
@@ -2466,6 +2603,31 @@ static BOOL hideAllToNextSeparator;
     {
         [menuItemJSControlled setState:NSOffState];
     }
+}
+
+- (void) updateDefaultBrowser
+{
+    [menuItemSafari setKeyEquivalent:@""];
+    [menuItemSafari setState:NSOffState];
+    [menuItemChrome setKeyEquivalent:@""];
+    [menuItemChrome setState:NSOffState];
+    [menuItemFirefox setKeyEquivalent:@""];
+    [menuItemFirefox setState:NSOffState];
+    
+    NSString* defaultBrowser = [[NSUserDefaults standardUserDefaults] valueForKey:@"defaultBrowser"];
+    NSMenuItem* defaultBrowserMenuItem;
+    if([defaultBrowser isEqual:@"Chrome"])
+    {
+        defaultBrowserMenuItem = menuItemChrome;
+    }else if([defaultBrowser isEqual:@"Firefox"])
+    {
+        defaultBrowserMenuItem = menuItemFirefox;
+    }else{
+        defaultBrowserMenuItem = menuItemSafari;
+    }
+    [defaultBrowserMenuItem setKeyEquivalentModifierMask: NSShiftKeyMask | NSCommandKeyMask];
+    [defaultBrowserMenuItem setKeyEquivalent:@"b"];
+    [defaultBrowserMenuItem setState:NSOnState];
 }
 
 - (IBAction) menuSetCanvasBorder:(id)sender
@@ -2975,16 +3137,36 @@ static BOOL hideAllToNextSeparator;
         wc.compress = ssSettings.compress;
         wc.dither = ssSettings.dither;
         wc.textureFileFormat = ssSettings.textureFileFormat;
-        
+        wc.ditherAndroid = ssSettings.ditherAndroid;
+        wc.textureFileFormatAndroid = ssSettings.textureFileFormatAndroid;
+        wc.textureFileFormatHTML5 = ssSettings.textureFileFormatHTML5;
+        wc.ditherHTML5 = ssSettings.ditherHTML5;
+        wc.iOSEnabled = projectSettings.publishEnablediPhone;
+        wc.androidEnabled = projectSettings.publishEnabledAndroid;
+        wc.HTML5Enabled = projectSettings.publishEnabledHTML5;
+
         int success = [wc runModalSheetForWindow:window];
         
         if (success)
         {
-            ssSettings.compress = wc.compress;
-            ssSettings.dither = wc.dither;
-            ssSettings.textureFileFormat = wc.textureFileFormat;
-            
-            [projectSettings store];
+            BOOL settingDirty  = (ssSettings.compress != wc.compress)||
+                                 (ssSettings.dither != wc.dither)||
+                                 (ssSettings.textureFileFormat != wc.textureFileFormat)||
+                                 (ssSettings.ditherAndroid != wc.ditherAndroid)||
+                                 (ssSettings.textureFileFormatAndroid != wc.textureFileFormatAndroid)||
+                                 (ssSettings.textureFileFormatHTML5 != wc.textureFileFormatHTML5)||
+                                 (ssSettings.ditherHTML5 != wc.ditherHTML5);
+            if(settingDirty){
+                ssSettings.isDirty = YES;
+                ssSettings.compress = wc.compress;
+                ssSettings.dither = wc.dither;
+                ssSettings.textureFileFormat = wc.textureFileFormat;
+                ssSettings.ditherAndroid = wc.ditherAndroid;
+                ssSettings.textureFileFormatAndroid = wc.textureFileFormatAndroid;
+                ssSettings.textureFileFormatHTML5 = wc.textureFileFormatHTML5;
+                ssSettings.ditherHTML5 = wc.ditherHTML5;
+                [projectSettings store];
+            }
         }
     }
 }
@@ -3050,6 +3232,7 @@ static BOOL hideAllToNextSeparator;
 {
     if (menuItem.action == @selector(saveDocument:)) return hasOpenedDocument;
     else if (menuItem.action == @selector(saveDocumentAs:)) return hasOpenedDocument;
+    else if (menuItem.action == @selector(saveAllDocuments:)) return hasOpenedDocument;
     else if (menuItem.action == @selector(performClose:)) return hasOpenedDocument;
     else if (menuItem.action == @selector(menuCreateKeyframesFromSelection:))
     {
@@ -3089,6 +3272,17 @@ static BOOL hideAllToNextSeparator;
     }
     
     return YES;
+}
+
+- (IBAction)menuAbout:(id)sender
+{
+    NSLog(@"menuAbout");
+    if(!aboutWindow)
+    {
+        aboutWindow = [[AboutWindow alloc] initWithWindowNibName:@"AboutWindow"];
+    }
+    
+    [[aboutWindow window] makeKeyAndOrderFront:self];
 }
 
 - (NSUndoManager*) windowWillReturnUndoManager:(NSWindow *)window

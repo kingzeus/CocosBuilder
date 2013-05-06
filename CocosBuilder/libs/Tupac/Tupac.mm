@@ -174,7 +174,8 @@ typedef struct _PVRTexHeader
     NSMutableArray *imageInfos = [NSMutableArray arrayWithCapacity:self.filenames.count];
     
     CGColorSpaceRef colorSpace = NULL;
-    
+    BOOL createdColorSpace = NO;
+        
     for (NSString *filename in self.filenames)
     {
         // Load CGImage
@@ -186,7 +187,17 @@ typedef struct _PVRTexHeader
         int h = (int)CGImageGetHeight(srcImage);
         
         NSRect trimRect = [self trimmedRectForImage:srcImage];
-        colorSpace = CGImageGetColorSpace(srcImage);
+        
+        if (!colorSpace)
+        {
+            colorSpace = CGImageGetColorSpace(srcImage);
+        
+            if (CGColorSpaceGetModel(colorSpace) == kCGColorSpaceModelIndexed)
+            {
+                colorSpace = CGColorSpaceCreateDeviceRGB();
+                createdColorSpace = YES;
+            }
+        }
         
         NSMutableDictionary* imageInfo = [NSMutableDictionary dictionary];
         [imageInfo setObject:[NSNumber numberWithInt:w] forKey:@"width"];
@@ -345,8 +356,6 @@ typedef struct _PVRTexHeader
     [NSGraphicsContext restoreGraphicsState];
     
     NSString* textureFileName = NULL;
-
-    
     
     // Export PNG file
     
@@ -363,7 +372,39 @@ typedef struct _PVRTexHeader
     
     textureFileName = pngFilename;
     
-    if (imageFormat_ != kTupacImageFormatPNG)
+    if (createdColorSpace)
+    {
+        CFRelease(colorSpace);
+    }
+
+    // Convert file to 8 bit if original uses indexed colors
+    if (imageFormat_ == kTupacImageFormatPNG_8BIT)
+    {
+        NSTask* pngTask = [[NSTask alloc] init];
+        [pngTask setLaunchPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"pngquant"]];
+        NSMutableArray* args = [NSMutableArray arrayWithObjects:
+                                @"--force", @"--ext", @".png", pngFilename, nil];
+        if (self.dither) [args addObject:@"-dither"];
+        [pngTask setArguments:args];
+        [pngTask launch];
+        [pngTask waitUntilExit];
+        [pngTask release];
+    }
+    else if (imageFormat_ == kTupacImageFormatWEBP)
+    {
+        NSString* dstFile = [self.outputName stringByAppendingPathExtension:@"webp"];
+        NSTask* webPTask = [[NSTask alloc] init];
+        [webPTask setLaunchPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"cwebp"]];
+        NSMutableArray* args = [NSMutableArray arrayWithObjects:
+                                @"-q", @"80", pngFilename, @"-o", dstFile, nil];
+        [webPTask setArguments:args];
+        [webPTask launch];
+        [webPTask waitUntilExit];
+        [webPTask release];
+        // Remove PNG file
+        [[NSFileManager defaultManager] removeItemAtPath:pngFilename error:NULL];
+    }
+    else if (imageFormat_ != kTupacImageFormatPNG)
     {
         NSString *pvrFilename = [self.outputName stringByAppendingPathExtension:@"pvr"];
         
@@ -524,8 +565,6 @@ typedef struct _PVRTexHeader
             }
         }
     }
-    
-    NSLog(@"Tupac filenames: %@", absoluteFilepaths);
     
     // Generate the sprite sheet
     self.filenames = absoluteFilepaths;
