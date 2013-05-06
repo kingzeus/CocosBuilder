@@ -26,6 +26,7 @@
 
 @class MGSFragaria;
 @class SMLTextView;
+@class JavaScriptSyntaxChecker;
 
 @interface JavaScriptDocument : NSDocument
 {
@@ -35,7 +36,18 @@
     MGSFragaria* fragaria;
     SMLTextView* fragariaTextView;
     
+    JavaScriptSyntaxChecker* syntaxChecker;
+    IBOutlet NSPopUpButton* warningButton;
+    IBOutlet NSPopUpButton* quickJumpButton;
+    
     NSString* docStr;
     BOOL docEdited;
+    
+    BOOL updatingAutoComplete;
 }
+
+@property (atomic, copy) NSString* absFileName;
+
+- (void) updateErrors:(NSArray*) errors;
+- (void) setHighlightedLine:(int)line;
 @end

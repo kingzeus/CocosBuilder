@@ -33,20 +33,35 @@
 #import "PlayerConnection.h"
 #import "PlayerDeviceInfo.h"
 
+#import <ApplicationServices/ApplicationServices.h>
+
 @implementation ProjectSettingsGeneratedSpriteSheet
 
+@synthesize isDirty;
 @synthesize textureFileFormat;
 @synthesize dither;
 @synthesize compress;
+@synthesize textureFileFormatAndroid;
+@synthesize ditherAndroid;
+@synthesize textureFileFormatHTML5;
+@synthesize ditherHTML5;
 
 - (id)init
 {
     self = [super init];
     if (!self) return NULL;
     
+    self.isDirty = NO;
+    
     self.textureFileFormat = 0; // PNG
     self.dither = YES;
     self.compress = YES;
+    
+    self.textureFileFormatAndroid = 0;
+    self.ditherAndroid = YES;
+    
+    self.textureFileFormatHTML5 = 0;
+    self.ditherHTML5 = YES;
     
     return self;
 }
@@ -56,10 +71,18 @@
     self = [super init];
     if (!self) return NULL;
     
+    self.isDirty = [[dict objectForKey:@"isDirty"] boolValue];
+
     self.textureFileFormat = [[dict objectForKey:@"textureFileFormat"] intValue];
     self.dither = [[dict objectForKey:@"dither"] boolValue];
     self.compress = [[dict objectForKey:@"compress"] boolValue];
     
+    self.textureFileFormatAndroid = [[dict objectForKey:@"textureFileFormatAndroid"] intValue];
+    self.ditherAndroid = [[dict objectForKey:@"ditherAndroid"] boolValue];
+    
+    self.textureFileFormatHTML5 = [[dict objectForKey:@"textureFileFormatHTML5"] intValue];
+    self.ditherHTML5 = [[dict objectForKey:@"ditherHTML5"] boolValue];
+
     return self;
 }
 
@@ -67,10 +90,18 @@
 {
     NSMutableDictionary* ser = [NSMutableDictionary dictionary];
     
+    [ser setObject:[NSNumber numberWithBool:self.isDirty] forKey:@"isDirty"];
+
     [ser setObject:[NSNumber numberWithInt:self.textureFileFormat] forKey:@"textureFileFormat"];
     [ser setObject:[NSNumber numberWithBool:self.dither] forKey:@"dither"];
     [ser setObject:[NSNumber numberWithBool:self.compress] forKey:@"compress"];
     
+    [ser setObject:[NSNumber numberWithInt:self.textureFileFormatAndroid] forKey:@"textureFileFormatAndroid"];
+    [ser setObject:[NSNumber numberWithBool:self.ditherAndroid] forKey:@"ditherAndroid"];
+    
+    [ser setObject:[NSNumber numberWithInt:self.textureFileFormatHTML5] forKey:@"textureFileFormatHTML5"];
+    [ser setObject:[NSNumber numberWithBool:self.ditherHTML5] forKey:@"ditherHTML5"];
+
     return ser;
 }
 
@@ -98,6 +129,9 @@
 @synthesize publishResolutionHTML5_width;
 @synthesize publishResolutionHTML5_height;
 @synthesize publishResolutionHTML5_scale;
+@synthesize isSafariExist;
+@synthesize isChromeExist;
+@synthesize isFirefoxExist;
 @synthesize flattenPaths;
 @synthesize publishToZipFile;
 @synthesize javascriptBased;
@@ -111,6 +145,7 @@
 @synthesize deviceOrientationLandscapeRight;
 @synthesize resourceAutoScaleFactor;
 @synthesize generatedSpriteSheets;
+@synthesize breakpoints;
 
 - (id) init
 {
@@ -160,6 +195,7 @@
         [availableExporters addObject: plugIn.extension];
     }
     
+    [self detectBrowserPresence];
     return self;
 }
 
@@ -236,6 +272,7 @@
     if (!mainCCB) mainCCB = @"";
     self.javascriptMainCCB = mainCCB;
     
+    [self detectBrowserPresence];
     return self;
 }
 
@@ -433,6 +470,9 @@
     {
         [bps addObject:num];
     }
+    
+    // Send new list of bps to player
+    [[PlayerConnection sharedPlayerConnection] debugSendBreakpoints:breakpoints];
 }
 
 - (NSSet*) breakpointsForFile:(NSString*)file
@@ -443,4 +483,28 @@
     return bps;
 }
 
+- (void) detectBrowserPresence
+{
+    isSafariExist = FALSE;
+    isChromeExist = FALSE;
+    isFirefoxExist = FALSE;
+    
+    OSStatus result = LSFindApplicationForInfo (kLSUnknownCreator, CFSTR("com.apple.Safari"), NULL, NULL, NULL);
+    if (result == noErr)
+    {
+        isSafariExist = TRUE;
+    }
+    
+    result = LSFindApplicationForInfo (kLSUnknownCreator, CFSTR("com.google.Chrome"), NULL, NULL, NULL);
+    if (result == noErr)
+    {
+        isChromeExist = TRUE;
+    }
+
+    result = LSFindApplicationForInfo (kLSUnknownCreator, CFSTR("org.mozilla.firefox"), NULL, NULL, NULL);
+    if (result == noErr)
+    {
+        isFirefoxExist = TRUE;
+    }
+}
 @end

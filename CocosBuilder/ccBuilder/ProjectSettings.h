@@ -31,13 +31,23 @@
 
 @interface ProjectSettingsGeneratedSpriteSheet : NSObject
 {
+    BOOL isDirty;
     int textureFileFormat;
     BOOL dither;
     BOOL compress;
+    int textureFileFormatAndroid;
+    BOOL ditherAndroid;
+    int textureFileFormatHTML5;
+    BOOL ditherHTML5;
 }
+@property (nonatomic,assign) BOOL isDirty;
 @property (nonatomic,assign) int textureFileFormat;
 @property (nonatomic,assign) BOOL dither;
 @property (nonatomic,assign) BOOL compress;
+@property (nonatomic,assign) int textureFileFormatAndroid;
+@property (nonatomic,assign) BOOL ditherAndroid;
+@property (nonatomic,assign) int textureFileFormatHTML5;
+@property (nonatomic,assign) BOOL ditherHTML5;
 
 - (id)initWithSerialization:(id)dict;
 - (id)serialize;
@@ -71,6 +81,10 @@
     int publishResolutionHTML5_width;
     int publishResolutionHTML5_height;
     int publishResolutionHTML5_scale;
+    
+    BOOL isSafariExist;
+    BOOL isChromeExist;
+    BOOL isFirefoxExist;
     
     BOOL flattenPaths;
     BOOL publishToZipFile;
@@ -112,6 +126,10 @@
 @property (nonatomic,assign) int publishResolutionHTML5_height;
 @property (nonatomic,assign) int publishResolutionHTML5_scale;
 
+@property (nonatomic,assign) BOOL isSafariExist;
+@property (nonatomic,assign) BOOL isChromeExist;
+@property (nonatomic,assign) BOOL isFirefoxExist;
+
 @property (nonatomic, copy) NSString* javascriptMainCCB;
 @property (nonatomic, assign) BOOL flattenPaths;
 @property (nonatomic, assign) BOOL publishToZipFile;
@@ -130,6 +148,8 @@
 @property (nonatomic, assign) int resourceAutoScaleFactor;
 
 @property (nonatomic, readonly) NSDictionary* generatedSpriteSheets;
+
+@property (nonatomic,readonly) NSDictionary* breakpoints;
 
 - (id) initWithSerialization:(id)dict;
 - (BOOL) store;
