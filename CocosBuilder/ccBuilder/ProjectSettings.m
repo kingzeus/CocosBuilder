@@ -146,6 +146,8 @@
 @synthesize resourceAutoScaleFactor;
 @synthesize generatedSpriteSheets;
 @synthesize breakpoints;
+@synthesize versionStr;
+@synthesize needRepublish;
 
 - (id) init
 {
@@ -196,6 +198,8 @@
     }
     
     [self detectBrowserPresence];
+    self.versionStr = [self getVersion];
+    self.needRepublish = NO;
     return self;
 }
 
@@ -273,11 +277,27 @@
     self.javascriptMainCCB = mainCCB;
     
     [self detectBrowserPresence];
+    
+    // Check if we are running a new version of CocosBuilder
+    // in which case the project needs to be republished
+    NSString* oldVersionHash = [dict objectForKey:@"versionStr"];
+    NSString* newVersionHash = [self getVersion];
+    if (newVersionHash && ![newVersionHash isEqual:oldVersionHash])
+    {
+       self.versionStr = [self getVersion];
+       self.needRepublish = YES;
+    }
+    else
+    {
+       self.needRepublish = NO;
+    }
+    
     return self;
 }
 
 - (void) dealloc
 {
+    self.versionStr = NULL;
     self.resourcePaths = NULL;
     self.projectPath = NULL;
     self.publishDirectory = NULL;
@@ -350,6 +370,12 @@
     }
     [dict setObject:generatedSpriteSheetsDict forKey:@"generatedSpriteSheets"];
     
+    if (versionStr)
+    {
+        [dict setObject:versionStr forKey:@"versionStr"];
+    }
+    
+    [dict setObject:[NSNumber numberWithBool:needRepublish] forKey:@"needRepublish"];
     return dict;
 }
 
@@ -506,5 +532,13 @@
     {
         isFirefoxExist = TRUE;
     }
+}
+
+- (NSString* ) getVersion
+{
+    NSString* versionPath = [[NSBundle mainBundle] pathForResource:@"Version" ofType:@"txt" inDirectory:@"version"];
+    
+    NSString* version = [NSString stringWithContentsOfFile:versionPath encoding:NSUTF8StringEncoding error:NULL];
+    return version;
 }
 @end
