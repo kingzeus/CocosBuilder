@@ -57,7 +57,7 @@
     warnings = [w retain];
     
     // Setup extensions to copy
-    copyExtensions = [[NSArray alloc] initWithObjects:@"jpg",@"png", @"pvr", @"ccz", @"plist", @"fnt", @"ttf",@"js",@"wav",@"mp3",@"m4a",@"caf", nil];
+    copyExtensions = [[NSArray alloc] initWithObjects:@"jpg",@"png", @"pvr", @"ccz", @"plist", @"fnt", @"ttf",@"js", @"json", @"wav",@"mp3",@"m4a",@"caf", nil];
     
     // Set format to use for exports
     self.publishFormat = projectSettings.exporter;
@@ -893,6 +893,22 @@
 
 - (BOOL) publish_
 {
+    // Remove all old publish directories if user has cleaned the cache
+    if (projectSettings.needRepublish)
+    {
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSString* publishDir;
+        
+        publishDir = [projectSettings.publishDirectory absolutePathFromBaseDirPath:[projectSettings.projectPath stringByDeletingLastPathComponent]];
+        [fm removeItemAtPath:publishDir error:NULL];
+        
+        publishDir = [projectSettings.publishDirectoryAndroid absolutePathFromBaseDirPath:[projectSettings.projectPath stringByDeletingLastPathComponent]];
+        [fm removeItemAtPath:publishDir error:NULL];
+        
+        publishDir = [projectSettings.publishDirectoryHTML5 absolutePathFromBaseDirPath:[projectSettings.projectPath stringByDeletingLastPathComponent]];
+        [fm removeItemAtPath:publishDir error:NULL];
+    }
+    
     if (!runAfterPublishing)
     {
         // Normal publishing
@@ -1088,6 +1104,12 @@
         }
     }
     
+    // Once published, set needRepublish back to NO
+    if (projectSettings.needRepublish)
+    {
+        projectSettings.needRepublish = NO;
+        [projectSettings store];
+    }
     return YES;
 }
 
