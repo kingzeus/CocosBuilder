@@ -1,10 +1,26 @@
-//
-//  Tupac.m
-//  tupac
-//
-//  Created by Mark Onyschuk on 11-09-09.
-//  Copyright 2011 Zynga Toronto, Inc. All rights reserved.
-//
+/*
+ * CocosBuilder: http://www.cocosbuilder.com
+ *
+ * Copyright (c) 2012 Zynga Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
 #import "Tupac.h"
 #import "MaxRectsBinPack.h"
@@ -174,7 +190,8 @@ typedef struct _PVRTexHeader
     NSMutableArray *imageInfos = [NSMutableArray arrayWithCapacity:self.filenames.count];
     
     CGColorSpaceRef colorSpace = NULL;
-    
+    BOOL createdColorSpace = NO;
+        
     for (NSString *filename in self.filenames)
     {
         // Load CGImage
@@ -186,7 +203,17 @@ typedef struct _PVRTexHeader
         int h = (int)CGImageGetHeight(srcImage);
         
         NSRect trimRect = [self trimmedRectForImage:srcImage];
-        colorSpace = CGImageGetColorSpace(srcImage);
+        
+        if (!colorSpace)
+        {
+            colorSpace = CGImageGetColorSpace(srcImage);
+        
+            if (CGColorSpaceGetModel(colorSpace) == kCGColorSpaceModelIndexed)
+            {
+                colorSpace = CGColorSpaceCreateDeviceRGB();
+                createdColorSpace = YES;
+            }
+        }
         
         NSMutableDictionary* imageInfo = [NSMutableDictionary dictionary];
         [imageInfo setObject:[NSNumber numberWithInt:w] forKey:@"width"];
@@ -345,8 +372,6 @@ typedef struct _PVRTexHeader
     [NSGraphicsContext restoreGraphicsState];
     
     NSString* textureFileName = NULL;
-
-    
     
     // Export PNG file
     
@@ -363,7 +388,39 @@ typedef struct _PVRTexHeader
     
     textureFileName = pngFilename;
     
-    if (imageFormat_ != kTupacImageFormatPNG)
+    if (createdColorSpace)
+    {
+        CFRelease(colorSpace);
+    }
+
+    // Convert file to 8 bit if original uses indexed colors
+    if (imageFormat_ == kTupacImageFormatPNG_8BIT)
+    {
+        NSTask* pngTask = [[NSTask alloc] init];
+        [pngTask setLaunchPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"pngquant"]];
+        NSMutableArray* args = [NSMutableArray arrayWithObjects:
+                                @"--force", @"--ext", @".png", pngFilename, nil];
+        if (self.dither) [args addObject:@"-dither"];
+        [pngTask setArguments:args];
+        [pngTask launch];
+        [pngTask waitUntilExit];
+        [pngTask release];
+    }
+    else if (imageFormat_ == kTupacImageFormatWEBP)
+    {
+        NSString* dstFile = [self.outputName stringByAppendingPathExtension:@"webp"];
+        NSTask* webPTask = [[NSTask alloc] init];
+        [webPTask setLaunchPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"cwebp"]];
+        NSMutableArray* args = [NSMutableArray arrayWithObjects:
+                                @"-q", @"80", pngFilename, @"-o", dstFile, nil];
+        [webPTask setArguments:args];
+        [webPTask launch];
+        [webPTask waitUntilExit];
+        [webPTask release];
+        // Remove PNG file
+        [[NSFileManager defaultManager] removeItemAtPath:pngFilename error:NULL];
+    }
+    else if (imageFormat_ != kTupacImageFormatPNG)
     {
         NSString *pvrFilename = [self.outputName stringByAppendingPathExtension:@"pvr"];
         
@@ -524,8 +581,6 @@ typedef struct _PVRTexHeader
             }
         }
     }
-    
-    NSLog(@"Tupac filenames: %@", absoluteFilepaths);
     
     // Generate the sprite sheet
     self.filenames = absoluteFilepaths;

@@ -37,11 +37,15 @@
 #import "CCBFileUtil.h"
 #import "Tupac.h"
 #import "CCBPublisherTemplate.h"
+#import "CCBDirectoryComparer.h"
+#import "ResourceManager.h"
+#import "ResourceManagerUtil.h"
 
 @implementation CCBPublisher
 
 @synthesize publishFormat;
 @synthesize runAfterPublishing;
+@synthesize browser;
 
 - (id) initWithProjectSettings:(ProjectSettings*)settings warnings:(CCBWarnings*)w
 {
@@ -53,7 +57,7 @@
     warnings = [w retain];
     
     // Setup extensions to copy
-    copyExtensions = [[NSArray alloc] initWithObjects:@"jpg",@"png", @"pvr", @"ccz", @"plist", @"fnt", @"ttf",@"js",@"wav",@"mp3",@"m4a",@"caf", nil];
+    copyExtensions = [[NSArray alloc] initWithObjects:@"jpg",@"png", @"pvr", @"ccz", @"plist", @"fnt", @"ttf",@"js", @"json", @"wav",@"mp3",@"m4a",@"caf", nil];
     
     // Set format to use for exports
     self.publishFormat = projectSettings.exporter;
@@ -173,13 +177,17 @@
         // Skip sprite sheets that are already published
         NSString* spriteSheetDir = [outDir stringByDeletingLastPathComponent];
         NSString* spriteSheetName = [outDir lastPathComponent];
+        
+        NSString *subPath = [[ResourceManagerUtil relativePathFromAbsolutePath:srcFile] stringByDeletingLastPathComponent];
+        
+        ProjectSettingsGeneratedSpriteSheet* ssSettings = [projectSettings smartSpriteSheetForSubPath:subPath];
 
         NSString* spriteSheetFile = NULL;
         if (publishToSingleResolution) spriteSheetFile = outDir;
         else spriteSheetFile = [[spriteSheetDir stringByAppendingPathComponent:[NSString stringWithFormat:@"resources-%@", resolution]] stringByAppendingPathComponent:spriteSheetName];
         
         NSDate* dstDate = [CCBFileUtil modificationDateForFile:[spriteSheetFile stringByAppendingPathExtension:@"plist"]];
-        if (dstDate && [dstDate isEqualToDate:srcDate])
+        if (dstDate && [dstDate isEqualToDate:srcDate] && !ssSettings.isDirty)
         {
             return YES;
         }
@@ -402,6 +410,12 @@
             // Skip generated sprite sheets
             if (isGeneratedSpriteSheet) continue;
             
+            // Skip the empty folder
+            if ([[fm contentsOfDirectoryAtPath:filePath error:NULL] count] == 0)  continue;
+            
+            // Skip the fold no .ccb files when onlyPublishCCBs is true
+            if(projectSettings.onlyPublishCCBs && ![self containsCCBFile:filePath]) continue;
+            
             [self publishDirectory:filePath subPath:childPath];
         }
         else
@@ -521,7 +535,8 @@
         // Sprite files should have been saved to the temp cache directory, now actually generate the sprite sheets
         NSString* spriteSheetDir = [outDir stringByDeletingLastPathComponent];
         NSString* spriteSheetName = [outDir lastPathComponent];
-        
+        ProjectSettingsGeneratedSpriteSheet* ssSettings = [projectSettings smartSpriteSheetForSubPath:subPath];
+
         // Check if sprite sheet needs to be re-published
         for (NSString* res in publishForResolutions)
         {
@@ -536,28 +551,32 @@
             
             // Skip publish if sprite sheet exists and is up to date
             NSDate* dstDate = [CCBFileUtil modificationDateForFile:[spriteSheetFile stringByAppendingPathExtension:@"plist"]];
-            if (dstDate && [dstDate isEqualToDate:srcSpriteSheetDate])
+            if (dstDate && [dstDate isEqualToDate:srcSpriteSheetDate] && !ssSettings.isDirty)
             {
                 continue;
             }
-            
+                        
             Tupac* packer = [Tupac tupac];
             packer.outputName = spriteSheetFile;
             packer.outputFormat = TupacOutputFormatCocos2D;
             
-            if (targetType == kCCBPublisherTargetTypeHTML5)
+            if (targetType == kCCBPublisherTargetTypeIPhone)
             {
-                // Only publish PNG files
-                packer.imageFormat = kTupacImageFormatPNG;
-            }
-            else
-            {
-                // Use settings
-                ProjectSettingsGeneratedSpriteSheet* ssSettings = [projectSettings smartSpriteSheetForSubPath:subPath];
-                
                 packer.imageFormat = ssSettings.textureFileFormat;
                 packer.compress = ssSettings.compress;
                 packer.dither = ssSettings.dither;
+            }
+            else if (targetType == kCCBPublisherTargetTypeAndroid)
+            {
+                packer.imageFormat = ssSettings.textureFileFormatAndroid;
+                packer.compress = NO;
+                packer.dither = ssSettings.ditherAndroid;
+            }
+            else if (targetType == kCCBPublisherTargetTypeHTML5)
+            {
+                packer.imageFormat = ssSettings.textureFileFormatHTML5;
+                packer.compress = NO;
+                packer.dither = ssSettings.ditherHTML5;
             }
             
             // Update progress
@@ -574,9 +593,43 @@
         
         [publishedResources addObject:[subPath stringByAppendingPathExtension:@"plist"]];
         [publishedResources addObject:[subPath stringByAppendingPathExtension:@"png"]];
+        
+        if (ssSettings.isDirty) {
+            ssSettings.isDirty = NO;
+            [projectSettings store];
+        }
     }
     
     return YES;
+}
+
+- (BOOL) containsCCBFile:(NSString*) dir
+{
+    NSFileManager* fm = [NSFileManager defaultManager];
+    ResourceManager* resManager = [ResourceManager sharedManager];
+    NSArray* files = [fm contentsOfDirectoryAtPath:dir error:NULL];
+    NSArray* resIndependentDirs = [resManager resIndependentDirs];
+    
+    for (NSString* file in files) {
+        BOOL isDirectory;
+        NSString* filePath = [dir stringByAppendingPathComponent:file];
+        
+        if([fm fileExistsAtPath:filePath isDirectory:&isDirectory]){
+            if(isDirectory){
+                // Skip resource independent directories
+                if ([resIndependentDirs containsObject:file]) {
+                    continue;
+                }else if([self containsCCBFile:filePath]){
+                    return YES;
+                }
+            }else{
+                if([[file lowercaseString] hasSuffix:@"ccb"]){
+                    return YES;
+                }
+            }
+        }
+    }
+    return NO;
 }
 
 // Currently only checks top level of resource directories
@@ -592,6 +645,7 @@
     return NO;
 }
 
+/*
 - (void) addFilesWithExtension:(NSString*)ext inDirectory:(NSString*)dir toArray:(NSMutableArray*)array subPath:(NSString*)subPath
 {
     NSArray* files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:dir error:NULL];
@@ -631,7 +685,7 @@
     }
     
     return files;
-}
+}*/
 
 - (void) publishGeneratedFiles
 {
@@ -652,7 +706,7 @@
             && ![self fileExistInResourcePaths:@"main.js"])
         {
             // Find all jsFiles
-            NSArray* jsFiles = [self filesInResourcePathsWithExtension:@"js"];
+            NSArray* jsFiles = [CCBFileUtil filesInResourcePathsWithExtension:@"js"];
             NSString* mainFile = [outputDir stringByAppendingPathComponent:@"main.js"];
             
             // Generate file from template
@@ -678,7 +732,7 @@
         // Generate boot-html5.js file
         
         NSString* bootFile = [outputDir stringByAppendingPathComponent:@"boot-html5.js"];
-        NSArray* jsFiles = [self filesInResourcePathsWithExtension:@"js"];
+        NSArray* jsFiles = [CCBFileUtil filesInResourcePathsWithExtension:@"js"];
         
         tmpl = [CCBPublisherTemplate templateWithFile:@"boot-html5.txt"];
         [tmpl setStrings:jsFiles forMarker:@"REQUIRED_FILES" prefix:@"    '" suffix:@"',\n"];
@@ -691,6 +745,7 @@
         
         tmpl = [CCBPublisherTemplate templateWithFile:@"boot2-html5.txt"];
         [tmpl setString:projectSettings.javascriptMainCCB forMarker:@"MAIN_SCENE"];
+        [tmpl setString:[NSString stringWithFormat:@"%d", projectSettings.publishResolutionHTML5_scale] forMarker:@"RESOLUTION_SCALE"];
         
         [tmpl writeToFile:boot2File];
         
@@ -774,12 +829,8 @@
         if (![self publishDirectory:dir subPath:NULL]) return NO;
     }
     
-    //NSLog(@"publishedResources: %@", publishedResources);
-    
     // Publish generated files
     [self publishGeneratedFiles];
-    
-    //NSLog(@"Renamed files: %@", renamedFiles);
     
     // Yiee Haa!
     return YES;
@@ -806,8 +857,58 @@
     return [manager fileExistsAtPath:file];
 }
 
+- (BOOL) archiveToFile:(NSString*)file diffFrom:(NSDictionary*) diffFiles
+{
+    if (!diffFiles) diffFiles = [NSDictionary dictionary];
+    
+    NSFileManager *manager = [NSFileManager defaultManager];
+    
+    // Remove the old file
+    [manager removeItemAtPath:file error:NULL];
+    
+    // Create diff
+    CCBDirectoryComparer* dc = [[[CCBDirectoryComparer alloc] init] autorelease];
+    [dc loadDirectory:outputDir];
+    NSArray* fileList = [dc diffWithFiles:diffFiles];
+    
+    // Zip it up!
+    NSTask* zipTask = [[NSTask alloc] init];
+    [zipTask setCurrentDirectoryPath:outputDir];
+    
+    [zipTask setLaunchPath:@"/usr/bin/zip"];
+    NSMutableArray* args = [NSMutableArray arrayWithObjects:@"-r", @"-q", file, @".", @"-i", nil];
+    
+    for (NSString* f in fileList)
+    {
+        [args addObject:f];
+    }
+    
+    [zipTask setArguments:args];
+    [zipTask launch];
+    [zipTask waitUntilExit];
+    [zipTask release];
+    
+    return [manager fileExistsAtPath:file];
+}
+
 - (BOOL) publish_
 {
+    // Remove all old publish directories if user has cleaned the cache
+    if (projectSettings.needRepublish)
+    {
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSString* publishDir;
+        
+        publishDir = [projectSettings.publishDirectory absolutePathFromBaseDirPath:[projectSettings.projectPath stringByDeletingLastPathComponent]];
+        [fm removeItemAtPath:publishDir error:NULL];
+        
+        publishDir = [projectSettings.publishDirectoryAndroid absolutePathFromBaseDirPath:[projectSettings.projectPath stringByDeletingLastPathComponent]];
+        [fm removeItemAtPath:publishDir error:NULL];
+        
+        publishDir = [projectSettings.publishDirectoryHTML5 absolutePathFromBaseDirPath:[projectSettings.projectPath stringByDeletingLastPathComponent]];
+        [fm removeItemAtPath:publishDir error:NULL];
+    }
+    
     if (!runAfterPublishing)
     {
         // Normal publishing
@@ -930,60 +1031,85 @@
     }
     else
     {
-        // Publish for running on device
-        targetType = kCCBPublisherTargetTypeIPhone;
-        
-        PlayerDeviceInfo* deviceInfo = [PlayerConnection sharedPlayerConnection].selectedDeviceInfo;
-        if ([deviceInfo.deviceType isEqualToString:@"iPad"])
+        if (browser)
         {
-            // iPad
-            if (deviceInfo.hasRetinaDisplay)
-            {
-                // iPad retina
-                publishForResolutions = [NSArray arrayWithObjects:@"ipadhd", nil];
-            }
-            else
-            {
-                // iPad normal
-                publishForResolutions = [NSArray arrayWithObjects:@"ipad", @"hd", nil];
-            }
-        }
-        else if ([deviceInfo.deviceType isEqualToString:@"iPhone"])
-        {
-            // iPhone
-            if (deviceInfo.hasRetinaDisplay)
-            {
-                publishForResolutions = [NSArray arrayWithObjects:@"iphonehd", nil];
-            }
-            else
-            {
-                publishForResolutions = [NSArray arrayWithObjects:@"iphone", nil];
-            }
-        }
-        else if ([deviceInfo.deviceType isEqualToString:@"Android"])
-        {
-            targetType = kCCBPublisherTargetTypeAndroid;
+            // Publish for running in browser
+            targetType = kCCBPublisherTargetTypeHTML5;
             
-            publishForResolutions = [NSArray arrayWithObjects:deviceInfo.preferredResourceType, nil];
+            NSMutableArray* resolutions = [NSMutableArray array];
+            [resolutions addObject: @"html5"];
+            publishForResolutions = resolutions;
+            
+            publishToSingleResolution = YES;
+            
+            NSString* publishDir = [projectSettings.publishDirectoryHTML5 absolutePathFromBaseDirPath:[projectSettings.projectPath stringByDeletingLastPathComponent]];
+            
+            if (![self publishAllToDirectory:publishDir]) return NO;
         }
-        
-        if (![self publishAllToDirectory:projectSettings.publishCacheDirectory]) return NO;
-        
-        // Zip up and push
-        CocosBuilderAppDelegate* ad = [CocosBuilderAppDelegate appDelegate];
-        [ad modalStatusWindowUpdateStatusText:@"Zipping up project..."];
-        
-        // Archive
-        NSString *zipFile = [projectSettings.publishCacheDirectory stringByAppendingPathComponent:@"ccb.zip"];
-        [self archiveToFile:zipFile];
-        
-        // Send to player
-        [ad modalStatusWindowUpdateStatusText:@"Sending to player..."];
-        
-        PlayerConnection* conn = [PlayerConnection sharedPlayerConnection];
-        [conn sendResourceZip:zipFile];
+        else
+        {
+            // Publish for running on device
+            targetType = kCCBPublisherTargetTypeIPhone;
+            
+            PlayerDeviceInfo* deviceInfo = [PlayerConnection sharedPlayerConnection].selectedDeviceInfo;
+            if ([deviceInfo.deviceType isEqualToString:@"iPad"])
+            {
+                // iPad
+                if (deviceInfo.hasRetinaDisplay)
+                {
+                    // iPad retina
+                    publishForResolutions = [NSArray arrayWithObjects:@"ipadhd", nil];
+                }
+                else
+                {
+                    // iPad normal
+                    publishForResolutions = [NSArray arrayWithObjects:@"ipad", @"hd", nil];
+                }
+            }
+            else if ([deviceInfo.deviceType isEqualToString:@"iPhone"])
+            {
+                // iPhone
+                if (deviceInfo.hasRetinaDisplay)
+                {
+                    publishForResolutions = [NSArray arrayWithObjects:@"iphonehd", nil];
+                }
+                else
+                {
+                    publishForResolutions = [NSArray arrayWithObjects:@"iphone", nil];
+                }
+            }
+            else if ([deviceInfo.deviceType isEqualToString:@"Android"])
+            {
+                targetType = kCCBPublisherTargetTypeAndroid;
+                
+                publishForResolutions = [NSArray arrayWithObjects:deviceInfo.preferredResourceType, nil];
+            }
+            
+            if (![self publishAllToDirectory:projectSettings.publishCacheDirectory]) return NO;
+            
+            // Zip up and push
+            CocosBuilderAppDelegate* ad = [CocosBuilderAppDelegate appDelegate];
+            [ad modalStatusWindowUpdateStatusText:@"Zipping up project..."];
+            
+            // Archive
+            NSString *zipFile = [projectSettings.publishCacheDirectory stringByAppendingPathComponent:@"ccb.zip"];
+            [self archiveToFile:zipFile diffFrom:deviceInfo.fileList];
+            // TODO: Fix diffFrom
+            
+            // Send to player
+            [ad modalStatusWindowUpdateStatusText:@"Sending to player..."];
+            
+            PlayerConnection* conn = [PlayerConnection sharedPlayerConnection];
+            [conn sendResourceZip:zipFile];
+        }
     }
     
+    // Once published, set needRepublish back to NO
+    if (projectSettings.needRepublish)
+    {
+        projectSettings.needRepublish = NO;
+        [projectSettings store];
+    }
     return YES;
 }
 

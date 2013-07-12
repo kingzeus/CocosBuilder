@@ -30,21 +30,38 @@
 #import "ResourceManager.h"
 #import "ResourceManagerUtil.h"
 #import "CocosBuilderAppDelegate.h"
+#import "PlayerConnection.h"
+#import "PlayerDeviceInfo.h"
+
+#import <ApplicationServices/ApplicationServices.h>
 
 @implementation ProjectSettingsGeneratedSpriteSheet
 
+@synthesize isDirty;
 @synthesize textureFileFormat;
 @synthesize dither;
 @synthesize compress;
+@synthesize textureFileFormatAndroid;
+@synthesize ditherAndroid;
+@synthesize textureFileFormatHTML5;
+@synthesize ditherHTML5;
 
 - (id)init
 {
     self = [super init];
     if (!self) return NULL;
     
+    self.isDirty = NO;
+    
     self.textureFileFormat = 0; // PNG
     self.dither = YES;
     self.compress = YES;
+    
+    self.textureFileFormatAndroid = 0;
+    self.ditherAndroid = YES;
+    
+    self.textureFileFormatHTML5 = 0;
+    self.ditherHTML5 = YES;
     
     return self;
 }
@@ -54,10 +71,18 @@
     self = [super init];
     if (!self) return NULL;
     
+    self.isDirty = [[dict objectForKey:@"isDirty"] boolValue];
+
     self.textureFileFormat = [[dict objectForKey:@"textureFileFormat"] intValue];
     self.dither = [[dict objectForKey:@"dither"] boolValue];
     self.compress = [[dict objectForKey:@"compress"] boolValue];
     
+    self.textureFileFormatAndroid = [[dict objectForKey:@"textureFileFormatAndroid"] intValue];
+    self.ditherAndroid = [[dict objectForKey:@"ditherAndroid"] boolValue];
+    
+    self.textureFileFormatHTML5 = [[dict objectForKey:@"textureFileFormatHTML5"] intValue];
+    self.ditherHTML5 = [[dict objectForKey:@"ditherHTML5"] boolValue];
+
     return self;
 }
 
@@ -65,10 +90,18 @@
 {
     NSMutableDictionary* ser = [NSMutableDictionary dictionary];
     
+    [ser setObject:[NSNumber numberWithBool:self.isDirty] forKey:@"isDirty"];
+
     [ser setObject:[NSNumber numberWithInt:self.textureFileFormat] forKey:@"textureFileFormat"];
     [ser setObject:[NSNumber numberWithBool:self.dither] forKey:@"dither"];
     [ser setObject:[NSNumber numberWithBool:self.compress] forKey:@"compress"];
     
+    [ser setObject:[NSNumber numberWithInt:self.textureFileFormatAndroid] forKey:@"textureFileFormatAndroid"];
+    [ser setObject:[NSNumber numberWithBool:self.ditherAndroid] forKey:@"ditherAndroid"];
+    
+    [ser setObject:[NSNumber numberWithInt:self.textureFileFormatHTML5] forKey:@"textureFileFormatHTML5"];
+    [ser setObject:[NSNumber numberWithBool:self.ditherHTML5] forKey:@"ditherHTML5"];
+
     return ser;
 }
 
@@ -96,6 +129,9 @@
 @synthesize publishResolutionHTML5_width;
 @synthesize publishResolutionHTML5_height;
 @synthesize publishResolutionHTML5_scale;
+@synthesize isSafariExist;
+@synthesize isChromeExist;
+@synthesize isFirefoxExist;
 @synthesize flattenPaths;
 @synthesize publishToZipFile;
 @synthesize javascriptBased;
@@ -109,6 +145,9 @@
 @synthesize deviceOrientationLandscapeRight;
 @synthesize resourceAutoScaleFactor;
 @synthesize generatedSpriteSheets;
+@synthesize breakpoints;
+@synthesize versionStr;
+@synthesize needRepublish;
 
 - (id) init
 {
@@ -147,6 +186,8 @@
     self.publishResolutionHTML5_height = 320;
     self.publishResolutionHTML5_scale = 1;
     
+    breakpoints = [[NSMutableDictionary dictionary] retain];
+    
     generatedSpriteSheets = [[NSMutableDictionary dictionary] retain];
     
     // Load available exporters
@@ -156,6 +197,9 @@
         [availableExporters addObject: plugIn.extension];
     }
     
+    [self detectBrowserPresence];
+    self.versionStr = [self getVersion];
+    self.needRepublish = NO;
     return self;
 }
 
@@ -232,17 +276,35 @@
     if (!mainCCB) mainCCB = @"";
     self.javascriptMainCCB = mainCCB;
     
+    [self detectBrowserPresence];
+    
+    // Check if we are running a new version of CocosBuilder
+    // in which case the project needs to be republished
+    NSString* oldVersionHash = [dict objectForKey:@"versionStr"];
+    NSString* newVersionHash = [self getVersion];
+    if (newVersionHash && ![newVersionHash isEqual:oldVersionHash])
+    {
+       self.versionStr = [self getVersion];
+       self.needRepublish = YES;
+    }
+    else
+    {
+       self.needRepublish = NO;
+    }
+    
     return self;
 }
 
 - (void) dealloc
 {
+    self.versionStr = NULL;
     self.resourcePaths = NULL;
     self.projectPath = NULL;
     self.publishDirectory = NULL;
     self.exporter = NULL;
     self.availableExporters = NULL;
     [generatedSpriteSheets release];
+    [breakpoints release];
     [super dealloc];
 }
 
@@ -308,6 +370,12 @@
     }
     [dict setObject:generatedSpriteSheetsDict forKey:@"generatedSpriteSheets"];
     
+    if (versionStr)
+    {
+        [dict setObject:versionStr forKey:@"versionStr"];
+    }
+    
+    [dict setObject:[NSNumber numberWithBool:needRepublish] forKey:@"needRepublish"];
     return dict;
 }
 
@@ -353,8 +421,11 @@
 
 - (NSString*) publishCacheDirectory
 {
+    NSString* uuid = [PlayerConnection sharedPlayerConnection].selectedDeviceInfo.uuid;
+    NSAssert(uuid, @"No uuid for selected device");
+    
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    return [[[[paths objectAtIndex:0] stringByAppendingPathComponent:@"com.cocosbuilder.CocosBuilder"] stringByAppendingPathComponent:@"publish"]stringByAppendingPathComponent:self.projectPathHashed];
+    return [[[[[paths objectAtIndex:0] stringByAppendingPathComponent:@"com.cocosbuilder.CocosBuilder"] stringByAppendingPathComponent:@"publish"]stringByAppendingPathComponent:self.projectPathHashed] stringByAppendingPathComponent:uuid];
 }
 
 - (NSString*) tempSpriteSheetCacheDirectory
@@ -406,4 +477,68 @@
     return [generatedSpriteSheets objectForKey:relPath];
 }
 
+- (void) toggleBreakpointForFile:(NSString*)file onLine:(int)line
+{
+    // Get breakpoints for file
+    NSMutableSet* bps = [breakpoints objectForKey:file];
+    if (!bps)
+    {
+        bps = [NSMutableSet set];
+        [breakpoints setObject:bps forKey:file];
+    }
+    
+    NSNumber* num = [NSNumber numberWithInt:line];
+    if ([bps containsObject:num])
+    {
+        [bps removeObject:num];
+    }
+    else
+    {
+        [bps addObject:num];
+    }
+    
+    // Send new list of bps to player
+    [[PlayerConnection sharedPlayerConnection] debugSendBreakpoints:breakpoints];
+}
+
+- (NSSet*) breakpointsForFile:(NSString*)file
+{
+    NSSet* bps = [breakpoints objectForKey:file];
+    if (!bps) bps = [NSSet set];
+    
+    return bps;
+}
+
+- (void) detectBrowserPresence
+{
+    isSafariExist = FALSE;
+    isChromeExist = FALSE;
+    isFirefoxExist = FALSE;
+    
+    OSStatus result = LSFindApplicationForInfo (kLSUnknownCreator, CFSTR("com.apple.Safari"), NULL, NULL, NULL);
+    if (result == noErr)
+    {
+        isSafariExist = TRUE;
+    }
+    
+    result = LSFindApplicationForInfo (kLSUnknownCreator, CFSTR("com.google.Chrome"), NULL, NULL, NULL);
+    if (result == noErr)
+    {
+        isChromeExist = TRUE;
+    }
+
+    result = LSFindApplicationForInfo (kLSUnknownCreator, CFSTR("org.mozilla.firefox"), NULL, NULL, NULL);
+    if (result == noErr)
+    {
+        isFirefoxExist = TRUE;
+    }
+}
+
+- (NSString* ) getVersion
+{
+    NSString* versionPath = [[NSBundle mainBundle] pathForResource:@"Version" ofType:@"txt" inDirectory:@"version"];
+    
+    NSString* version = [NSString stringWithContentsOfFile:versionPath encoding:NSUTF8StringEncoding error:NULL];
+    return version;
+}
 @end

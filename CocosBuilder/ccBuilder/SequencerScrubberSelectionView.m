@@ -31,6 +31,10 @@
 #import "SequencerKeyframe.h"
 #import "SequencerKeyframeEasing.h"
 #import "CocosBuilderAppDelegate.h"
+#import "SequencerChannel.h"
+#import "SequencerCallbackChannel.h"
+#import "SequencerSoundChannel.h"
+#import "SequencerPopoverHandler.h"
 
 @implementation SequencerScrubberSelectionView
 
@@ -78,7 +82,7 @@
         CCNode* lastNode = [outlineView itemAtRow:[outlineView numberOfRows]-1];
         if (lastNode.seqExpanded)
         {
-            return [[lastNode plugIn].animatableProperties count];
+            return [[[lastNode plugIn] animatablePropertiesForNode:lastNode] count]-1;
         }
         else
         {
@@ -93,12 +97,19 @@
     int subRow = yInCell/kCCBSeqDefaultRowHeight;
     
     // Check bounds
-    CCNode* node = [outlineView itemAtRow:row];
+    id item = [outlineView itemAtRow:row];
+    
+    if ([item isKindOfClass:[SequencerChannel class]])
+    {
+        return 0;
+    }
+    CCNode* node = item;
+    
     if (node.seqExpanded)
     {
-        if (subRow >= [[node plugIn].animatableProperties count])
+        if (subRow >= [[[node plugIn] animatablePropertiesForNode:node] count])
         {
-            subRow = [[node plugIn].animatableProperties count]-1;
+            subRow = [[[node plugIn] animatablePropertiesForNode:node] count]-1;
         }
     }
     else
@@ -317,7 +328,7 @@
 
 - (NSString*) propNameForNode:(CCNode*) node subRow:(int)sub
 {
-    NSArray* props = node.plugIn.animatableProperties;
+    NSArray* props = [node.plugIn animatablePropertiesForNode:node];
     
     NSString* prop = NULL;
     prop = [props objectAtIndex:sub];
@@ -330,7 +341,17 @@
     NSOutlineView* outlineView = [SequencerHandler sharedHandler].outlineHierarchy;
     
     // Get the double clicked node
-    CCNode* node = [outlineView itemAtRow:row];
+    id item = [outlineView itemAtRow:row];
+    
+    if ([item isKindOfClass:[SequencerChannel class]])
+    {
+        SequencerChannel* channel = item;
+        [channel addDefaultKeyframeAtTime:time];
+        
+        return;
+    }
+    
+    CCNode* node = item;
     NSString* prop = [self propNameForNode:node subRow:sub];
     
     [node addDefaultKeyframeForProperty:prop atTime:time sequenceId:[SequencerHandler sharedHandler].currentSequence.sequenceId];
@@ -339,7 +360,17 @@
 - (SequencerKeyframe*) keyframeForRow:(int)row sub:(int)sub minTime:(float)minTime maxTime:(float)maxTime
 {
     NSOutlineView* outlineView = [SequencerHandler sharedHandler].outlineHierarchy;
-    CCNode* node = [outlineView itemAtRow:row];
+    
+    id item = [outlineView itemAtRow:row];
+    
+    if ([item isKindOfClass:[SequencerChannel class]])
+    {
+        // Handle audio & callbacks
+        SequencerChannel* channel = item;
+        return [channel.seqNodeProp keyframeBetweenMinTime:minTime maxTime:maxTime];
+    }
+    
+    CCNode* node = item;
     NSString* prop = [self propNameForNode:node subRow:sub];
     
     SequencerNodeProperty* seqNodeProp = [node sequenceNodeProperty:prop sequenceId:[SequencerHandler sharedHandler].currentSequence.sequenceId];
@@ -415,12 +446,23 @@
             yMaxSubRow = yStartSelectSubRow;
         }
         
-        CCNode* node = [outlineView itemAtRow:yMinRow];
-        for (int subRow = yMinSubRow; subRow <= yMaxSubRow; subRow++)
+        id item = [outlineView itemAtRow:yMinRow];
+        
+        if ([item isKindOfClass:[SequencerChannel class]])
         {
-            NSString* propName = [self propNameForNode:node subRow:subRow];
-            SequencerNodeProperty* seqNodeProp = [node sequenceNodeProperty:propName sequenceId:seq.sequenceId];
-            [selectedKeyframes addObjectsFromArray:[seqNodeProp keyframesBetweenMinTime:xMinTime maxTime:xMaxTime]];
+            // Handle audio & callbacks
+            SequencerChannel* channel = item;
+            [selectedKeyframes addObjectsFromArray:[channel.seqNodeProp keyframesBetweenMinTime:xMinTime maxTime:xMaxTime]];
+        }
+        else
+        {
+            CCNode* node = item;
+            for (int subRow = yMinSubRow; subRow <= yMaxSubRow; subRow++)
+            {
+                NSString* propName = [self propNameForNode:node subRow:subRow];
+                SequencerNodeProperty* seqNodeProp = [node sequenceNodeProperty:propName sequenceId:seq.sequenceId];
+                [selectedKeyframes addObjectsFromArray:[seqNodeProp keyframesBetweenMinTime:xMinTime maxTime:xMaxTime]];
+            }
         }
     }
     else
@@ -428,14 +470,25 @@
         // Selection spanning multiple rows
         for (int row = yMinRow; row <= yMaxRow; row++)
         {
-            CCNode* node = [outlineView itemAtRow:row];
+            id item = [outlineView itemAtRow:row];
+            CCNode* node = NULL;
+            
+            if ([item isKindOfClass:[SequencerChannel class]])
+            {
+                SequencerChannel* channel = item;
+                [selectedKeyframes addObjectsFromArray: [channel.seqNodeProp keyframesBetweenMinTime:xMinTime maxTime:xMaxTime]];
+            }
+            else
+            {
+                node = item;
+            }
             
             if (node.seqExpanded)
             {
                 // This row is expanded
                 if (row == yMinRow)
                 {
-                    for (int subRow = yMinSubRow; subRow < [node.plugIn.animatableProperties count]; subRow++)
+                    for (int subRow = yMinSubRow; subRow < [[node.plugIn animatablePropertiesForNode:node] count]; subRow++)
                     {
                         NSString* propName  = [self propNameForNode:node subRow:subRow];
                         SequencerNodeProperty* seqNodeProp = [node sequenceNodeProperty:propName sequenceId:seq.sequenceId];
@@ -453,7 +506,7 @@
                 }
                 else
                 {
-                    for (int subRow = 0; subRow < [node.plugIn.animatableProperties count]; subRow++)
+                    for (int subRow = 0; subRow < [[node.plugIn animatablePropertiesForNode:node] count]; subRow++)
                     {
                         NSString* propName  = [self propNameForNode:node subRow:subRow];
                         SequencerNodeProperty* seqNodeProp = [node sequenceNodeProperty:propName sequenceId:seq.sequenceId];
@@ -504,7 +557,12 @@
     CCNode* node = NULL;
     if (row >= 0)
     {
-        node = [outlineView itemAtRow:row];
+        id item = [outlineView itemAtRow:row];
+        
+        if ([item isKindOfClass:[CCNode class]])
+        {
+            node = item;
+        }
     }
     
     didAutoScroll = NO;
@@ -539,7 +597,44 @@
                 if (theEvent.clickCount == 2)
                 {
                     seq.timelinePosition = mouseDownKeyframe.time;
-                    [CocosBuilderAppDelegate appDelegate].selectedNodes = [NSArray arrayWithObject: node];
+                    if (node)
+                    {
+                        // Center
+                        [CocosBuilderAppDelegate appDelegate].selectedNodes = [NSArray arrayWithObject: node];
+                        
+                        if (subRow != 0)
+                        {
+                            // Calc bounds of keyframe
+                            float xPos = [seq timeToPosition:mouseDownKeyframe.time];
+                            NSRect kfBounds = NSMakeRect(xPos-3, mouseLocation.y, 7, 10);
+                            
+                            // Popover
+                            [SequencerPopoverHandler popoverNode:node property:[self propNameForNode:node subRow:subRow] overView:self kfBounds:kfBounds];
+                        }
+                    }
+                    else
+                    {
+                        // This is a channel keyframe
+                        float time = mouseDownKeyframe.time;
+                        SequencerChannel* channel = NULL;
+                        if (mouseDownKeyframe.type == kCCBKeyframeTypeCallbacks)
+                        {
+                            channel = seq.callbackChannel;
+                        }
+                        else if (mouseDownKeyframe.type == kCCBKeyframeTypeSoundEffects)
+                        {
+                            channel = seq.soundChannel;
+                        }
+                        
+                        NSAssert(channel, @"Keyframe doesn't have valid channel");
+                        
+                        // Calc bounds of keyframe
+                        float xPos = [seq timeToPosition:mouseDownKeyframe.time];
+                        NSRect kfBounds = NSMakeRect(xPos-3, mouseLocation.y, 7, 10);
+                        
+                        // Popover
+                        [SequencerPopoverHandler popoverChannelKeyframes:[channel keyframesAtTime:time] kfBounds:kfBounds overView:self];
+                    }
                 }
                 
                 // Start dragging keyframe(s)
@@ -785,6 +880,14 @@
     {
         [SequencerHandler sharedHandler].contextKeyframe = keyframe;
         return [CocosBuilderAppDelegate appDelegate].menuContextKeyframe;
+    }
+    
+    NSOutlineView* outlineView = [SequencerHandler sharedHandler].outlineHierarchy;
+    
+    id item = [outlineView itemAtRow:row];
+    if ([item isKindOfClass:[SequencerChannel class]])
+    {
+        return NULL;
     }
     
     // Check if an interpolation was clicked

@@ -28,12 +28,13 @@
 @class PlayerConnection;
 @class ProjectSettings;
 @class PlayerDeviceInfo;
+@class DebuggerConnection;
 
 @protocol PlayerConnectionDelegate <NSObject>
 
 - (void) playerConnection: (PlayerConnection*)playerConn updatedPlayerList:(NSDictionary*)playerList;
 - (void) playerConnection:(PlayerConnection *)playerConn receivedResult:(NSString*)result;
-
+- (void) playerConnection:(PlayerConnection *)playerConn receivedDebuggerResult:(NSString *)result;
 @end
 
 @interface PlayerConnection : NSObject<ThoMoClientDelegateProtocol>
@@ -44,6 +45,8 @@
     NSString* selectedServer;
     
     NSObject<PlayerConnectionDelegate>* delegate;
+    
+    DebuggerConnection* dbgConnection;
 }
 
 @property (nonatomic,retain) NSObject<PlayerConnectionDelegate>* delegate;
@@ -51,6 +54,7 @@
 @property (nonatomic,copy) NSString* selectedServer;
 @property (nonatomic,readonly) BOOL connected;
 @property (nonatomic,readonly) PlayerDeviceInfo* selectedDeviceInfo;
+@property (nonatomic,retain) DebuggerConnection* dbgConnection;
 
 + (PlayerConnection*) sharedPlayerConnection;
 
@@ -62,4 +66,9 @@
 - (void) sendRunCommand;
 - (void) sendStopCommand;
 - (void) sendJavaScript:(NSString*)script;
+
+- (void) debugSendBreakpoints:(NSDictionary*) breakpoints;
+- (void) debugConnectionStarted;
+- (void) debugConnectionLost;
+
 @end

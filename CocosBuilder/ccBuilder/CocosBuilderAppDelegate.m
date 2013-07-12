@@ -79,6 +79,8 @@
 #import "PlayerConsoleWindow.h"
 #import "SequencerUtil.h"
 #import "SequencerStretchWindow.h"
+#import "SequencerSoundChannel.h"
+#import "SequencerCallbackChannel.h"
 #import "CustomPropSettingsWindow.h"
 #import "CustomPropSetting.h"
 #import "MainToolbarDelegate.h"
@@ -88,9 +90,14 @@
 #import "NodeGraphPropertySetter.h"
 #import "CCBSplitHorizontalView.h"
 #import "SpriteSheetSettingsWindow.h"
-
+#import "AboutWindow.h"
+#import "CCBHTTPServer.h"
+#import "JavaScriptAutoCompleteHandler.h"
+#import "CCBFileUtil.h"
+#import "ResourceManagerPreviewView.h"
 
 #import <ExceptionHandling/NSExceptionHandler.h>
+
 
 @implementation CocosBuilderAppDelegate
 
@@ -218,8 +225,27 @@ static CocosBuilderAppDelegate* sharedAppDelegate;
     //resManagerPanel = [[ResourceManagerPanel alloc] initWithWindowNibName:@"ResourceManagerPanel"];
     //[resManagerPanel.window setIsVisible:NO];
     
+    // Setup preview
+    previewViewOwner = [[ResourceManagerPreviewView alloc] init];
+    
+    NSArray* topLevelObjs = NULL;
+    [[NSBundle mainBundle] loadNibNamed:@"ResourceManagerPreviewView" owner:previewViewOwner topLevelObjects:&topLevelObjs];
+    
+    for (id obj in topLevelObjs)
+    {
+        if ([obj isKindOfClass:[NSView class]])
+        {
+            previewView = obj;
+            break;
+        }
+    }
+    
+    [previewViewContainer addSubview:previewView];
+    
     // Setup project display
-    projectOutlineHandler = [[ResourceManagerOutlineHandler alloc] initWithOutlineView:outlineProject resType:kCCBResTypeNone];
+    projectOutlineHandler = [[ResourceManagerOutlineHandler alloc] initWithOutlineView:outlineProject resType:kCCBResTypeNone preview:previewViewOwner];
+    
+    resourceManagerSplitView.delegate = previewViewOwner;
 }
 
 - (void) setupGUIWindow
@@ -239,6 +265,14 @@ static CocosBuilderAppDelegate* sharedAppDelegate;
     [window addChildWindow:guiWindow ordered:NSWindowAbove];
 }
 
+- (void) setupAutoCompleteHandler
+{
+    JavaScriptAutoCompleteHandler* handler = [JavaScriptAutoCompleteHandler sharedAutoCompleteHandler];
+    
+    NSString* dir = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"autoCompleteDefinitions"];
+    
+    [handler loadGlobalFilesFromDirectory:dir];
+}
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
@@ -249,6 +283,8 @@ static CocosBuilderAppDelegate* sharedAppDelegate;
     loadedSelectedNodes = [[NSMutableArray alloc] init];
     
     sharedAppDelegate = self;
+    
+    [self setupAutoCompleteHandler];
     
     [[NSExceptionHandler defaultExceptionHandler] setExceptionHandlingMask: NSLogUncaughtExceptionMask | NSLogUncaughtSystemExceptionMask | NSLogUncaughtRuntimeErrorMask];
     
@@ -282,6 +318,7 @@ static CocosBuilderAppDelegate* sharedAppDelegate;
     [cs setStageBorder:0];
     [self updateCanvasBorderMenu];
     [self updateJSControlledMenu];
+    [self updateDefaultBrowser];
     
     // Load plug-ins
     plugInManager = [PlugInManager sharedManager];
@@ -599,8 +636,6 @@ static BOOL hideAllToNextSeparator;
     [inspectorDocumentView addSubview:view];
     [view setAutoresizingMask:NSViewWidthSizable];
     
-
-    
     return offset;
 }
 
@@ -682,6 +717,12 @@ static BOOL hideAllToNextSeparator;
             BOOL animated = [[propInfo objectForKey:@"animatable"] boolValue];
             if ([name isEqualToString:@"visible"]) animated = YES;
             if ([self.selectedNode shouldDisableProperty:name]) readOnly = YES;
+            
+            // Handle Flash skews
+            BOOL usesFlashSkew = [self.selectedNode usesFlashSkew];
+            if (usesFlashSkew && [name isEqualToString:@"rotation"]) continue;
+            if (!usesFlashSkew && [name isEqualToString:@"rotationX"]) continue;
+            if (!usesFlashSkew && [name isEqualToString:@"rotationY"]) continue;
             
             // TODO: Handle read only for animated properties
             if ([self isDisabledProperty:name animatable:animated])
@@ -857,6 +898,10 @@ static BOOL hideAllToNextSeparator;
     {
         CCBDocument* doc = [(NSTabViewItem*)[docs objectAtIndex:i] identifier];
         if (doc.isDirty) return YES;
+    }
+    if ([[NSDocumentController sharedDocumentController] hasEditedDocuments])
+    {
+        return YES;
     }
     return NO;
 }
@@ -1236,6 +1281,13 @@ static BOOL hideAllToNextSeparator;
         }
     }
     
+    [[JavaScriptAutoCompleteHandler sharedAutoCompleteHandler] removeLocalFiles];
+    
+    [window setTitle:@"CocosBuilder"];
+
+    // Stop local web server
+    [[CCBHTTPServer sharedHTTPServer] stop];
+    
     // Remove resource paths
     self.projectSettings = NULL;
     [resManager removeAllDirectories];
@@ -1263,7 +1315,7 @@ static BOOL hideAllToNextSeparator;
         return NO;
     }
     project.projectPath = fileName;
-    
+    [project store];
     self.projectSettings = project;
     
     [self updateResourcePathsFromProjectSettings];
@@ -1271,6 +1323,20 @@ static BOOL hideAllToNextSeparator;
     BOOL success = [self checkForTooManyDirectoriesInCurrentProject];
     
     if (!success) return NO;
+    
+    // Load autocompletions for all JS files
+    NSArray* jsFiles = [CCBFileUtil filesInResourcePathsWithExtension:@"js"];
+    for (NSString* jsFile in jsFiles)
+    {
+        [[JavaScriptAutoCompleteHandler sharedAutoCompleteHandler] loadLocalFile:[resManager toAbsolutePath:jsFile]];
+    }
+    
+    // Update the title of the main window
+    [window setTitle:[NSString stringWithFormat:@"CocosBuilder - %@", [fileName lastPathComponent]]];
+
+    // Start local web server
+    NSString* docRoot = [projectSettings.publishDirectoryHTML5 absolutePathFromBaseDirPath:[projectSettings.projectPath stringByDeletingLastPathComponent]];
+    [[CCBHTTPServer sharedHTTPServer] start:docRoot];
     
     // Open ccb file for project if there is only one
     NSArray* resPaths = project.absoluteResourcePaths;
@@ -1380,6 +1446,14 @@ static BOOL hideAllToNextSeparator;
     {
         [self modalDialogTitle:@"Publish failed" message:@"Failed to publish the document, please try to publish to another location."];
     }
+}
+
+- (void) newJSFile:(NSString*) fileName
+{
+    NSData* jsData = [@"" dataUsingEncoding:NSUTF8StringEncoding];
+    [jsData writeToFile:fileName atomically:YES];
+    
+    [self openJSFile:fileName];
 }
 
 - (void) newFile:(NSString*) fileName type:(NSString*)type resolutions: (NSMutableArray*) resolutions;
@@ -1510,6 +1584,11 @@ static BOOL hideAllToNextSeparator;
 
 - (void) openJSFile:(NSString*) fileName
 {
+    [self openJSFile:fileName highlightLine:0];
+}
+
+- (void) openJSFile:(NSString*) fileName highlightLine:(int)line
+{
     NSURL* docURL = [[[NSURL alloc] initFileURLWithPath:fileName] autorelease];
     
     JavaScriptDocument* jsDoc = [[NSDocumentController sharedDocumentController] documentForURL:docURL];
@@ -1522,6 +1601,17 @@ static BOOL hideAllToNextSeparator;
     }
     
     [jsDoc showWindows];
+    [jsDoc setHighlightedLine:line];
+}
+
+- (void) resetJSFilesLineHighlight
+{
+    NSArray* jsDocs = [[NSDocumentController sharedDocumentController] documents];
+    for (int i = 0; i < [jsDocs count]; i++)
+    {
+        JavaScriptDocument* doc = [jsDocs objectAtIndex:i];
+        [doc setHighlightedLine:0];
+    }
 }
 
 #pragma mark Undo
@@ -1746,6 +1836,8 @@ static BOOL hideAllToNextSeparator;
         NSMutableSet* propsSet = [NSMutableSet set];
         NSMutableSet* seqsSet = [NSMutableSet set];
         BOOL duplicatedProps = NO;
+        BOOL hasNodeKeyframes = NO;
+        BOOL hasChannelKeyframes = NO;
         
         for (int i = 0; i < keyframes.count; i++)
         {
@@ -1755,13 +1847,23 @@ static BOOL hideAllToNextSeparator;
             if (![seqsSet containsObject:seqVal])
             {
                 NSString* propName = keyframe.name;
-                if ([propsSet containsObject:propName])
+                
+                if (propName)
                 {
-                    duplicatedProps = YES;
-                    break;
+                    if ([propsSet containsObject:propName])
+                    {
+                        duplicatedProps = YES;
+                        break;
+                    }
+                    [propsSet addObject:propName];
+                    [seqsSet addObject:seqVal];
+                    
+                    hasNodeKeyframes = YES;
                 }
-                [propsSet addObject:propName];
-                [seqsSet addObject:seqVal];
+                else
+                {
+                    hasChannelKeyframes = YES;
+                }
             }
         }
         
@@ -1769,6 +1871,18 @@ static BOOL hideAllToNextSeparator;
         {
             [self modalDialogTitle:@"Failed to Copy" message:@"You can only copy keyframes from one node."];
             return;
+        }
+        
+        if (hasChannelKeyframes && hasNodeKeyframes)
+        {
+            [self modalDialogTitle:@"Failed to Copy" message:@"You cannot copy sound/callback keyframes and node keyframes at once."];
+            return;
+        }
+        
+        NSString* clipType = @"com.cocosbuilder.keyframes";
+        if (hasChannelKeyframes)
+        {
+            clipType = @"com.cocosbuilder.channelkeyframes";
         }
         
         // Serialize keyframe
@@ -1779,8 +1893,8 @@ static BOOL hideAllToNextSeparator;
         }
         NSData* clipData = [NSKeyedArchiver archivedDataWithRootObject:serKeyframes];
         NSPasteboard* cb = [NSPasteboard generalPasteboard];
-        [cb declareTypes:[NSArray arrayWithObject:@"com.cocosbuilder.keyframes"] owner:self];
-        [cb setData:clipData forType:@"com.cocosbuilder.keyframes"];
+        [cb declareTypes:[NSArray arrayWithObject:clipType] owner:self];
+        [cb setData:clipData forType:clipType];
         
         return;
     }
@@ -1822,11 +1936,11 @@ static BOOL hideAllToNextSeparator;
     
     // Paste keyframes
     NSPasteboard* cb = [NSPasteboard generalPasteboard];
-    NSString* type = [cb availableTypeFromArray:[NSArray arrayWithObjects:@"com.cocosbuilder.keyframes", nil]];
+    NSString* type = [cb availableTypeFromArray:[NSArray arrayWithObjects:@"com.cocosbuilder.keyframes", @"com.cocosbuilder.channelkeyframes", nil]];
     
     if (type)
     {
-        if (!self.selectedNode)
+        if (!self.selectedNode && [type isEqualToString:@"com.cocosbuilder.keyframes"])
         {
             [self modalDialogTitle:@"Paste Failed" message:@"You need to select a node to paste keyframes"];
             return;
@@ -1858,7 +1972,23 @@ static BOOL hideAllToNextSeparator;
             keyframe.time = [seq alignTimeToResolution:keyframe.time - firstTime + seq.timelinePosition];
             
             // Add the keyframe
-            [self.selectedNode addKeyframe:keyframe forProperty:keyframe.name atTime:keyframe.time sequenceId:seq.sequenceId];
+            if ([type isEqualToString:@"com.cocosbuilder.keyframes"])
+            {
+                [self.selectedNode addKeyframe:keyframe forProperty:keyframe.name atTime:keyframe.time sequenceId:seq.sequenceId];
+            }
+            else if ([type isEqualToString:@"com.cocosbuilder.channelkeyframes"])
+            {
+                if (keyframe.type == kCCBKeyframeTypeCallbacks)
+                {
+                    [seq.callbackChannel.seqNodeProp setKeyframe:keyframe];
+                }
+                else if (keyframe.type == kCCBKeyframeTypeSoundEffects)
+                {
+                    [seq.soundChannel.seqNodeProp setKeyframe:keyframe];
+                }
+                [keyframe.parent deleteKeyframesAfterTime:seq.timelineLength];
+                [[SequencerHandler sharedHandler] redrawTimeline];
+            }
         }
         
     }
@@ -1991,18 +2121,22 @@ static BOOL hideAllToNextSeparator;
     [saveDlg beginSheetModalForWindow:window completionHandler:^(NSInteger result){
         if (result == NSOKButton)
         {
-            [[[CCDirector sharedDirector] view] lockOpenGLContext];
-            
-            // Save file to new path
-            [self saveFile:[[saveDlg URL] path]];
-            
-            // Close document
-            [tabView removeTabViewItem:[self tabViewItemFromDoc:currentDocument]];
-            
-            // Open newly created document
-            [self openFile:[[saveDlg URL] path]];
-            
-            [[[CCDirector sharedDirector] view] unlockOpenGLContext];
+            NSString *filename = [[saveDlg URL] path];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0),
+                           dispatch_get_current_queue(), ^{
+                [[[CCDirector sharedDirector] view] lockOpenGLContext];
+                
+                // Save file to new path
+                [self saveFile:filename];
+                
+                // Close document
+                [tabView removeTabViewItem:[self tabViewItemFromDoc:currentDocument]];
+                
+                // Open newly created document
+                [self openFile:filename];
+                
+                [[[CCDirector sharedDirector] view] unlockOpenGLContext];
+            });
         }
         [limter release];
     }];
@@ -2020,7 +2154,36 @@ static BOOL hideAllToNextSeparator;
     }
 }
 
-- (void) publishAndRun:(BOOL)run
+- (IBAction) saveAllDocuments:(id)sender
+{
+    // Save all JS files
+    //[[NSDocumentController sharedDocumentController] saveAllDocuments:sender]; //This API have no effects
+    NSArray* JSDocs = [[NSDocumentController sharedDocumentController] documents];
+    for (int i = 0; i < [JSDocs count]; i++)
+    {
+        NSDocument* doc = [JSDocs objectAtIndex:i];
+        if (doc.isDocumentEdited)
+        {
+            [doc saveDocument:sender];
+        }
+    }
+    
+    // Save all CCB files
+    CCBDocument* oldCurDoc = currentDocument;
+    NSArray* docs = [tabView tabViewItems];
+    for (int i = 0; i < [docs count]; i++)
+    {
+        CCBDocument* doc = [(NSTabViewItem*)[docs objectAtIndex:i] identifier];
+         if (doc.isDirty)
+         {
+             [self switchToDocument:doc forceReload:NO];
+             [self saveDocument:sender];
+         }
+    }
+    [self switchToDocument:oldCurDoc forceReload:NO];
+}
+
+- (void) publishAndRun:(BOOL)run runInBrowser:(NSString *)browser
 {
     if (!projectSettings.publishEnabledAndroid
         && !projectSettings.publishEnablediPhone
@@ -2030,19 +2193,47 @@ static BOOL hideAllToNextSeparator;
         return;
     }
     
+    if (run && !browser && ![[PlayerConnection sharedPlayerConnection] connected])
+    {
+        [self modalDialogTitle:@"No Player Connected" message:@"There is no CocosPlayer connected to CocosBuilder. Make sure that a player is running and that it has the same pairing number as CocosBuilder."];
+        return;
+    }
+    
     CCBWarnings* warnings = [[[CCBWarnings alloc] init] autorelease];
     warnings.warningsDescription = @"Publisher Warnings";
     
     // Setup publisher, publisher is released in publisher:finishedWithWarnings:
     CCBPublisher* publisher = [[CCBPublisher alloc] initWithProjectSettings:projectSettings warnings:warnings];
     publisher.runAfterPublishing = run;
+    publisher.browser = browser;
     
-    // Open progress window and publish
-    
-    [publisher publish];
-    
-    [self modalStatusWindowStartWithTitle:@"Publishing"];
-    [self modalStatusWindowUpdateStatusText:@"Starting up..."];
+    // Check if there are unsaved documents
+    if ([self hasDirtyDocument])
+    {
+        NSAlert* alert = [NSAlert alertWithMessageText:@"Publish Project" defaultButton:@"Save All" alternateButton:@"Cancel" otherButton:@"Don't Save" informativeTextWithFormat:@"There are unsaved documents. Do you want to save before publishing?"];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        NSInteger result = [alert runModal];
+        switch (result) {
+            case NSAlertDefaultReturn:
+                [self saveAllDocuments:nil];
+                // Falling through to publish
+            case NSAlertOtherReturn:
+                // Open progress window and publish
+                [publisher publish];
+                [self modalStatusWindowStartWithTitle:@"Publishing"];
+                [self modalStatusWindowUpdateStatusText:@"Starting up..."];
+                break;
+            default:
+                break;
+        }
+    }
+    else
+    {
+        // Open progress window and publish
+        [publisher publish];
+        [self modalStatusWindowStartWithTitle:@"Publishing"];
+        [self modalStatusWindowUpdateStatusText:@"Starting up..."];
+    }
 }
 
 - (void) publisher:(CCBPublisher*)publisher finishedWithWarnings:(CCBWarnings*)warnings
@@ -2060,7 +2251,15 @@ static BOOL hideAllToNextSeparator;
     
     [[publishWarningsWindow window] setIsVisible:(warnings.warnings.count > 0)];
     
-    if (publisher.runAfterPublishing)
+    // Run in Browser
+    if (publisher.runAfterPublishing && publisher.browser)
+    {
+        [[CCBHTTPServer sharedHTTPServer] openBrowser:publisher.browser];
+        [self updateDefaultBrowser];
+    }
+    
+    // Run in CocosPlayer
+    if (publisher.runAfterPublishing && !publisher.browser)
     {
         [self runProject:self];
     }
@@ -2089,24 +2288,28 @@ static BOOL hideAllToNextSeparator;
         [[PlayerConnection sharedPlayerConnection] sendProjectSettings:projectSettings];
         [[PlayerConnection sharedPlayerConnection] sendRunCommand];
     }
-    else
-    {
-        [self modalDialogTitle:@"No Player Connected" message:@"There is no CocosPlayer connected to CocosBuilder. Make sure that a player is running and that it has the same pairing number as CocosBuilder."];
-    }
 }
 
 - (IBAction) menuPublishProject:(id)sender
 {
-    [self publishAndRun:NO];
+    [self publishAndRun:NO runInBrowser:NULL];
 }
 
 - (IBAction) menuPublishProjectAndRun:(id)sender
 {
-    [self publishAndRun:YES];
+    [self publishAndRun:YES runInBrowser:NULL];
+}
+
+- (IBAction)menuPublishProjectAndRunInBrowser:(id)sender
+{
+    NSMenuItem* item = (NSMenuItem *)sender;
+    [self publishAndRun:YES runInBrowser:item.title];
 }
 
 - (IBAction) menuCleanCacheDirectories:(id)sender
 {
+    projectSettings.needRepublish = YES;
+    [projectSettings store];
     [CCBPublisher cleanAllCacheDirectories];
 }
 
@@ -2120,29 +2323,32 @@ static BOOL hideAllToNextSeparator;
     [openDlg beginSheetModalForWindow:window completionHandler:^(NSInteger result){
         if (result == NSOKButton)
         {
-            [[[CCDirector sharedDirector] view] lockOpenGLContext];
-            
             NSArray* files = [openDlg URLs];
             
-            for (int i = 0; i < [files count]; i++)
-            {
-                NSString* dirName = [[files objectAtIndex:i] path];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0),
+                           dispatch_get_current_queue(), ^{
+                [[[CCDirector sharedDirector] view] lockOpenGLContext];
                 
-                NSArray* arr = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:dirName error:NULL];
-                for(NSString* file in arr)
+                for (int i = 0; i < [files count]; i++)
                 {
-                    if ([file hasSuffix:@".ccb"])
+                    NSString* dirName = [[files objectAtIndex:i] path];
+                    
+                    NSArray* arr = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:dirName error:NULL];
+                    for(NSString* file in arr)
                     {
-                        NSString* absPath = [dirName stringByAppendingPathComponent:file];
-                        [self openFile:absPath];
-                        [self saveFile:absPath];
-                        //[self publishDocument:NULL];
-                        [self performClose:sender];
+                        if ([file hasSuffix:@".ccb"])
+                        {
+                            NSString* absPath = [dirName stringByAppendingPathComponent:file];
+                            [self openFile:absPath];
+                            [self saveFile:absPath];
+                            //[self publishDocument:NULL];
+                            [self performClose:sender];
+                        }
                     }
                 }
-            }
-            
-            [[[CCDirector sharedDirector] view] unlockOpenGLContext];
+                
+                [[[CCDirector sharedDirector] view] unlockOpenGLContext];
+            });
         }
     }];
 }
@@ -2192,12 +2398,14 @@ static BOOL hideAllToNextSeparator;
         if (result == NSOKButton)
         {
             NSArray* files = [openDlg URLs];
-            
-            for (int i = 0; i < [files count]; i++)
-            {
-                NSString* fileName = [[files objectAtIndex:i] path];
-                [self openProject:fileName];
-            }
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0),
+                           dispatch_get_current_queue(), ^{
+                for (int i = 0; i < [files count]; i++)
+                {
+                    NSString* fileName = [[files objectAtIndex:i] path];
+                    [self openProject:fileName];
+                }
+            });
         }
     }];
 }
@@ -2221,15 +2429,37 @@ static BOOL hideAllToNextSeparator;
             [[NSFileManager defaultManager] createDirectoryAtPath:fileName withIntermediateDirectories:NO attributes:NULL error:NULL];
             NSString* projectName = [fileName lastPathComponent];
             fileName = [[fileName stringByAppendingPathComponent:projectName] stringByAppendingPathExtension:@"ccbproj"];
-            if ([self createProject: fileName])
-            {
-                [self openProject:fileName];
-            }
-            else
-            {
-                [self modalDialogTitle:@"Failed to Create Project" message:@"Failed to create the project, make sure you are saving it to a writable directory."];
-            }
+
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0),
+                           dispatch_get_current_queue(), ^{
+                if ([self createProject: fileName])
+                {
+                    [self openProject:fileName];
+                }
+                else
+                {
+                    [self modalDialogTitle:@"Failed to Create Project" message:@"Failed to create the project, make sure you are saving it to a writable directory."];
+                }
+            });
         }
+    }];
+}
+
+- (IBAction) newJSDocument:(id)sender
+{
+    NSLog(@"New JS Doc");
+    
+    NSSavePanel* saveDlg = [NSSavePanel savePanel];
+    [saveDlg setAllowedFileTypes:[NSArray arrayWithObject:@"js"]];
+    
+    SavePanelLimiter* limiter = [[SavePanelLimiter alloc] initWithPanel:saveDlg resManager:resManager];
+    
+    [saveDlg beginSheetModalForWindow:window completionHandler:^(NSInteger result) {
+        if (result == NSOKButton)
+        {
+            [self newJSFile:[[saveDlg URL] path]];
+        }
+        [limiter release];
     }];
 }
 
@@ -2254,7 +2484,12 @@ static BOOL hideAllToNextSeparator;
         [saveDlg beginSheetModalForWindow:window completionHandler:^(NSInteger result){
             if (result == NSOKButton)
             {
-                [self newFile:[[saveDlg URL] path] type:wc.rootObjectType resolutions:wc.availableResolutions];
+                NSString *type = wc.rootObjectType;
+                NSMutableArray *resolutions = wc.availableResolutions;
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0),
+                               dispatch_get_current_queue(), ^{
+                    [self newFile:[[saveDlg URL] path] type:type resolutions:resolutions];
+                });
             }
             [wc release];
             [limiter release];
@@ -2417,6 +2652,31 @@ static BOOL hideAllToNextSeparator;
     {
         [menuItemJSControlled setState:NSOffState];
     }
+}
+
+- (void) updateDefaultBrowser
+{
+    [menuItemSafari setKeyEquivalent:@""];
+    [menuItemSafari setState:NSOffState];
+    [menuItemChrome setKeyEquivalent:@""];
+    [menuItemChrome setState:NSOffState];
+    [menuItemFirefox setKeyEquivalent:@""];
+    [menuItemFirefox setState:NSOffState];
+    
+    NSString* defaultBrowser = [[NSUserDefaults standardUserDefaults] valueForKey:@"defaultBrowser"];
+    NSMenuItem* defaultBrowserMenuItem;
+    if([defaultBrowser isEqual:@"Chrome"])
+    {
+        defaultBrowserMenuItem = menuItemChrome;
+    }else if([defaultBrowser isEqual:@"Firefox"])
+    {
+        defaultBrowserMenuItem = menuItemFirefox;
+    }else{
+        defaultBrowserMenuItem = menuItemSafari;
+    }
+    [defaultBrowserMenuItem setKeyEquivalentModifierMask: NSShiftKeyMask | NSCommandKeyMask];
+    [defaultBrowserMenuItem setKeyEquivalent:@"b"];
+    [defaultBrowserMenuItem setState:NSOnState];
 }
 
 - (IBAction) menuSetCanvasBorder:(id)sender
@@ -2722,17 +2982,11 @@ static BOOL hideAllToNextSeparator;
     [self refreshProperty:@"position"];
 }
 
-- (IBAction) menuAlignObjects:(id)sender
+- (void) menuAlignObjectsCenter:(id)sender alignmentType:(int)alignmentType
 {
-    if (!currentDocument) return;
-    if (self.selectedNodes.count <= 1) return;
-    
-    [self saveUndoStateWillChangeProperty:@"*align"];
-    
-    int alignmentType = [sender tag];
-    
     // Find position
     float alignmentValue = 0;
+    
     for (CCNode* node in self.selectedNodes)
     {
         if (alignmentType == kCCBAlignHorizontalCenter)
@@ -2765,6 +3019,275 @@ static BOOL hideAllToNextSeparator;
         [PositionPropertySetter addPositionKeyframeForNode:node];
     }
 }
+
+- (void) menuAlignObjectsEdge:(id)sender alignmentType:(int)alignmentType
+{
+    CGFloat x;
+    CGFloat y;
+    
+    int nAnchor = self.selectedNodes.count - 1;
+    CCNode* nodeAnchor = [self.selectedNodes objectAtIndex:nAnchor];
+    
+    for (int i = 0; i < self.selectedNodes.count - 1; ++i)
+    {
+        CCNode* node = [self.selectedNodes objectAtIndex:i];
+        
+        CGPoint newAbsPosition = node.position;
+        
+        switch (alignmentType)
+        {
+            case kCCBAlignLeft:
+                x = nodeAnchor.position.x
+                - nodeAnchor.contentSize.width * nodeAnchor.scaleX * nodeAnchor.anchorPoint.x;
+                
+                newAbsPosition.x = x
+                + node.contentSize.width * node.scaleX * node.anchorPoint.x;
+                break;
+            case kCCBAlignRight:
+                x = nodeAnchor.position.x
+                + nodeAnchor.contentSize.width * nodeAnchor.scaleX * nodeAnchor.anchorPoint.x;
+                
+                newAbsPosition.x = x
+                - node.contentSize.width * node.scaleX * node.anchorPoint.x;
+                break;
+            case kCCBAlignTop:
+                y = nodeAnchor.position.y
+                + nodeAnchor.contentSize.height * nodeAnchor.scaleY * nodeAnchor.anchorPoint.y;
+                
+                newAbsPosition.y = y
+                - node.contentSize.height * node.scaleY * node.anchorPoint.y;
+                break;
+            case kCCBAlignBottom:
+                y = nodeAnchor.position.y
+                - nodeAnchor.contentSize.height * nodeAnchor.scaleY * nodeAnchor.anchorPoint.y;
+                
+                newAbsPosition.y = y
+                + node.contentSize.height * node.scaleY * node.anchorPoint.y;
+                break;
+        }
+        
+        int posType = [PositionPropertySetter positionTypeForNode:node prop:@"position"];
+        NSPoint newRelPos = [PositionPropertySetter calcRelativePositionFromAbsolute:NSPointFromCGPoint(newAbsPosition) type:posType parentSize:node.parent.contentSize];
+        [PositionPropertySetter setPosition:newRelPos forNode:node prop:@"position"];
+        [PositionPropertySetter addPositionKeyframeForNode:node];
+    }
+ }
+
+- (void) menuAlignObjectsAcross:(id)sender alignmentType:(int)alignmentType
+{
+    CGFloat x;
+    CGFloat cxNode;
+    CGFloat xMin;
+    CGFloat xMax;
+    CGFloat cxTotal;
+    CGFloat cxInterval;
+    
+    if (self.selectedNodes.count < 3)
+        return;
+    
+    cxTotal = 0.0f;
+    xMin = FLT_MAX;
+    xMax = FLT_MIN;
+    
+    for (int i = 0; i < self.selectedNodes.count; ++i)
+    {
+        CCNode* node = [self.selectedNodes objectAtIndex:i];
+        
+        cxNode = node.contentSize.width * node.scaleX;
+        
+        x = node.position.x - cxNode * node.anchorPoint.x;
+        
+        if (xMin > x)
+            xMin = x;
+        
+        if (xMax < x + cxNode)
+            xMax = x + cxNode;
+        
+        cxTotal += cxNode;
+    }
+    
+    cxInterval = (xMax - xMin - cxTotal) / (self.selectedNodes.count - 1);
+    
+    x = xMin;
+    
+    NSArray* sortedNodes = [self.selectedNodes sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        CCNode* lhs = obj1;
+        CCNode* rhs = obj2;
+        if (lhs.position.x < rhs.position.x)
+            return NSOrderedAscending;
+        if (lhs.position.x > rhs.position.x)
+            return NSOrderedDescending;
+        return NSOrderedSame;
+    }];
+    
+    for (int i = 0; i < self.selectedNodes.count; ++i)
+    {
+        CCNode* node = [sortedNodes objectAtIndex:i];
+        
+        CGPoint newAbsPosition = node.position;
+        
+        cxNode = node.contentSize.width * node.scaleX;
+        
+        newAbsPosition.x = x + cxNode * node.anchorPoint.x;
+        
+        x = x + cxNode + cxInterval;
+        
+        int posType = [PositionPropertySetter positionTypeForNode:node prop:@"position"];
+        NSPoint newRelPos = [PositionPropertySetter calcRelativePositionFromAbsolute:NSPointFromCGPoint(newAbsPosition) type:posType parentSize:node.parent.contentSize];
+        [PositionPropertySetter setPosition:newRelPos forNode:node prop:@"position"];
+        [PositionPropertySetter addPositionKeyframeForNode:node];
+    }
+}
+
+
+- (void) menuAlignObjectsDown:(id)sender alignmentType:(int)alignmentType
+{
+    CGFloat y;
+    CGFloat cyNode;
+    CGFloat yMin;
+    CGFloat yMax;
+    CGFloat cyTotal;
+    CGFloat cyInterval;
+    
+    if (self.selectedNodes.count < 3)
+        return;
+    
+    cyTotal = 0.0f;
+    yMin = FLT_MAX;
+    yMax = FLT_MIN;
+    
+    for (int i = 0; i < self.selectedNodes.count; ++i)
+    {
+        CCNode* node = [self.selectedNodes objectAtIndex:i];
+        
+        cyNode = node.contentSize.height * node.scaleY;
+        
+        y = node.position.y - cyNode * node.anchorPoint.y;
+        
+        if (yMin > y)
+            yMin = y;
+        
+        if (yMax < y + cyNode)
+            yMax = y + cyNode;
+        
+        cyTotal += cyNode;
+    }
+    
+    cyInterval = (yMax - yMin - cyTotal) / (self.selectedNodes.count - 1);
+    
+    y = yMin;
+    
+    NSArray* sortedNodes = [self.selectedNodes sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        CCNode* lhs = obj1;
+        CCNode* rhs = obj2;
+        if (lhs.position.y < rhs.position.y)
+            return NSOrderedAscending;
+        if (lhs.position.y > rhs.position.y)
+            return NSOrderedDescending;
+        return NSOrderedSame;
+    }];
+
+    for (int i = 0; i < self.selectedNodes.count; ++i)
+    {
+        CCNode* node = [sortedNodes objectAtIndex:i];
+        
+        CGPoint newAbsPosition = node.position;
+        
+        cyNode = node.contentSize.height * node.scaleY;
+        
+        newAbsPosition.y = y + cyNode * node.anchorPoint.y;
+        
+        y = y + cyNode + cyInterval;
+        
+        int posType = [PositionPropertySetter positionTypeForNode:node prop:@"position"];
+        NSPoint newRelPos = [PositionPropertySetter calcRelativePositionFromAbsolute:NSPointFromCGPoint(newAbsPosition) type:posType parentSize:node.parent.contentSize];
+        [PositionPropertySetter setPosition:newRelPos forNode:node prop:@"position"];
+        [PositionPropertySetter addPositionKeyframeForNode:node];
+    }
+}
+
+- (void) menuAlignObjectsSize:(id)sender alignmentType:(int)alignmentType
+{
+    CGFloat x;
+    CGFloat y;
+    
+    int nAnchor = self.selectedNodes.count - 1;
+    CCNode* nodeAnchor = [self.selectedNodes objectAtIndex:nAnchor];
+ 
+    for (int i = 0; i < self.selectedNodes.count - 1; ++i)
+    {
+        CCNode* node = [self.selectedNodes objectAtIndex:i];
+        
+        switch (alignmentType)
+        {
+            case kCCBAlignSameWidth:
+                x = nodeAnchor.contentSize.width * nodeAnchor.scaleX;
+                if (abs(x) >= 0.0001f)
+                    x /= node.contentSize.width;
+                y = node.scaleY;
+                break;
+            case kCCBAlignSameHeight:
+                x = node.scaleX;
+                y = nodeAnchor.contentSize.height * nodeAnchor.scaleY;
+                if (abs(y) >= 0.0001f)
+                    y /= node.contentSize.height;
+                break;
+            case kCCBAlignSameSize:
+                x = nodeAnchor.contentSize.width * nodeAnchor.scaleX;
+                if (abs(x) >= 0.0001f)
+                    x /= node.contentSize.width;
+                y = nodeAnchor.contentSize.height * nodeAnchor.scaleY;
+                if (abs(y) >= 0.0001f)
+                    y /= node.contentSize.height;
+                break;
+        }
+
+        int posType = [PositionPropertySetter positionTypeForNode:node prop:@"scale"];
+        
+        [PositionPropertySetter setScaledX:x Y:y type:posType forNode:node prop:@"scale"];
+        [PositionPropertySetter addPositionKeyframeForNode:node];
+    }
+}
+
+
+- (IBAction) menuAlignObjects:(id)sender
+{
+    if (!currentDocument)
+        return;
+    
+    if (self.selectedNodes.count <= 1)
+        return;
+    
+    [self saveUndoStateWillChangeProperty:@"*align"];
+    
+    int alignmentType = [sender tag];
+    
+    switch (alignmentType)
+    {
+        case kCCBAlignHorizontalCenter:
+        case kCCBAlignVerticalCenter:
+            [self menuAlignObjectsCenter:sender alignmentType:alignmentType];
+            break;
+        case kCCBAlignLeft:
+        case kCCBAlignRight:
+        case kCCBAlignTop:
+        case kCCBAlignBottom:
+            [self menuAlignObjectsEdge:sender alignmentType:alignmentType];
+            break;
+        case kCCBAlignAcross:
+            [self menuAlignObjectsAcross:sender alignmentType:alignmentType];
+            break;
+        case kCCBAlignDown:
+            [self menuAlignObjectsDown:sender alignmentType:alignmentType];
+            break;
+        case kCCBAlignSameSize:
+        case kCCBAlignSameWidth:
+        case kCCBAlignSameHeight:
+            [self menuAlignObjectsSize:sender alignmentType:alignmentType];
+            break;
+    }
+}
+
 
 - (IBAction)menuArrange:(id)sender
 {
@@ -2870,6 +3393,26 @@ static BOOL hideAllToNextSeparator;
     [SequencerUtil createFramesFromSelectedResources];
 }
 
+- (IBAction)menuOpenExternal:(id)sender
+{
+    NSOutlineView* outlineView = [CocosBuilderAppDelegate appDelegate].outlineProject;
+    
+    NSUInteger idx = [sender tag];
+    
+    NSString* filename = [[outlineView itemAtRow:idx] filePath];
+    if (![[NSWorkspace sharedWorkspace] openFile:filename])
+    {
+        NSRange slash = [filename rangeOfString:@"/" options:NSBackwardsSearch];
+        
+        if (slash.location != NSNotFound)
+        {
+            filename = [filename stringByReplacingCharactersInRange:slash withString: @"/resources-auto/"];
+            // Try again
+            [[NSWorkspace sharedWorkspace] openFile:filename];
+        }
+    }
+}
+
 - (IBAction)menuCreateSmartSpriteSheet:(id)sender
 {
     int selectedRow = [sender tag];
@@ -2906,16 +3449,36 @@ static BOOL hideAllToNextSeparator;
         wc.compress = ssSettings.compress;
         wc.dither = ssSettings.dither;
         wc.textureFileFormat = ssSettings.textureFileFormat;
-        
+        wc.ditherAndroid = ssSettings.ditherAndroid;
+        wc.textureFileFormatAndroid = ssSettings.textureFileFormatAndroid;
+        wc.textureFileFormatHTML5 = ssSettings.textureFileFormatHTML5;
+        wc.ditherHTML5 = ssSettings.ditherHTML5;
+        wc.iOSEnabled = projectSettings.publishEnablediPhone;
+        wc.androidEnabled = projectSettings.publishEnabledAndroid;
+        wc.HTML5Enabled = projectSettings.publishEnabledHTML5;
+
         int success = [wc runModalSheetForWindow:window];
         
         if (success)
         {
-            ssSettings.compress = wc.compress;
-            ssSettings.dither = wc.dither;
-            ssSettings.textureFileFormat = wc.textureFileFormat;
-            
-            [projectSettings store];
+            BOOL settingDirty  = (ssSettings.compress != wc.compress)||
+                                 (ssSettings.dither != wc.dither)||
+                                 (ssSettings.textureFileFormat != wc.textureFileFormat)||
+                                 (ssSettings.ditherAndroid != wc.ditherAndroid)||
+                                 (ssSettings.textureFileFormatAndroid != wc.textureFileFormatAndroid)||
+                                 (ssSettings.textureFileFormatHTML5 != wc.textureFileFormatHTML5)||
+                                 (ssSettings.ditherHTML5 != wc.ditherHTML5);
+            if(settingDirty){
+                ssSettings.isDirty = YES;
+                ssSettings.compress = wc.compress;
+                ssSettings.dither = wc.dither;
+                ssSettings.textureFileFormat = wc.textureFileFormat;
+                ssSettings.ditherAndroid = wc.ditherAndroid;
+                ssSettings.textureFileFormatAndroid = wc.textureFileFormatAndroid;
+                ssSettings.textureFileFormatHTML5 = wc.textureFileFormatHTML5;
+                ssSettings.ditherHTML5 = wc.ditherHTML5;
+                [projectSettings store];
+            }
         }
     }
 }
@@ -2981,6 +3544,7 @@ static BOOL hideAllToNextSeparator;
 {
     if (menuItem.action == @selector(saveDocument:)) return hasOpenedDocument;
     else if (menuItem.action == @selector(saveDocumentAs:)) return hasOpenedDocument;
+    else if (menuItem.action == @selector(saveAllDocuments:)) return hasOpenedDocument;
     else if (menuItem.action == @selector(performClose:)) return hasOpenedDocument;
     else if (menuItem.action == @selector(menuCreateKeyframesFromSelection:))
     {
@@ -3020,6 +3584,17 @@ static BOOL hideAllToNextSeparator;
     }
     
     return YES;
+}
+
+- (IBAction)menuAbout:(id)sender
+{
+    NSLog(@"menuAbout");
+    if(!aboutWindow)
+    {
+        aboutWindow = [[AboutWindow alloc] initWithWindowNibName:@"AboutWindow"];
+    }
+    
+    [[aboutWindow window] makeKeyAndOrderFront:self];
 }
 
 - (NSUndoManager*) windowWillReturnUndoManager:(NSWindow *)window

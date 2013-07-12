@@ -179,23 +179,6 @@
             nil];
 }
 
-+ (BOOL) isEqualNumberArray:(NSArray*) a1 comparison:(NSArray*) a2
-{
-    if (!a1 || !a2) return NO;
-    
-    if ([a1 count] != [a2 count]) return NO;
-    
-    for (int i = 0; i < [a1 count]; i++)
-    {
-        if (![[a1 objectAtIndex:i] isEqualToNumber:[a2 objectAtIndex:i]])
-        {
-            return NO;
-        }
-    }
-    
-    return YES;
-}
-
 #pragma mark Writer
 
 + (NSMutableDictionary*) dictionaryFromCCObject:(CCNode *)node
@@ -225,8 +208,12 @@
         BOOL readOnly = [[propInfo objectForKey:@"readOnly"] boolValue];
         BOOL hasKeyframes = [node hasKeyframesForProperty:name];
         id defaultSerialization = [propInfo objectForKey:@"defaultSerialization"];
-        BOOL usingDefaultValue = NO;
         id serializedValue = NULL;
+        
+        BOOL useFlashSkews = [node usesFlashSkew];
+        if (useFlashSkews && [name isEqualToString:@"rotation"]) continue;
+        if (!useFlashSkews && [name isEqualToString:@"rotationX"]) continue;
+        if (!useFlashSkews && [name isEqualToString:@"rotationY"]) continue;
         
         // Check if this property should be excluded
         if (excludeProps && [excludeProps indexOfObject:name] != NSNotFound)
@@ -259,16 +246,12 @@
             NSPoint pt = [PositionPropertySetter positionForNode:node prop:name];
             int type = [PositionPropertySetter positionTypeForNode:node prop:name];
             serializedValue = [CCBWriterInternal serializePosition:pt type:type];
-            
-            usingDefaultValue = [CCBWriterInternal isEqualNumberArray:serializedValue comparison:defaultSerialization];
         }
         else if([type isEqualToString:@"Point"]
             || [type isEqualToString:@"PointLock"])
         {
 			CGPoint pt = NSPointToCGPoint( [[node valueForKey:name] pointValue] );
             serializedValue = [CCBWriterInternal serializePoint:pt];
-            
-            usingDefaultValue = [CCBWriterInternal isEqualNumberArray:serializedValue comparison:defaultSerialization];
         }
         else if ([type isEqualToString:@"Size"])
         {
@@ -276,16 +259,12 @@
             NSSize size = [PositionPropertySetter sizeForNode:node prop:name];
             int type = [PositionPropertySetter sizeTypeForNode:node prop:name];
             serializedValue = [CCBWriterInternal serializeSize:size type:type];
-            
-            usingDefaultValue = [CCBWriterInternal isEqualNumberArray:serializedValue comparison:defaultSerialization];
         }
-        else if ([type isEqualToString:@"Scale"])
+        else if ([type isEqualToString:@"FloatXY"])
         {
             float x = [[node valueForKey:[NSString stringWithFormat:@"%@X",name]] floatValue];
             float y = [[node valueForKey:[NSString stringWithFormat:@"%@Y",name]] floatValue];
             serializedValue = [CCBWriterInternal serializePoint:ccp(x,y)];
-            
-            usingDefaultValue = [CCBWriterInternal isEqualNumberArray:serializedValue comparison:defaultSerialization];
         }
         else if ([type isEqualToString:@"ScaleLock"])
         {
@@ -295,32 +274,24 @@
             int scaleType = [PositionPropertySetter scaledFloatTypeForNode:node prop:name];
             
             serializedValue = [CCBWriterInternal serializePoint:ccp(x,y) lock:lock type: scaleType];
-            
-            usingDefaultValue = [CCBWriterInternal isEqualNumberArray:serializedValue comparison:defaultSerialization];
         }
         else if ([type isEqualToString:@"Float"]
                  || [type isEqualToString:@"Degrees"])
         {
             float f = [[node valueForKey:name] floatValue];
             serializedValue = [CCBWriterInternal serializeFloat:f];
-            
-            usingDefaultValue = (defaultSerialization && f == [defaultSerialization floatValue]);
         }
         else if ([type isEqualToString:@"FloatScale"])
         {
             float f = [PositionPropertySetter floatScaleForNode:node prop:name];
             int type = [PositionPropertySetter floatScaleTypeForNode:node prop:name];
             serializedValue = [CCBWriterInternal serializeFloatScale:f type:type];
-            
-            usingDefaultValue = [CCBWriterInternal isEqualNumberArray:serializedValue comparison:defaultSerialization];
         }
         else if ([type isEqualToString:@"FloatVar"])
         {
             float x = [[node valueForKey:name] floatValue];
             float y = [[node valueForKey:[NSString stringWithFormat:@"%@Var",name]] floatValue];
             serializedValue = [CCBWriterInternal serializePoint:ccp(x,y)];
-            
-            usingDefaultValue = [CCBWriterInternal isEqualNumberArray:serializedValue comparison:defaultSerialization];
         }
         else if ([type isEqualToString:@"Integer"]
                  || [type isEqualToString:@"IntegerLabeled"]
@@ -328,23 +299,17 @@
         {
             int d = [[node valueForKey:name] intValue];
             serializedValue = [CCBWriterInternal serializeInt:d];
-            
-            usingDefaultValue = (defaultSerialization && d == [defaultSerialization intValue]);
         }
         else if ([type isEqualToString:@"Check"])
         {
             BOOL check = [[node valueForKey:name] boolValue];
             serializedValue = [CCBWriterInternal serializeBool:check];
-            
-            usingDefaultValue = (defaultSerialization && check == [defaultSerialization boolValue]);
         }
         else if ([type isEqualToString:@"Flip"])
         {
             BOOL x = [[node valueForKey:[NSString stringWithFormat:@"%@X",name]] boolValue];
             BOOL y = [[node valueForKey:[NSString stringWithFormat:@"%@Y",name]] boolValue];
             serializedValue = [CCBWriterInternal serializeBoolPairX:x Y:y];
-            
-            usingDefaultValue = [CCBWriterInternal isEqualNumberArray:serializedValue comparison:defaultSerialization];
         }
         else if ([type isEqualToString:@"SpriteFrame"])
         {
@@ -371,8 +336,6 @@
             ccColor3B c;
             [colorValue getValue:&c];
             serializedValue = [CCBWriterInternal serializeColor3:c];
-            
-            usingDefaultValue = [CCBWriterInternal isEqualNumberArray:serializedValue comparison:defaultSerialization];
         }
         else if ([type isEqualToString:@"Color4FVar"])
         {
@@ -390,8 +353,6 @@
                                [CCBWriterInternal serializeColor4F:c],
                                [CCBWriterInternal serializeColor4F:cVar],
                                nil];
-            
-            usingDefaultValue = [CCBWriterInternal isEqualNumberArray:serializedValue comparison:defaultSerialization];
         }
         else if ([type isEqualToString:@"Blendmode"])
         {
@@ -399,8 +360,6 @@
             ccBlendFunc bf;
             [blendValue getValue:&bf];
             serializedValue = [CCBWriterInternal serializeBlendFunc:bf];
-            
-            usingDefaultValue = [CCBWriterInternal isEqualNumberArray:serializedValue comparison:defaultSerialization];
         }
         else if ([type isEqualToString:@"FntFile"])
         {
@@ -458,12 +417,13 @@
         }
         
         // Skip default values
-        if (usingDefaultValue && !hasKeyframes)
+        if ([serializedValue isEqual:defaultSerialization] && !hasKeyframes)
         {
             continue;
         }
         
         NSMutableDictionary* prop = [NSMutableDictionary dictionary];
+        
         [prop setValue:type forKey:@"type"];
         [prop setValue:name forKey:@"name"];
         [prop setValue:serializedValue forKey:@"value"];
@@ -520,6 +480,12 @@
     if (customProps)
     {
         [dict setObject:customProps forKey:@"customProperties"];
+    }
+    
+    // Support for Flash skews
+    if (node.usesFlashSkew)
+    {
+        [dict setValue:[NSNumber numberWithBool:YES] forKey:@"usesFlashSkew"];
     }
     
     // Selection
