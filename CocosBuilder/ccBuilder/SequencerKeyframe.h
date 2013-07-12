@@ -29,6 +29,7 @@
 
 enum
 {
+    // Node properties
     kCCBKeyframeTypeUndefined,
     kCCBKeyframeTypeToggle,
     kCCBKeyframeTypeDegrees,
@@ -37,6 +38,11 @@ enum
     kCCBKeyframeTypeByte,
     kCCBKeyframeTypeColor3,
     kCCBKeyframeTypeSpriteFrame,
+    kCCBKeyframeTypeFloatXY,
+    
+    // Channels
+    kCCBKeyframeTypeSoundEffects,
+    kCCBKeyframeTypeCallbacks,
 };
 
 @interface SequencerKeyframe : NSObject

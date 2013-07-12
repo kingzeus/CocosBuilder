@@ -31,13 +31,23 @@
 
 @interface ProjectSettingsGeneratedSpriteSheet : NSObject
 {
+    BOOL isDirty;
     int textureFileFormat;
     BOOL dither;
     BOOL compress;
+    int textureFileFormatAndroid;
+    BOOL ditherAndroid;
+    int textureFileFormatHTML5;
+    BOOL ditherHTML5;
 }
+@property (nonatomic,assign) BOOL isDirty;
 @property (nonatomic,assign) int textureFileFormat;
 @property (nonatomic,assign) BOOL dither;
 @property (nonatomic,assign) BOOL compress;
+@property (nonatomic,assign) int textureFileFormatAndroid;
+@property (nonatomic,assign) BOOL ditherAndroid;
+@property (nonatomic,assign) int textureFileFormatHTML5;
+@property (nonatomic,assign) BOOL ditherHTML5;
 
 - (id)initWithSerialization:(id)dict;
 - (id)serialize;
@@ -48,6 +58,7 @@
     NSString* projectPath;
     NSMutableArray* resourcePaths;
     NSMutableDictionary* generatedSpriteSheets;
+    NSMutableDictionary* breakpoints;
     
     NSString* publishDirectory;
     NSString* publishDirectoryAndroid;
@@ -71,6 +82,10 @@
     int publishResolutionHTML5_height;
     int publishResolutionHTML5_scale;
     
+    BOOL isSafariExist;
+    BOOL isChromeExist;
+    BOOL isFirefoxExist;
+    
     BOOL flattenPaths;
     BOOL publishToZipFile;
     BOOL javascriptBased;
@@ -83,6 +98,9 @@
     BOOL deviceOrientationLandscapeLeft;
     BOOL deviceOrientationLandscapeRight;
     int resourceAutoScaleFactor;
+    
+    NSString* versionStr;
+    BOOL needRepublish;
 }
 
 @property (nonatomic, copy) NSString* projectPath;
@@ -111,6 +129,10 @@
 @property (nonatomic,assign) int publishResolutionHTML5_height;
 @property (nonatomic,assign) int publishResolutionHTML5_scale;
 
+@property (nonatomic,assign) BOOL isSafariExist;
+@property (nonatomic,assign) BOOL isChromeExist;
+@property (nonatomic,assign) BOOL isFirefoxExist;
+
 @property (nonatomic, copy) NSString* javascriptMainCCB;
 @property (nonatomic, assign) BOOL flattenPaths;
 @property (nonatomic, assign) BOOL publishToZipFile;
@@ -130,6 +152,10 @@
 
 @property (nonatomic, readonly) NSDictionary* generatedSpriteSheets;
 
+@property (nonatomic,readonly) NSDictionary* breakpoints;
+@property (nonatomic, copy) NSString* versionStr;
+@property (nonatomic, assign) BOOL needRepublish;
+
 - (id) initWithSerialization:(id)dict;
 - (BOOL) store;
 - (id) serialize;
@@ -138,4 +164,7 @@
 - (void) removeSmartSpriteSheet:(RMResource*) res;
 - (ProjectSettingsGeneratedSpriteSheet*) smartSpriteSheetForRes:(RMResource*) res;
 - (ProjectSettingsGeneratedSpriteSheet*) smartSpriteSheetForSubPath:(NSString*) relPath;
+
+- (void) toggleBreakpointForFile:(NSString*)file onLine:(int)line;
+- (NSSet*) breakpointsForFile:(NSString*)file;
 @end

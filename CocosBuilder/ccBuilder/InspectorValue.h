@@ -27,7 +27,7 @@
 
 @class CocosBuilderAppDelegate;
 
-@interface InspectorValue : NSObject
+@interface InspectorValue : NSObject <NSControlTextEditingDelegate>
 {
     CCNode* selection;
     NSString* propertyName;
@@ -41,6 +41,9 @@
     NSArray* affectsProperties;
     InspectorValue* inspectorValueBelow;
     BOOL rootNode;
+    BOOL inPopoverWindow;
+    
+    NSString* textFieldOriginalValue;
 }
 
 @property (nonatomic,readonly) NSString* displayName;
@@ -50,6 +53,8 @@
 @property (nonatomic,assign) BOOL rootNode;
 @property (nonatomic,retain) NSArray* affectsProperties;
 @property (nonatomic,retain) InspectorValue* inspectorValueBelow;
+@property (nonatomic,assign) BOOL inPopoverWindow;
+@property (nonatomic,retain) NSString* textFieldOriginalValue;
 
 + (id) inspectorOfType:(NSString*) t withSelection:(CCNode*)s andPropertyName:(NSString*)pn andDisplayName:(NSString*) dn andExtra:(NSString*)e;
 

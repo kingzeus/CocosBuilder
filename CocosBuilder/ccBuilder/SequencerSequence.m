@@ -29,6 +29,12 @@
 #import "CocosScene.h"
 #import "CCNode+NodeInfo.h"
 #import "SequencerSettingsWindow.h"
+#import "SequencerCallbackChannel.h"
+#import "SequencerSoundChannel.h"
+#import "SequencerNodeProperty.h"
+#import "SequencerKeyframe.h"
+#import "SimpleAudioEngine.h"
+#import "ResourceManager.h"
 
 @implementation SequencerSequence
 
@@ -42,6 +48,8 @@
 @synthesize chainedSequenceId;
 @synthesize autoPlay;
 @synthesize settingsWindow;
+@synthesize soundChannel;
+@synthesize callbackChannel;
 
 - (id) init
 {
@@ -56,6 +64,9 @@
     sequenceId = -1;
     chainedSequenceId = -1;
     timelinePosition = 0;
+    
+    callbackChannel = [[SequencerCallbackChannel alloc] init];
+    soundChannel = [[SequencerSoundChannel alloc] init];
     
     return self;
 }
@@ -77,6 +88,11 @@
     else chainedSequenceId = -1;
     autoPlay = [[ser objectForKey:@"autoPlay"] boolValue];
     
+    id serCallbacks = [ser objectForKey:@"callbackChannel"];
+    callbackChannel = [[SequencerCallbackChannel alloc] initWithSerialization: serCallbacks];
+    id serSounds = [ser objectForKey:@"soundChannel"];
+    soundChannel = [[SequencerSoundChannel alloc] initWithSerialization: serSounds];
+    
     return self;
 }
 
@@ -93,6 +109,11 @@
     [ser setObject:[NSNumber numberWithInt:sequenceId] forKey:@"sequenceId"];
     [ser setObject:[NSNumber numberWithInt:chainedSequenceId] forKey:@"chainedSequenceId"];
     [ser setObject:[NSNumber numberWithBool:autoPlay] forKey:@"autoPlay"];
+    
+    id serCallbacks = [callbackChannel serialize];
+    [ser setObject:serCallbacks forKey:@"callbackChannel"];
+    id serSounds = [soundChannel serialize];
+    [ser setObject:serSounds forKey:@"soundChannel"];
     
     return ser;
 }
@@ -207,7 +228,27 @@
 
 - (void) stepForward:(int)numSteps
 {
+    // Calculate new time
     float newTime = [self alignTimeToResolution: timelinePosition + numSteps/timelineResolution];
+    
+    // Handle audio
+    NSArray* soundKeyframes = [soundChannel.seqNodeProp keyframesBetweenMinTime:timelinePosition maxTime:newTime - 1.0f/timelineResolution];
+    
+    for (SequencerKeyframe* keyframe in soundKeyframes)
+    {
+        NSString* soundFile = [keyframe.value objectAtIndex:0];
+        float pitch = [[keyframe.value objectAtIndex:1] floatValue];
+        float pan = [[keyframe.value objectAtIndex:2] floatValue];
+        float gain = [[keyframe.value objectAtIndex:3] floatValue];
+        
+        NSString* absFile = [[CocosBuilderAppDelegate appDelegate].resManager toAbsolutePath:soundFile];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:absFile])
+        {
+            [[SimpleAudioEngine sharedEngine] playEffect:absFile pitch:pitch pan:pan gain:gain];
+        }
+    }
+    
+    // Update timeline
     self.timelinePosition = newTime;
     [[SequencerHandler sharedHandler] updateScrollerToShowCurrentTime];
 }
@@ -233,6 +274,8 @@
 - (void) dealloc
 {
     self.name = NULL;
+    [callbackChannel release];
+    [soundChannel release];
     [super dealloc];
 }
 
@@ -249,6 +292,12 @@
     copy.sequenceId = sequenceId;
     copy.chainedSequenceId = chainedSequenceId;
     copy.autoPlay = autoPlay;
+    
+    [copy->callbackChannel release];
+    [copy->soundChannel release];
+    
+    copy->callbackChannel = [callbackChannel copy];
+    copy->soundChannel = [soundChannel copy];
     
     return copy;
 }

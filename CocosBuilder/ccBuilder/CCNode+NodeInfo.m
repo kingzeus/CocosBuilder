@@ -116,7 +116,6 @@
     SequencerNodeProperty* seqNodeProp = [[[SequencerNodeProperty alloc] initWithProperty:name node:self] autorelease];
     if (![info.baseValues objectForKey:name])
     {
-        NSLog(@"setting baseValue to %@ for %@", baseValue, name);
         [info.baseValues setObject:baseValue forKey:name];
     }
     
@@ -168,7 +167,7 @@
     }
     
     // Ensure that the keyframe type is animated
-    if (![self.plugIn.animatableProperties containsObject:name])
+    if (![[self.plugIn animatablePropertiesForNode:self] containsObject:name])
     {
         return;
     }
@@ -296,6 +295,15 @@
         
         return [NSArray arrayWithObjects:sprite, sheet, nil];
     }
+    else if (type == kCCBKeyframeTypeFloatXY)
+    {
+        float x = [[self valueForKey:[name stringByAppendingString:@"X"]] floatValue];
+        float y = [[self valueForKey:[name stringByAppendingString:@"Y"]] floatValue];
+        return [NSArray arrayWithObjects:
+                [NSNumber numberWithFloat:x],
+                [NSNumber numberWithFloat:y],
+                nil];
+    }
     
     return NULL;
 }
@@ -350,13 +358,19 @@
     {
         [self setValue:value forKey:propName];
     }
+    else if (type == kCCBKeyframeTypeFloatXY)
+    {
+        float x = [[value objectAtIndex:0] floatValue];
+        float y = [[value objectAtIndex:1] floatValue];
+        
+        [self setValue:[NSNumber numberWithFloat:x] forKey:[propName stringByAppendingString:@"X"]];
+        [self setValue:[NSNumber numberWithFloat:y] forKey:[propName stringByAppendingString:@"Y"]];
+    }
 }
 
 - (void) updatePropertiesTime:(float)time sequenceId:(int)seqId
 {
-
-    
-    NSArray* animatableProps = [self.plugIn animatableProperties];
+    NSArray* animatableProps = [self.plugIn animatablePropertiesForNode:self];
     for (NSString* propName in animatableProps)
     {
         [self updateProperty:propName time:time sequenceId:seqId];
@@ -375,10 +389,7 @@
         SequencerNodeProperty* prop;
         while ((prop = [seqEnum nextObject]))
         {
-            for (SequencerKeyframe* keyframe in prop.keyframes)
-            {
-                keyframe.selected = NO;
-            }
+            [prop deselectKeyframes];
         }
     }
 }
@@ -573,6 +584,11 @@
         
         for (NSString* propName in properties)
         {
+            BOOL useFlashSkews = [self usesFlashSkew];
+            if (useFlashSkews && [propName isEqualToString:@"rotation"]) continue;
+            if (!useFlashSkews && [propName isEqualToString:@"rotationX"]) continue;
+            if (!useFlashSkews && [propName isEqualToString:@"rotationY"]) continue;
+            
             SequencerNodeProperty* seqNodeProp = [properties objectForKey:propName];
             [serProperties setObject:[seqNodeProp serialization] forKey:propName];
         }
@@ -737,6 +753,7 @@
         else if ([prop isEqualToString:@"rotation"]) return YES;
         else if ([prop isEqualToString:@"tag"]) return YES;
         else if ([prop isEqualToString:@"visible"]) return YES;
+        else if ([prop isEqualToString:@"skew"]) return YES;
     }
     
     return NO;
@@ -752,6 +769,16 @@
 {
     NodeInfo* info = self.userObject;
     info.transformStartPosition= transformStartPosition;
+}
+
+- (void) setUsesFlashSkew:(BOOL)seqExpanded
+{
+    [self setExtraProp:[NSNumber numberWithBool:seqExpanded] forKey:@"usesFlashSkew"];
+}
+
+- (BOOL) usesFlashSkew
+{
+    return [[self extraPropForKey:@"usesFlashSkew"] boolValue];
 }
 
 @end

@@ -26,6 +26,7 @@
 #import "SequencerSequence.h"
 #import "SequencerKeyframe.h"
 #import "SequencerKeyframeEasing.h"
+#import "SequencerChannel.h"
 #import "CCNode+NodeInfo.h"
 #import "PlugInNode.h"
 
@@ -48,6 +49,18 @@
     type = [SequencerKeyframe keyframeTypeFromPropertyType:propType];
     
     NSAssert(type, @"Failed to find valid type for SequencerNodeProperty");
+    
+    return self;
+}
+
+- (id) initWithChannel:(SequencerChannel*)c
+{
+    self = [super init];
+    if (!self) return NULL;
+    
+    propName = NULL;
+    keyframes = [[NSMutableArray alloc] init];
+    type = c.keyframeType;
     
     return self;
 }
@@ -76,7 +89,10 @@
 {
     NSMutableDictionary* ser = [NSMutableDictionary dictionaryWithCapacity:3];
     
-    [ser setObject:propName forKey:@"name"];
+    if (propName)
+    {
+        [ser setObject:propName forKey:@"name"];
+    }
     [ser setObject:[NSNumber numberWithInt:type] forKey:@"type"];
     
     NSMutableArray* serKeyframes = [NSMutableArray arrayWithCapacity:keyframes.count];
@@ -193,6 +209,22 @@
     }
 }
 
+- (BOOL) deleteSelectedKeyframes
+{
+    BOOL deleted = NO;
+    for (int i = keyframes.count-1; i >= 0; i--)
+    {
+        SequencerKeyframe* keyframe = [keyframes objectAtIndex:i];
+        if (keyframe.selected)
+        {
+            [keyframes removeObjectAtIndex:i];
+            deleted = YES;
+        }
+    }
+    
+    return deleted;
+}
+
 - (id) valueAtTime:(float)time
 {
     int numKeyframes = [keyframes count];
@@ -229,19 +261,9 @@
         {
             SequencerKeyframe* kf = [keyframes objectAtIndex:i];
             
-            if (visible)
+            if (time < kf.time)
             {
-                if (time <= kf.time)
-                {
-                    return [NSNumber numberWithBool:visible];
-                }
-            }
-            else
-            {
-                if (time < kf.time)
-                {
-                    return [NSNumber numberWithBool:visible];
-                }
+                return [NSNumber numberWithBool:visible];
             }
             
             visible = !visible;
@@ -358,6 +380,25 @@
                 [NSNumber numberWithInt:b],
                 nil];
     }
+    else if (type == kCCBKeyframeTypeFloatXY)
+    {
+        float xStart = [[keyframeStart.value objectAtIndex:0] floatValue];
+        float yStart = [[keyframeStart.value objectAtIndex:1] floatValue];
+        
+        float xEnd = [[keyframeEnd.value objectAtIndex:0] floatValue];
+        float yEnd = [[keyframeEnd.value objectAtIndex:1] floatValue];
+        
+        float xSpan = xEnd - xStart;
+        float ySpan = yEnd - yStart;
+        
+        float xVal = xStart+xSpan*interpolVal;
+        float yVal = yStart+ySpan*interpolVal;
+        
+        return [NSArray arrayWithObjects:
+                [NSNumber numberWithFloat:xVal],
+                [NSNumber numberWithFloat:yVal],
+                nil];
+    }
     
     
     // Unsupported value type
@@ -382,11 +423,38 @@
     return NULL;
 }
 
+- (NSArray*) keyframesAtTime:(float)time
+{
+    NSMutableArray* kfs = [NSMutableArray array];
+    
+    for (SequencerKeyframe* keyframe in keyframes)
+    {
+        if (keyframe.time == time) [kfs addObject:keyframe];
+    }
+    
+    return kfs;
+}
+
+- (void) deselectKeyframes
+{
+    for (SequencerKeyframe* keyframe in keyframes)
+    {
+        keyframe.selected = NO;
+    }
+}
+
 - (SequencerNodeProperty*) duplicate
 {
     id serialization = [self serialization];
     SequencerNodeProperty* duplicate = [[[SequencerNodeProperty alloc] initWithSerialization:serialization] autorelease];
     return duplicate;
+}
+
+- (id) copyWithZone:(NSZone*)zone
+{
+    id serialization = [self serialization];
+    SequencerNodeProperty* copy = [[SequencerNodeProperty alloc] initWithSerialization:serialization];
+    return copy;
 }
 
 /*
