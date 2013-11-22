@@ -7,6 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		308B4E36181E2703001EDEF2 /* UIWidget.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED824F181A71EA00CBC4AA /* UIWidget.ccbPlugNode */; };
+		308B4E37181E2703001EDEF2 /* UIWindow.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED8251181A71EA00CBC4AA /* UIWindow.ccbPlugNode */; };
+		308B4E38181E2703001EDEF2 /* UIButton.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED8255181A71EA00CBC4AA /* UIButton.ccbPlugNode */; };
+		308B4E39181E2703001EDEF2 /* NodeCCB.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED8257181A71EA00CBC4AA /* NodeCCB.ccbPlugNode */; };
+		308B4E3A181E2703001EDEF2 /* NodeTouch.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED8259181A71EA00CBC4AA /* NodeTouch.ccbPlugNode */; };
+		308B4E3B181E2703001EDEF2 /* NodeLabelBMFont.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED825B181A71EA00CBC4AA /* NodeLabelBMFont.ccbPlugNode */; };
+		308B4E3C181E2703001EDEF2 /* Node.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED824D181A71EA00CBC4AA /* Node.ccbPlugNode */; };
+		308B4E3D181E2703001EDEF2 /* CCBRoot.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED8261181A71EA00CBC4AA /* CCBRoot.ccbPlugNode */; };
+		308B4E3E181E2703001EDEF2 /* NodeSprite.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED8263181A71EA00CBC4AA /* NodeSprite.ccbPlugNode */; };
+		308B4E3F181E2703001EDEF2 /* NodeLabelTTF.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED825D181A71EA00CBC4AA /* NodeLabelTTF.ccbPlugNode */; };
+		308B4E40181E2703001EDEF2 /* UIButtonCCB.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED8265181A71EA00CBC4AA /* UIButtonCCB.ccbPlugNode */; };
+		308B4E43181E2703001EDEF2 /* UITab.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED8253181A71EA00CBC4AA /* UITab.ccbPlugNode */; };
+		308B4E44181E2703001EDEF2 /* NodeClip.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED8269181A71EA00CBC4AA /* NodeClip.ccbPlugNode */; };
+		308B4E45181E4DBC001EDEF2 /* NodeProgress.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED825F181A71EA00CBC4AA /* NodeProgress.ccbPlugNode */; };
 		581130601639C52500A86D70 /* seq-startmarker.png in Resources */ = {isa = PBXBuildFile; fileRef = 5811305F1639C52000A86D70 /* seq-startmarker.png */; };
 		581BCFE8162DADE7007DE600 /* CCBSplitHorizontalView.m in Sources */ = {isa = PBXBuildFile; fileRef = 581BCFE7162DADE7007DE600 /* CCBSplitHorizontalView.m */; };
 		58FA2034162D73F3006B8856 /* TB_bottomPanel.png in Resources */ = {isa = PBXBuildFile; fileRef = 58FA2031162D73F3006B8856 /* TB_bottomPanel.png */; };
@@ -666,6 +680,118 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		308B4E22181E2452001EDEF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30988AE417842DE100CB8258 /* ui.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 30C2776C1749F83500C35EB0;
+			remoteInfo = all;
+		};
+		30ED824C181A71EA00CBC4AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30988AE417842DE100CB8258 /* ui.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 306871E9174CF1ED000136F4;
+			remoteInfo = Node;
+		};
+		30ED824E181A71EA00CBC4AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30988AE417842DE100CB8258 /* ui.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E3DEFB1014FFD66C00B98586;
+			remoteInfo = UIWidget;
+		};
+		30ED8250181A71EA00CBC4AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30988AE417842DE100CB8258 /* ui.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 303136CD17440EE2004AAB76;
+			remoteInfo = UIWindow;
+		};
+		30ED8252181A71EA00CBC4AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30988AE417842DE100CB8258 /* ui.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 30E71B0E1796F8490093390A;
+			remoteInfo = UITab;
+		};
+		30ED8254181A71EA00CBC4AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30988AE417842DE100CB8258 /* ui.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 303137101744E0E1004AAB76;
+			remoteInfo = UIButton;
+		};
+		30ED8256181A71EA00CBC4AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30988AE417842DE100CB8258 /* ui.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 30C277661749C70E00C35EB0;
+			remoteInfo = NodeCCB;
+		};
+		30ED8258181A71EA00CBC4AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30988AE417842DE100CB8258 /* ui.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 30C27786174A270700C35EB0;
+			remoteInfo = NodeTouch;
+		};
+		30ED825A181A71EA00CBC4AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30988AE417842DE100CB8258 /* ui.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3068713F174CB185000136F4;
+			remoteInfo = NodeLabelBMFont;
+		};
+		30ED825C181A71EA00CBC4AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30988AE417842DE100CB8258 /* ui.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 30480B68176C669B00014D91;
+			remoteInfo = NodeLabelTTF;
+		};
+		30ED825E181A71EA00CBC4AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30988AE417842DE100CB8258 /* ui.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 30C4853A1786995B0074316F;
+			remoteInfo = NodeProgress;
+		};
+		30ED8260181A71EA00CBC4AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30988AE417842DE100CB8258 /* ui.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 30B8414C1769EE7900A1B352;
+			remoteInfo = CCBRoot;
+		};
+		30ED8262181A71EA00CBC4AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30988AE417842DE100CB8258 /* ui.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 30674700176AFC08008316EB;
+			remoteInfo = NodeSprite;
+		};
+		30ED8264181A71EA00CBC4AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30988AE417842DE100CB8258 /* ui.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 308FB980176EDEB30066F9F1;
+			remoteInfo = UIButtonCCB;
+		};
+		30ED8266181A71EA00CBC4AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30988AE417842DE100CB8258 /* ui.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 30E5C1431779C164005B1D58;
+			remoteInfo = UIBgColor;
+		};
+		30ED8268181A71EA00CBC4AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30988AE417842DE100CB8258 /* ui.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 308A413817B5768A00AE42DB;
+			remoteInfo = NodeClip;
+		};
 		E325F66814F6611300D29BCF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7789ABB5133AA82000CEFCC7 /* Project object */;
@@ -827,6 +953,20 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				308B4E45181E4DBC001EDEF2 /* NodeProgress.ccbPlugNode in Copy PlugIns */,
+				308B4E36181E2703001EDEF2 /* UIWidget.ccbPlugNode in Copy PlugIns */,
+				308B4E37181E2703001EDEF2 /* UIWindow.ccbPlugNode in Copy PlugIns */,
+				308B4E38181E2703001EDEF2 /* UIButton.ccbPlugNode in Copy PlugIns */,
+				308B4E39181E2703001EDEF2 /* NodeCCB.ccbPlugNode in Copy PlugIns */,
+				308B4E3A181E2703001EDEF2 /* NodeTouch.ccbPlugNode in Copy PlugIns */,
+				308B4E3B181E2703001EDEF2 /* NodeLabelBMFont.ccbPlugNode in Copy PlugIns */,
+				308B4E3C181E2703001EDEF2 /* Node.ccbPlugNode in Copy PlugIns */,
+				308B4E3D181E2703001EDEF2 /* CCBRoot.ccbPlugNode in Copy PlugIns */,
+				308B4E3E181E2703001EDEF2 /* NodeSprite.ccbPlugNode in Copy PlugIns */,
+				308B4E3F181E2703001EDEF2 /* NodeLabelTTF.ccbPlugNode in Copy PlugIns */,
+				308B4E40181E2703001EDEF2 /* UIButtonCCB.ccbPlugNode in Copy PlugIns */,
+				308B4E43181E2703001EDEF2 /* UITab.ccbPlugNode in Copy PlugIns */,
+				308B4E44181E2703001EDEF2 /* NodeClip.ccbPlugNode in Copy PlugIns */,
 				E3FCE874152485A20028E8E7 /* CCScrollView.ccbPlugNode in Copy PlugIns */,
 				E3C65124151BB8DF00D639C0 /* CCControl.ccbPlugNode in Copy PlugIns */,
 				E3B84C48151A2C93004B743C /* CCControlButton.ccbPlugNode in Copy PlugIns */,
@@ -860,6 +1000,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		30988AE417842DE100CB8258 /* ui.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ui.xcodeproj; path = "../../../../../Volumes/D/project/kzlibplus/tools/ccbplugin/PlugIn Nodes/ui/ui.xcodeproj"; sourceTree = "<group>"; };
 		5811305E1639BF1200A86D70 /* SequencerTimelineDrawDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SequencerTimelineDrawDelegate.h; sourceTree = "<group>"; };
 		5811305F1639C52000A86D70 /* seq-startmarker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "seq-startmarker.png"; sourceTree = "<group>"; };
 		581BCFE6162DADE7007DE600 /* CCBSplitHorizontalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCBSplitHorizontalView.h; sourceTree = "<group>"; };
@@ -2073,6 +2214,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		30ED823A181A71EA00CBC4AA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				30ED824D181A71EA00CBC4AA /* Node.ccbPlugNode */,
+				30ED824F181A71EA00CBC4AA /* UIWidget.ccbPlugNode */,
+				30ED8251181A71EA00CBC4AA /* UIWindow.ccbPlugNode */,
+				30ED8253181A71EA00CBC4AA /* UITab.ccbPlugNode */,
+				30ED8255181A71EA00CBC4AA /* UIButton.ccbPlugNode */,
+				30ED8257181A71EA00CBC4AA /* NodeCCB.ccbPlugNode */,
+				30ED8259181A71EA00CBC4AA /* NodeTouch.ccbPlugNode */,
+				30ED825B181A71EA00CBC4AA /* NodeLabelBMFont.ccbPlugNode */,
+				30ED825D181A71EA00CBC4AA /* NodeLabelTTF.ccbPlugNode */,
+				30ED825F181A71EA00CBC4AA /* NodeProgress.ccbPlugNode */,
+				30ED8261181A71EA00CBC4AA /* CCBRoot.ccbPlugNode */,
+				30ED8263181A71EA00CBC4AA /* NodeSprite.ccbPlugNode */,
+				30ED8265181A71EA00CBC4AA /* UIButtonCCB.ccbPlugNode */,
+				30ED8267181A71EA00CBC4AA /* UIBgColor.ccbPlugNode */,
+				30ED8269181A71EA00CBC4AA /* NodeClip.ccbPlugNode */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		776041E01498F4A00078095D /* Document Readers & Writers */ = {
 			isa = PBXGroup;
 			children = (
@@ -2397,6 +2560,7 @@
 		7789ABB3133AA82000CEFCC7 = {
 			isa = PBXGroup;
 			children = (
+				30988AE417842DE100CB8258 /* ui.xcodeproj */,
 				E3D08A321524581100E55891 /* README.md */,
 				E3D59118150F50D1004180CA /* AUTHORS */,
 				E395DC7D1511FDF70075979E /* CHANGELOG */,
@@ -4097,6 +4261,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				308B4E23181E2452001EDEF2 /* PBXTargetDependency */,
 				E3F541CE15AED85800EAAFBD /* PBXTargetDependency */,
 				E398C02F14FB82090078E771 /* PBXTargetDependency */,
 				E3B7AED314E31AEF00DFD402 /* PBXTargetDependency */,
@@ -4414,7 +4579,7 @@
 		7789ABB5133AA82000CEFCC7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0500;
 			};
 			buildConfigurationList = 7789ABB8133AA82000CEFCC7 /* Build configuration list for PBXProject "CocosBuilder" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -4431,6 +4596,10 @@
 				{
 					ProductGroup = E3F541BD15AED68500EAAFBD /* Products */;
 					ProjectRef = E3F541BC15AED68500EAAFBD /* Fragaria.xcodeproj */;
+				},
+				{
+					ProductGroup = 30ED823A181A71EA00CBC4AA /* Products */;
+					ProjectRef = 30988AE417842DE100CB8258 /* ui.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -4458,6 +4627,111 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		30ED824D181A71EA00CBC4AA /* Node.ccbPlugNode */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = Node.ccbPlugNode;
+			remoteRef = 30ED824C181A71EA00CBC4AA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30ED824F181A71EA00CBC4AA /* UIWidget.ccbPlugNode */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = UIWidget.ccbPlugNode;
+			remoteRef = 30ED824E181A71EA00CBC4AA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30ED8251181A71EA00CBC4AA /* UIWindow.ccbPlugNode */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = UIWindow.ccbPlugNode;
+			remoteRef = 30ED8250181A71EA00CBC4AA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30ED8253181A71EA00CBC4AA /* UITab.ccbPlugNode */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = UITab.ccbPlugNode;
+			remoteRef = 30ED8252181A71EA00CBC4AA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30ED8255181A71EA00CBC4AA /* UIButton.ccbPlugNode */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = UIButton.ccbPlugNode;
+			remoteRef = 30ED8254181A71EA00CBC4AA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30ED8257181A71EA00CBC4AA /* NodeCCB.ccbPlugNode */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = NodeCCB.ccbPlugNode;
+			remoteRef = 30ED8256181A71EA00CBC4AA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30ED8259181A71EA00CBC4AA /* NodeTouch.ccbPlugNode */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = NodeTouch.ccbPlugNode;
+			remoteRef = 30ED8258181A71EA00CBC4AA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30ED825B181A71EA00CBC4AA /* NodeLabelBMFont.ccbPlugNode */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = NodeLabelBMFont.ccbPlugNode;
+			remoteRef = 30ED825A181A71EA00CBC4AA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30ED825D181A71EA00CBC4AA /* NodeLabelTTF.ccbPlugNode */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = NodeLabelTTF.ccbPlugNode;
+			remoteRef = 30ED825C181A71EA00CBC4AA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30ED825F181A71EA00CBC4AA /* NodeProgress.ccbPlugNode */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = NodeProgress.ccbPlugNode;
+			remoteRef = 30ED825E181A71EA00CBC4AA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30ED8261181A71EA00CBC4AA /* CCBRoot.ccbPlugNode */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = CCBRoot.ccbPlugNode;
+			remoteRef = 30ED8260181A71EA00CBC4AA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30ED8263181A71EA00CBC4AA /* NodeSprite.ccbPlugNode */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = NodeSprite.ccbPlugNode;
+			remoteRef = 30ED8262181A71EA00CBC4AA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30ED8265181A71EA00CBC4AA /* UIButtonCCB.ccbPlugNode */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = UIButtonCCB.ccbPlugNode;
+			remoteRef = 30ED8264181A71EA00CBC4AA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30ED8267181A71EA00CBC4AA /* UIBgColor.ccbPlugNode */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = UIBgColor.ccbPlugNode;
+			remoteRef = 30ED8266181A71EA00CBC4AA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		30ED8269181A71EA00CBC4AA /* NodeClip.ccbPlugNode */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = NodeClip.ccbPlugNode;
+			remoteRef = 30ED8268181A71EA00CBC4AA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		E3F541C815AED68500EAAFBD /* Fragaria Document Based App.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
@@ -4895,7 +5169,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "./../scripts/CopyBuiltProduct.sh $CONFIGURATION_BUILD_DIR/ $SRCROOT/../build/ $PRODUCT_NAME.app 1";
+			shellScript = "\nCOCOSBUILDER_APP_BUILD_DIRECTORY=$CONFIGURATION_BUILD_DIR/\nCOCOSBUILDER_REGULAR_DIRECTORY=$SRCROOT/../build/\nCOCOSBUILDER_APP_BUNDLE=$PRODUCT_NAME.app\nCOCOSBUILDER_CREATE_DIR=1\n\nif [ $COCOSBUILDER_CREATE_DIR == \"1\" ]\nthen\nmkdir -p \"$COCOSBUILDER_REGULAR_DIRECTORY\"\nfi\n\necho \"Copying $COCOSBUILDER_APP_BUNDLE into `cd \\\"$COCOSBUILDER_REGULAR_DIRECTORY\\\"; pwd`\"\n\ncp -r \"$COCOSBUILDER_APP_BUILD_DIRECTORY$COCOSBUILDER_APP_BUNDLE\" \"$COCOSBUILDER_REGULAR_DIRECTORY$COCOSBUILDER_APP_BUNDLE\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -5352,6 +5626,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		308B4E23181E2452001EDEF2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = all;
+			targetProxy = 308B4E22181E2452001EDEF2 /* PBXContainerItemProxy */;
+		};
 		E325F66914F6611300D29BCF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E325F65914F65C8E00D29BCF /* CCMenuItemImage */;
@@ -5598,7 +5877,12 @@
 		7789ABDA133AA82000CEFCC7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
@@ -5606,6 +5890,9 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
@@ -5617,12 +5904,20 @@
 		7789ABDB133AA82000CEFCC7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
@@ -5635,6 +5930,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5671,6 +5967,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5707,7 +6004,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -5734,7 +6031,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -5757,7 +6054,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -5784,7 +6081,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -5807,7 +6104,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -5834,7 +6131,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -5857,7 +6154,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -5884,7 +6181,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -5907,7 +6204,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -5934,7 +6231,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -5957,7 +6254,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -5984,7 +6281,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -6007,7 +6304,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -6034,7 +6331,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -6057,7 +6354,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -6084,7 +6381,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -6107,7 +6404,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -6134,7 +6431,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -6157,7 +6454,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -6184,7 +6481,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -6207,7 +6504,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -6235,7 +6532,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -6259,7 +6556,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -6286,7 +6583,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -6309,7 +6606,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -6336,7 +6633,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -6359,7 +6656,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -6386,7 +6683,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -6409,7 +6706,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -6436,7 +6733,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -6459,7 +6756,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -6486,7 +6783,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;

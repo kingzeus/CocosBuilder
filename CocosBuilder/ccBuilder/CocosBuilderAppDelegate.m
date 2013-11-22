@@ -1645,8 +1645,8 @@ static BOOL hideAllToNextSeparator;
     }
     
     // Check if the added node requires a specific type of parent
-    NSString* requireParent = nodeInfo.plugIn.requireParentClass;
-    if (requireParent && ![requireParent isEqualToString: nodeInfoParent.plugIn.nodeClassName])
+    NSArray* requireParent = nodeInfo.plugIn.requireParentClass;
+    if (requireParent && [requireParent indexOfObject:nodeInfoParent.plugIn.nodeClassName] == NSNotFound)
     {
         //[self modalDialogTitle:@"Failed to add item" message:[NSString stringWithFormat: @"A %@ must be added to a %@",nodeInfo.plugIn.nodeClassName, requireParent]];
         self.errorDescription = [NSString stringWithFormat: @"A %@ must be added to a %@",nodeInfo.plugIn.nodeClassName, requireParent];
