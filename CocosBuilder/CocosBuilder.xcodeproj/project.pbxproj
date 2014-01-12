@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3032D38C188226560041A187 /* ResourceManagerPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3032D38A188226560041A187 /* ResourceManagerPreviewView.m */; };
+		3032D38D188226560041A187 /* ResourceManagerPreviewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3032D38B188226560041A187 /* ResourceManagerPreviewView.xib */; };
 		308B4E36181E2703001EDEF2 /* UIWidget.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED824F181A71EA00CBC4AA /* UIWidget.ccbPlugNode */; };
 		308B4E37181E2703001EDEF2 /* UIWindow.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED8251181A71EA00CBC4AA /* UIWindow.ccbPlugNode */; };
 		308B4E38181E2703001EDEF2 /* UIButton.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED8255181A71EA00CBC4AA /* UIButton.ccbPlugNode */; };
@@ -1000,6 +1002,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3032D389188226550041A187 /* ResourceManagerPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManagerPreviewView.h; sourceTree = "<group>"; };
+		3032D38A188226560041A187 /* ResourceManagerPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResourceManagerPreviewView.m; sourceTree = "<group>"; };
+		3032D38B188226560041A187 /* ResourceManagerPreviewView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResourceManagerPreviewView.xib; sourceTree = "<group>"; };
 		30988AE417842DE100CB8258 /* ui.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ui.xcodeproj; path = "../../../../../Volumes/D/project/kzlibplus/tools/ccbplugin/PlugIn Nodes/ui/ui.xcodeproj"; sourceTree = "<group>"; };
 		5811305E1639BF1200A86D70 /* SequencerTimelineDrawDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SequencerTimelineDrawDelegate.h; sourceTree = "<group>"; };
 		5811305F1639C52000A86D70 /* seq-startmarker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "seq-startmarker.png"; sourceTree = "<group>"; };
@@ -4045,6 +4050,9 @@
 		E3C5C1A11504D144000CF6F3 /* Resource Manager */ = {
 			isa = PBXGroup;
 			children = (
+				3032D389188226550041A187 /* ResourceManagerPreviewView.h */,
+				3032D38A188226560041A187 /* ResourceManagerPreviewView.m */,
+				3032D38B188226560041A187 /* ResourceManagerPreviewView.xib */,
 				E3C5C1A21504D17E000CF6F3 /* ResourceManager.h */,
 				E3C5C1A31504D17E000CF6F3 /* ResourceManager.m */,
 				E3C5C1B315075CDD000CF6F3 /* ResourceManagerUtil.h */,
@@ -4721,7 +4729,7 @@
 		30ED8267181A71EA00CBC4AA /* UIBgColor.ccbPlugNode */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = UIBgColor.ccbPlugNode;
+			path = UIEdit.ccbPlugNode;
 			remoteRef = 30ED8266181A71EA00CBC4AA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -4953,6 +4961,7 @@
 				E3D71E4B1669410800D9E638 /* defaultProjectResources in Resources */,
 				E3366A39168159F30094BD94 /* PVRTexToolCL in Resources */,
 				E35D78D616826C0100A53BEF /* SpriteSheetSettingsWindow.xib in Resources */,
+				3032D38D188226560041A187 /* ResourceManagerPreviewView.xib in Resources */,
 				E3DEF5B7169B359C00B9DCF4 /* lame in Resources */,
 				E3DEF5B9169B35DF00B9DCF4 /* lame-COPYING in Resources */,
 				E3347418169C5402000737CC /* README.md in Resources */,
@@ -5261,6 +5270,7 @@
 				A09AB6B714E9935F009C8B91 /* plane.c in Sources */,
 				A09AB6B814E9935F009C8B91 /* quaternion.c in Sources */,
 				A09AB6B914E9935F009C8B91 /* ray2.c in Sources */,
+				3032D38C188226560041A187 /* ResourceManagerPreviewView.m in Sources */,
 				A09AB6BA14E9935F009C8B91 /* utility.c in Sources */,
 				A09AB6BB14E9935F009C8B91 /* vec2.c in Sources */,
 				A09AB6BC14E9935F009C8B91 /* vec3.c in Sources */,

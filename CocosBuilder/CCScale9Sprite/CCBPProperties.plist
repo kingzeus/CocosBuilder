@@ -61,7 +61,7 @@
 				<string>insetTop</string>
 				<string>insetRight</string>
 				<string>insetBottom</string>
-				<string>preferedSize</string>
+				<string>preferredSize</string>
 				<string>contentSize</string>
 				<string>blendFunc</string>
 			</array>
@@ -80,7 +80,7 @@
 			<key>type</key>
 			<string>Size</string>
 			<key>name</key>
-			<string>preferedSize</string>
+			<string>preferredSize</string>
 			<key>displayName</key>
 			<string>Preferred size</string>
 		</dict>

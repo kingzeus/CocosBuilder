@@ -435,7 +435,7 @@ static CocosScene* sharedCocosScene;
                 sel.anchorPoint = ccp(0,0);
                 sel.rotation = angle;
                 sel.position = pos;
-                sel.preferedSize = CGSizeMake(width + kCCBSelectionOutset * 2, height + kCCBSelectionOutset * 2);
+                sel.preferredSize = CGSizeMake(width + kCCBSelectionOutset * 2, height + kCCBSelectionOutset * 2);
                 [selectionLayer addChild:sel];
                 
                 /*

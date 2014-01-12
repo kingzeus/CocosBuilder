@@ -126,7 +126,7 @@
 			<key>type</key>
 			<string>Size</string>
 			<key>name</key>
-			<string>preferedSize</string>
+			<string>preferredSize</string>
 			<key>displayName</key>
 			<string>Preferred size</string>
 		</dict>
