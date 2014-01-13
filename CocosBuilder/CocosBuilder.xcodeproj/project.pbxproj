@@ -23,6 +23,7 @@
 		308B4E43181E2703001EDEF2 /* UITab.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED8253181A71EA00CBC4AA /* UITab.ccbPlugNode */; };
 		308B4E44181E2703001EDEF2 /* NodeClip.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED8269181A71EA00CBC4AA /* NodeClip.ccbPlugNode */; };
 		308B4E45181E4DBC001EDEF2 /* NodeProgress.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED825F181A71EA00CBC4AA /* NodeProgress.ccbPlugNode */; };
+		30A0542018840E0600A07FC1 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30A0541F18840E0600A07FC1 /* Sparkle.framework */; };
 		581130601639C52500A86D70 /* seq-startmarker.png in Resources */ = {isa = PBXBuildFile; fileRef = 5811305F1639C52000A86D70 /* seq-startmarker.png */; };
 		581BCFE8162DADE7007DE600 /* CCBSplitHorizontalView.m in Sources */ = {isa = PBXBuildFile; fileRef = 581BCFE7162DADE7007DE600 /* CCBSplitHorizontalView.m */; };
 		58FA2034162D73F3006B8856 /* TB_bottomPanel.png in Resources */ = {isa = PBXBuildFile; fileRef = 58FA2031162D73F3006B8856 /* TB_bottomPanel.png */; };
@@ -939,7 +940,7 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		776C6897138878FB00153214 /* Copy Files (Sparkle framework) */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
@@ -1006,6 +1007,7 @@
 		3032D38A188226560041A187 /* ResourceManagerPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResourceManagerPreviewView.m; sourceTree = "<group>"; };
 		3032D38B188226560041A187 /* ResourceManagerPreviewView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResourceManagerPreviewView.xib; sourceTree = "<group>"; };
 		30988AE417842DE100CB8258 /* ui.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ui.xcodeproj; path = "../../../../../Volumes/D/project/kzlibplus/tools/ccbplugin/PlugIn Nodes/ui/ui.xcodeproj"; sourceTree = "<group>"; };
+		30A0541F18840E0600A07FC1 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		5811305E1639BF1200A86D70 /* SequencerTimelineDrawDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SequencerTimelineDrawDelegate.h; sourceTree = "<group>"; };
 		5811305F1639C52000A86D70 /* seq-startmarker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "seq-startmarker.png"; sourceTree = "<group>"; };
 		581BCFE6162DADE7007DE600 /* CCBSplitHorizontalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCBSplitHorizontalView.h; sourceTree = "<group>"; };
@@ -2063,6 +2065,7 @@
 				E3A4747A16D43BEA00DB0D61 /* OpenAL.framework in Frameworks */,
 				E3A4747816D43B5800DB0D61 /* AudioToolbox.framework in Frameworks */,
 				E3B19F6B15E62ADA000B023E /* Carbon.framework in Frameworks */,
+				30A0542018840E0600A07FC1 /* Sparkle.framework in Frameworks */,
 				E3F541CF15AED86800EAAFBD /* MGSFragaria.framework in Frameworks */,
 				E3E0879015669FA2008F1FDB /* libffi.dylib in Frameworks */,
 				E3E0878E15669F58008F1FDB /* JavaScriptCore.framework in Frameworks */,
@@ -2235,7 +2238,7 @@
 				30ED8261181A71EA00CBC4AA /* CCBRoot.ccbPlugNode */,
 				30ED8263181A71EA00CBC4AA /* NodeSprite.ccbPlugNode */,
 				30ED8265181A71EA00CBC4AA /* UIButtonCCB.ccbPlugNode */,
-				30ED8267181A71EA00CBC4AA /* UIBgColor.ccbPlugNode */,
+				30ED8267181A71EA00CBC4AA /* UIEdit.ccbPlugNode */,
 				30ED8269181A71EA00CBC4AA /* NodeClip.ccbPlugNode */,
 			);
 			name = Products;
@@ -2690,6 +2693,7 @@
 		7789ABEF133AB17100CEFCC7 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				30A0541F18840E0600A07FC1 /* Sparkle.framework */,
 				A77EF593171FD31400451DA4 /* WebP */,
 				835DAF7E171561B7003A2F7B /* CocoaHTTPServer */,
 				E3D839DF1713A70D004F6127 /* nodejs */,
@@ -4260,8 +4264,8 @@
 			buildPhases = (
 				7789ABBA133AA82000CEFCC7 /* Sources */,
 				7789ABBB133AA82000CEFCC7 /* Frameworks */,
-				7789ABBC133AA82000CEFCC7 /* Resources */,
 				776C6897138878FB00153214 /* Copy Files (Sparkle framework) */,
+				7789ABBC133AA82000CEFCC7 /* Resources */,
 				E3B7AED414E31E5D00DFD402 /* Copy PlugIns */,
 				E3E086E315663928008F1FDB /* Copy Player */,
 				E33BC1931510B2BD009AE29A /* Copy Built Product to Local Repository Directory */,
@@ -4726,7 +4730,7 @@
 			remoteRef = 30ED8264181A71EA00CBC4AA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		30ED8267181A71EA00CBC4AA /* UIBgColor.ccbPlugNode */ = {
+		30ED8267181A71EA00CBC4AA /* UIEdit.ccbPlugNode */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = UIEdit.ccbPlugNode;
@@ -5944,8 +5948,9 @@
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/libs\"",
+					"$(SRCROOT)",
+					"\\\"$(SRCROOT)/libs\\\"",
+					/Users/kingzeus/Development/CocosBuilder/CocosBuilder/libs,
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -5982,8 +5987,9 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/libs\"",
+					"$(SRCROOT)",
+					"\\\"$(SRCROOT)/libs\\\"",
+					/Users/kingzeus/Development/CocosBuilder/CocosBuilder/libs,
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
