@@ -2293,7 +2293,31 @@ static BOOL hideAllToNextSeparator;
 - (IBAction) menuPublishProject:(id)sender
 {
     [self publishAndRun:NO runInBrowser:NULL];
+    // 运行脚本
+    [self runSh];
 }
+//执行脚本
+- (void) runSh{
+    NSString* output = self.projectSettings.projectPath;
+    NSArray* arr = [output pathComponents];
+    arr = [arr subarrayWithRange:NSMakeRange(1, arr.count-2)];
+    if (arr ==  nil) {
+        return;
+    }
+    NSString* outputPath = [arr componentsJoinedByString:@"/"];
+    output = [NSString stringWithFormat:@"/%@/main.sh",outputPath];
+    
+    if([[NSFileManager defaultManager] fileExistsAtPath:output isDirectory:NO]){
+        double delayInSeconds = 1.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            system([[NSString stringWithFormat:@"cd /%@;sh %@",outputPath,output] cStringUsingEncoding:NSUTF8StringEncoding]);
+            [self modalStatusWindowFinish];
+        });
+        [self modalStatusWindowStartWithTitle:@"正在执行 main.sh 中..."];
+    }
+}
+
 
 - (IBAction) menuPublishProjectAndRun:(id)sender
 {
