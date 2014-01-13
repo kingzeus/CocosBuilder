@@ -1,4 +1,4 @@
-# git ignore template from: http://cocoaheads.tumblr.com/post/1350304132/gitignore-template-for-xcode3-4
+﻿# git ignore template from: http://cocoaheads.tumblr.com/post/1350304132/gitignore-template-for-xcode3-4
 # cocos2d specific
 PLBlocks.framework/*
 *.pyc 
@@ -48,4 +48,4 @@ Backup[ ]of[ ]*.numbers/
 
 *.ccbresourcelog
 CocosPlayer/CocosPlayer.xcodeproj/xcshareddata/xcschemes/CocosPlayer.xcscheme
-Version.txt
+

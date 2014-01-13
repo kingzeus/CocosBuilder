@@ -2315,6 +2315,7 @@ static BOOL hideAllToNextSeparator;
             [self modalStatusWindowFinish];
         });
         [self modalStatusWindowStartWithTitle:@"正在执行 main.sh 中..."];
+        [self modalStatusWindowUpdateStatusText:@"正在执行,请等待..."];
     }
 }
 
