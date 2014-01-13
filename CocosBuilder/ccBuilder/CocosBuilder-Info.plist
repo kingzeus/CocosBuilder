@@ -68,7 +68,7 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>SUFeedURL</key>
-	<string>http://cocosbuilder.com/downloads/updates.xml</string>
+	<string>http://raw2.github.com/kingzeus/CocosBuilder/master/archieves/update.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 </dict>

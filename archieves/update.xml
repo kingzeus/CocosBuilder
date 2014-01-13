@@ -1,17 +1,15 @@
 <rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
 <channel>
-<title>Sparkle Test App Changelog</title>
+<title>CocosBuilder(Kingzeus Version) Changelog</title>
 <link>http://andymatuschak.org/files/sparkletestcast.xml</link>
-<description>Most recent changes with links to updates.</description>
-<language>en</language>
+<description>ÈÃ°æ±¾·ÉÆðÀ´£¡~</description>
+<language>zh</language>
 <item>
-<title>Version 2.0 (2 bugs fixed; 3 new features)</title>
-<description>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sed felis ac ante ultrices rhoncus. Etiam quis elit vel nibh placerat facilisis in id leo. Vestibulum nec tortor odio, nec malesuada libero. Cras vel convallis nunc. Suspendisse tristique massa eget velit consequat tincidunt. Praesent sodales hendrerit pretium. Integer auctor sodales leo vel aliquam. Nullam nisi justo, molestie ut volutpat faucibus, convallis vitae dolor. Nam elementum, augue eu auctor imperdiet, ante arcu luctus turpis, quis vulputate est tortor non mauris. Fusce ut viverra ante. Mauris nec ullamcorper ante.
-</description>
+<title>Version 4.0.0</title>
 <pubDate>Wed, 09 Jan 2006 19:20:11 +0000</pubDate>
-<sparkle:releaseNotesLink>http://andymatuschak.org/files/notes.html</sparkle:releaseNotesLink>
-<enclosure url="http://andymatuschak.org/files/Sparkle Test App_2.0.zip" sparkle:version="2.0" length="1600000" type="application/octet-stream" sparkle:dsaSignature="MCwCFAmB39sazl2xGIxSF8pHBbBh1zBLAhRmawuNanltHMlkCLv6R8OYiDRigQ=="/>
+<sparkle:releaseNotesLink>4.1.text</sparkle:releaseNotesLink>
+<enclosure url="http://andymatuschak.org/files/Sparkle Test App_2.0.zip" sparkle:version="4.0.0" length="1600000" type="application/octet-stream" sparkle:dsaSignature="MC0CFQCCEto068vaFfyJlrhS4IkXy805GwIUfAYl1KL4RC4YqO1+9kkVnkj9WN4="/>
 </item>
+
 </channel>
 </rss>
