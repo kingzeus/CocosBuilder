@@ -1,15 +1,10 @@
 <rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
 <channel>
 <title>CocosBuilder(Kingzeus Version) Changelog</title>
-<link>http://cocosbuilder.com/downloads/updates.xml</link>
-<description>Most recent changes with links to updates.</description>
+<link>http://raw2.github.com/kingzeus/CocosBuilder/master/version.xml</link>
+<description>ÈÃ°æ±¾·ÉÆðÀ´£¡~</description>
 <language>en</language>
-<item>
-<title>Kingzeus Version(4.0.1)</title>
-<sparkle:releaseNotesLink>http://cocosbuilder.com/downloads/2.1.0.html</sparkle:releaseNotesLink>
-<pubDate>Thu, 23 Oct 2012 14:00:00 +0000</pubDate>
-<enclosure url="http://github.com/kingzeus/CocosBuilder/releases/download/v4.0.0/CocosBuilder_4.0.0.zip" sparkle:version="4.0.1" length="19455490" type="application/octet-stream" sparkle:dsaSignature="MC0CFGbPi2ZqK1J2BT3UeO+vUCB694goAhUAiZ8a8rmfwtuQwJJ+ESHNT+9QLgM="/>
-</item>
+
 
 </channel>
 </rss>
