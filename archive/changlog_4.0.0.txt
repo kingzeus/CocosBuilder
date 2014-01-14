@@ -1,0 +1,7 @@
+## Kingzeus Version(4.0.0)  ##
+
+
+- [NEW]	自动更新
+- [NEW]	工程发布后自动调用main.sh
+
+- [FIX]	CCBROOT 默认不再导出 scale 属性

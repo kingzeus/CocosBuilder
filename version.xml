@@ -1,15 +1,12 @@
-<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+﻿<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
 <channel>
-<title>CocosBuilder(Kingzeus Version) Changelog</title>
-<link>http://cocosbuilder.com/downloads/updates.xml</link>
-<description>Most recent changes with links to updates.</description>
+<title>CocosBuilder(Kingzeus Version) 更新记录</title>
+<link>http://andymatuschak.org/files/sparkletestcast.xml</link>
+<description>让版本飞起来！~</description>
 <language>en</language>
-<item>
-<title>Kingzeus Version(4.0.1)</title>
-<sparkle:releaseNotesLink>http://cocosbuilder.com/downloads/2.1.0.html</sparkle:releaseNotesLink>
-<pubDate>Thu, 23 Oct 2012 14:00:00 +0000</pubDate>
-<enclosure url="http://github.com/kingzeus/CocosBuilder/releases/download/v4.0.1/CocosBuilder_4.0.1.zip" sparkle:version="4.0.1" length="19455490" type="application/octet-stream" sparkle:dsaSignature="MC4CFQDgGxyuQhslIkKnuGO4GO034hB0EAIVAIN+JP+67TM41WZXwDnojZRFih7j"/>
-</item>
+<item><title>Kingzeus Version(4.0.0)</title><sparkle:releaseNotesLink>4.0.0.txt</sparkle:releaseNotesLink>
+<pubDate>2014-01-14 14:50:32 +0800</pubDate>
+<enclosure url="http://github.com/kingzeus/CocosBuilder/releases/download/v4.0.0/CocosBuilder_4.0.0_FULL.zip" sparkle:version="4.0.0" length="" type="application/octet-stream" sparkle:dsaSignature="MC0CFGswtotDgmStb6gNMXaVQUp4N7QSAhUAqmFNUMxf8WdnyEluEUm1rh+I6GY="/></item>
 
 </channel>
 </rss>
