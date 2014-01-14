@@ -4,6 +4,9 @@
 <link>http://raw2.github.com/kingzeus/CocosBuilder/master/version.xml</link>
 <description>让版本飞起来~~~</description>
 <language>en</language>
+<item><title>Kingzeus Version(4.0.1)</title><description><![CDATA[ <h2>Kingzeus Version(4.0.1)</h2> <blockquote> <p>2014-01-15 01:12:47 +0800</p> </blockquote> <ul> <li><p><strong>[FIX]</strong> 修正程序图标不显示</p></li> <li><p><strong>[FIX]</strong> 不进行设备的色域空间转换，设置的颜色值不再发生变化</p></li> </ul> ]]></description>
+<pubDate>2014-01-15 01:12:47 +0800</pubDate>
+<enclosure url="http://raw2.github.com/kingzeus/CocosBuilder/master/archive/CocosBuilder_4.0.1_FULL.zip" sparkle:version="4.0.1" length="19490236" type="application/octet-stream" sparkle:dsaSignature="MC4CFQCRToUdinyq4mBp0/3tRBni5YaEIQIVANkBuM0rLYScb7bQMgrNCfPzPteA"/></item>
 <item><title>Kingzeus Version(4.0.0)</title><description><![CDATA[ <h2>Kingzeus Version(4.0.0)</h2> <blockquote> <p>2014-01-14 18:29:13 +0800</p> </blockquote> <ul> <li><strong>[NEW]</strong> 自动更新</li> <li><p><strong>[NEW]</strong> 工程发布后自动调用main.sh</p></li> <li><p><strong>[FIX]</strong> CCBROOT 默认不再导出 scale 属性</p></li> </ul> ]]></description>
 <pubDate>2014-01-14 18:29:13 +0800</pubDate>
 <enclosure url="http://raw2.github.com/kingzeus/CocosBuilder/master/archive/CocosBuilder_4.0.0_FULL.zip" sparkle:version="4.0.0" length="19455327" type="application/octet-stream" sparkle:dsaSignature="MC0CFQCPx2Wbtip5AdpErkevbiv2sJrV7QIUVxBdOWqirpHyYyeXNc623Dymauk="/></item>

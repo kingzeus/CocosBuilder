@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3032D38C188226560041A187 /* ResourceManagerPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3032D38A188226560041A187 /* ResourceManagerPreviewView.m */; };
 		3032D38D188226560041A187 /* ResourceManagerPreviewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3032D38B188226560041A187 /* ResourceManagerPreviewView.xib */; };
+		306999A818859EB000D4A6D3 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 77AC50241360A0FB00B04360 /* Icon.icns */; };
 		308B4E36181E2703001EDEF2 /* UIWidget.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED824F181A71EA00CBC4AA /* UIWidget.ccbPlugNode */; };
 		308B4E37181E2703001EDEF2 /* UIWindow.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED8251181A71EA00CBC4AA /* UIWindow.ccbPlugNode */; };
 		308B4E38181E2703001EDEF2 /* UIButton.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED8255181A71EA00CBC4AA /* UIButton.ccbPlugNode */; };
@@ -80,10 +81,8 @@
 		7789ABEC133AB12000CEFCC7 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7789ABEB133AB12000CEFCC7 /* OpenGL.framework */; };
 		7789ABEE133AB12F00CEFCC7 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7789ABED133AB12F00CEFCC7 /* libz.dylib */; };
 		7789ACEA133AB47A00CEFCC7 /* CocosScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7789ACE9133AB47A00CEFCC7 /* CocosScene.m */; };
-		7789ACEF133AB6A700CEFCC7 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 7789ACED133AB6A700CEFCC7 /* icon.icns */; };
 		7789ACF1133BD5E800CEFCC7 /* header-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 7789ACF0133BD5E800CEFCC7 /* header-bg.png */; };
 		77AC50231360A05400B04360 /* CocosBuilderIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AC50221360A05300B04360 /* CocosBuilderIcon.png */; };
-		77AC50251360A0FB00B04360 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 77AC50241360A0FB00B04360 /* Icon.icns */; };
 		77D33E95138E714700012A88 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77D33E94138E714700012A88 /* ExceptionHandling.framework */; };
 		77D33EAB138EA4F900012A88 /* CCBUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 77D33EAA138EA4F800012A88 /* CCBUtil.m */; };
 		77D33EAD138EFBD800012A88 /* StageSizeWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77D33EAC138EFBD800012A88 /* StageSizeWindow.xib */; };
@@ -4770,16 +4769,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				306999A818859EB000D4A6D3 /* Icon.icns in Resources */,
 				A77EF594171FD3B200451DA4 /* cwebp in Resources */,
 				7789ABCD133AA82000CEFCC7 /* InfoPlist.strings in Resources */,
 				7789ABD3133AA82000CEFCC7 /* Credits.rtf in Resources */,
 				7789ABD9133AA82000CEFCC7 /* MainMenu.xib in Resources */,
-				7789ACEF133AB6A700CEFCC7 /* icon.icns in Resources */,
 				7789ACF1133BD5E800CEFCC7 /* header-bg.png in Resources */,
 				772BE567133E40D60009B5B9 /* missing-texture.png in Resources */,
 				772BE57C134398EE0009B5B9 /* NewDocWindow.xib in Resources */,
 				77AC50231360A05400B04360 /* CocosBuilderIcon.png in Resources */,
-				77AC50251360A0FB00B04360 /* Icon.icns in Resources */,
 				774F95C613638D74005D43EB /* missing-particle-texture.png in Resources */,
 				774E4EC2136D98AB0025D0A8 /* select-bl.png in Resources */,
 				774E4EC3136D98AB0025D0A8 /* select-br.png in Resources */,
