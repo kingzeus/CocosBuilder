@@ -1,8 +1,8 @@
 ﻿<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
 <channel>
-<title>CocosBuilder(Kingzeus Version) 更新记录</title>
+<title>CocosBuilder(Kingzeus Version) </title>
 <link>http://andymatuschak.org/files/sparkletestcast.xml</link>
-<description>让版本飞起来！~</description>
+<description>test</description>
 <language>en</language>
 <item><title>Kingzeus Version(4.0.0)</title><sparkle:releaseNotesLink>http://raw2.github.com/kingzeus/CocosBuilder/master/archive/changlog_4.0.0.txt</sparkle:releaseNotesLink>
 <pubDate>2014-01-14 15:50:32 +0800</pubDate>
