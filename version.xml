@@ -6,7 +6,7 @@
 <language>en</language>
 <item><title>Kingzeus Version(4.0.0)</title><sparkle:releaseNotesLink>http://raw2.github.com/kingzeus/CocosBuilder/master/archive//Users/kingzeus/Development/CocosBuilder/archive/changlog.4.0.0.html</sparkle:releaseNotesLink>
 <pubDate>2014-01-14 17:21:17 +0800</pubDate>
-<enclosure url="http://github.com/kingzeus/CocosBuilder/releases/download/v4.0.0/CocosBuilder_4.0.0_FULL.zip" sparkle:version="4.0.0" length="" type="application/octet-stream" sparkle:dsaSignature="MC4CFQCUrtrCXkWDtW11HauczTfFbD/o/gIVAKH0qUgUyzVcwii2soYJbk6m1V4N"/></item>
+<enclosure url="http://github.com/kingzeus/CocosBuilder/releases/download/v4.0.0/CocosBuilder_4.0.0_FULL.zip" sparkle:version="4.0.0" length="19455349" type="application/octet-stream" sparkle:dsaSignature="MC4CFQCUrtrCXkWDtW11HauczTfFbD/o/gIVAKH0qUgUyzVcwii2soYJbk6m1V4N"/></item>
 
 
 </channel>
