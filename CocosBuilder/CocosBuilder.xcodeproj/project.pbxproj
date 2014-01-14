@@ -1726,7 +1726,6 @@
 		E392618C159CAAA10034FF1D /* seq-keyframe-l.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "seq-keyframe-l.png"; sourceTree = "<group>"; };
 		E392618D159CAAA10034FF1D /* seq-keyframe-r-sel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "seq-keyframe-r-sel.png"; sourceTree = "<group>"; };
 		E392618E159CAAA10034FF1D /* seq-keyframe-r.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "seq-keyframe-r.png"; sourceTree = "<group>"; };
-		E395DC7D1511FDF70075979E /* CHANGELOG */ = {isa = PBXFileReference; lastKnownFileType = text; name = CHANGELOG; path = ../CHANGELOG; sourceTree = "<group>"; };
 		E3985418170D2409000F4465 /* DebuggerTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebuggerTextField.h; sourceTree = "<group>"; };
 		E3985419170D2409000F4465 /* DebuggerTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebuggerTextField.m; sourceTree = "<group>"; };
 		E398541D170E4A30000F4465 /* CCBScale9Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCBScale9Sprite.h; sourceTree = "<group>"; };
@@ -2571,7 +2570,6 @@
 				30988AE417842DE100CB8258 /* ui.xcodeproj */,
 				E3D08A321524581100E55891 /* README.md */,
 				E3D59118150F50D1004180CA /* AUTHORS */,
-				E395DC7D1511FDF70075979E /* CHANGELOG */,
 				E3D59119150F50D1004180CA /* LICENSE_CocosBuilder.txt */,
 				E3D5911A150F50D1004180CA /* LICENSE_PSMTabBarControl.txt */,
 				E3D5911B150F50D1004180CA /* LICENSE_SCEvents.txt */,

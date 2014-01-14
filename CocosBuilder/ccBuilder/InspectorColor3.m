@@ -30,8 +30,8 @@
 - (void) setColor:(NSColor *)color
 {
     CGFloat r, g, b, a;
-    
-    color = [color colorUsingColorSpace:[NSColorSpace deviceRGBColorSpace]];
+    // 不进行设备色域空间转换
+    //color = [color colorUsingColorSpace:[NSColorSpace deviceRGBColorSpace]];
     
     [color getRed:&r green:&g blue:&b alpha:&a];
     
