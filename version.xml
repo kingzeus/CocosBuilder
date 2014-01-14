@@ -4,7 +4,7 @@
 <link>http://andymatuschak.org/files/sparkletestcast.xml</link>
 <description>ÈÃ°æ±¾·ÉÆðÀ´£¡~</description>
 <language>zh</language>
-<item><title>Kingzeus Version(4.0.1)</title><sparkle:releaseNotesLink>4.0.1.txt</sparkle:releaseNotesLink>
+<item><title>Kingzeus Version(4.0.1)</title><sparkle:releaseNotesLink>http://cocosbuilder.com/downloads/2.1.0.html</sparkle:releaseNotesLink>
 <pubDate>2014-01-14 02:28:39 +0800</pubDate>
 <enclosure url="http://github.com/kingzeus/CocosBuilder/releases/download/v4.0.1/CocosBuilder_4.0.1.zip" sparkle:version="4.0.1" length="19455490" type="application/octet-stream" sparkle:dsaSignature="MC4CFQDgGxyuQhslIkKnuGO4GO034hB0EAIVAIN+JP+67TM41WZXwDnojZRFih7j"/></item>
 
