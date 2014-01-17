@@ -42,6 +42,7 @@ enum
     kCCBResTypeJSON,
     kCCBResTypeAudio,
     kCCBResTypeGeneratedSpriteSheetDef,
+    kCCBResTypeSearch
 };
 
 
@@ -99,6 +100,7 @@ enum
     NSMutableArray* ttfFonts;
     NSMutableArray* ccbFiles;
     NSMutableArray* audioFiles;
+    NSMutableArray* searches;
 }
 
 @property (nonatomic,assign) int count;
@@ -113,6 +115,7 @@ enum
 @property (nonatomic,readonly) NSMutableArray* ttfFonts;
 @property (nonatomic,readonly) NSMutableArray* ccbFiles;
 @property (nonatomic,readonly) NSMutableArray* audioFiles;
+@property (nonatomic,retain) NSMutableArray* searches;
 - (NSArray*) resourcesForType:(int)type;
 
 @end

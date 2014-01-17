@@ -195,6 +195,7 @@ enum {
     
     // PlugIns (nodes)
     PlugInManager* plugInManager;
+     NSTextFieldCell *searchBox;
     
     // Guides
     BOOL showGuides;
@@ -231,6 +232,8 @@ enum {
     
     // JavaScript bindings
     BOOL jsControlled;
+    
+    
     
 @private
     MainWindow *window;
@@ -278,6 +281,8 @@ enum {
 
 // PlugIns and properties
 @property (nonatomic,readonly) PlugInManager* plugInManager;
+@property (assign) IBOutlet NSTextFieldCell *searchBox;
+
 - (void) refreshProperty:(NSString*) name;
 
 // Methods
@@ -293,6 +298,9 @@ enum {
 - (void) resetJSFilesLineHighlight;
 
 // Menu options
+- (IBAction)searchRes:(id)sender;
+-(void) setResType:(int)type;
+
 - (void) dropAddSpriteNamed:(NSString*)spriteFile inSpriteSheet:(NSString*)spriteSheetFile at:(CGPoint)pt parent:(CCNode*)parent;
 - (void) dropAddSpriteNamed:(NSString*)spriteFile inSpriteSheet:(NSString*)spriteSheetFile at:(CGPoint)pt;
 - (void) dropAddCCBFileNamed:(NSString*)ccbFile at:(CGPoint)pt parent:(CCNode*)parent;

@@ -110,6 +110,7 @@
 @synthesize hasOpenedDocument;
 @synthesize defaultCanvasSize;
 @synthesize plugInManager;
+@synthesize searchBox;
 @synthesize resManager;
 @synthesize showGuides;
 @synthesize snapToGuides;
@@ -247,7 +248,14 @@ static CocosBuilderAppDelegate* sharedAppDelegate;
     
     resourceManagerSplitView.delegate = previewViewOwner;
 }
-
+// 设置预览
+-(void) SetPreview:(id) selection
+{
+    if(previewViewOwner!=NULL)
+    {
+        [previewViewOwner setPreviewFile: selection];
+    }
+}
 - (void) setupGUIWindow
 {
     NSRect frame = cocosView.frame;
@@ -377,6 +385,8 @@ static CocosBuilderAppDelegate* sharedAppDelegate;
     
     [[NSApplication sharedApplication] runModalForWindow:modalTaskStatusWindow.window];
 }
+
+
 
 - (void) modalStatusWindowFinish
 {
@@ -1265,6 +1275,7 @@ static BOOL hideAllToNextSeparator;
 
 - (void) closeProject
 {
+    [[self searchBox] setEnabled:false];
     while ([tabView numberOfTabViewItems] > 0)
     {
         NSTabViewItem* item = [self tabViewItemFromDoc:currentDocument];
@@ -1298,6 +1309,7 @@ static BOOL hideAllToNextSeparator;
     // Close currently open project
     [self closeProject];
     
+    [[self searchBox] setEnabled:true];
     // Add to recent list of opened documents
     [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:[NSURL fileURLWithPath:fileName]];
     
@@ -1782,7 +1794,13 @@ static BOOL hideAllToNextSeparator;
         [self addCCObject:node toParent:parent];
     }
 }
+- (IBAction)searchRes:(id)sender {
+    
+}
 
+-(void)setResType:(int)type{
+    [projectOutlineHandler setResType:type];
+}
 - (void) dropAddSpriteNamed:(NSString*)spriteFile inSpriteSheet:(NSString*)spriteSheetFile at:(CGPoint)pt
 {
     // Sprite dropped in working canvas

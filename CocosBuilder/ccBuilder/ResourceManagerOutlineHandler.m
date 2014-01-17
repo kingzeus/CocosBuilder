@@ -69,6 +69,7 @@
     return self;
 }
 
+
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
 {
     // Do not display directories if only one directory is used

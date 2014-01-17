@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3023B4521888B529007E5845 /* ResourceManagerSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 3023B4511888B529007E5845 /* ResourceManagerSearch.m */; };
 		3032D38C188226560041A187 /* ResourceManagerPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3032D38A188226560041A187 /* ResourceManagerPreviewView.m */; };
 		3032D38D188226560041A187 /* ResourceManagerPreviewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3032D38B188226560041A187 /* ResourceManagerPreviewView.xib */; };
 		306999A818859EB000D4A6D3 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 77AC50241360A0FB00B04360 /* Icon.icns */; };
@@ -1002,6 +1003,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3023B4501888B528007E5845 /* ResourceManagerSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManagerSearch.h; sourceTree = "<group>"; };
+		3023B4511888B529007E5845 /* ResourceManagerSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResourceManagerSearch.m; sourceTree = "<group>"; };
 		3032D389188226550041A187 /* ResourceManagerPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManagerPreviewView.h; sourceTree = "<group>"; };
 		3032D38A188226560041A187 /* ResourceManagerPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResourceManagerPreviewView.m; sourceTree = "<group>"; };
 		3032D38B188226560041A187 /* ResourceManagerPreviewView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResourceManagerPreviewView.xib; sourceTree = "<group>"; };
@@ -4051,6 +4054,8 @@
 		E3C5C1A11504D144000CF6F3 /* Resource Manager */ = {
 			isa = PBXGroup;
 			children = (
+				3023B4501888B528007E5845 /* ResourceManagerSearch.h */,
+				3023B4511888B529007E5845 /* ResourceManagerSearch.m */,
 				3032D389188226550041A187 /* ResourceManagerPreviewView.h */,
 				3032D38A188226560041A187 /* ResourceManagerPreviewView.m */,
 				3032D38B188226560041A187 /* ResourceManagerPreviewView.xib */,
@@ -5178,7 +5183,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\nCOCOSBUILDER_APP_BUILD_DIRECTORY=$CONFIGURATION_BUILD_DIR/\nCOCOSBUILDER_REGULAR_DIRECTORY=$SRCROOT/../build/\nCOCOSBUILDER_APP_BUNDLE=$PRODUCT_NAME.app\nCOCOSBUILDER_CREATE_DIR=1\n\nif [ $COCOSBUILDER_CREATE_DIR == \"1\" ]\nthen\nmkdir -p \"$COCOSBUILDER_REGULAR_DIRECTORY\"\nfi\n\necho \"Copying $COCOSBUILDER_APP_BUNDLE into `cd \\\"$COCOSBUILDER_REGULAR_DIRECTORY\\\"; pwd`\"\n\ncp -r \"$COCOSBUILDER_APP_BUILD_DIRECTORY$COCOSBUILDER_APP_BUNDLE\" \"$COCOSBUILDER_REGULAR_DIRECTORY$COCOSBUILDER_APP_BUNDLE\"\n";
+			shellScript = "\nCOCOSBUILDER_APP_BUILD_DIRECTORY=$CONFIGURATION_BUILD_DIR/\nCOCOSBUILDER_REGULAR_DIRECTORY=$SRCROOT/../build/\nCOCOSBUILDER_APP_BUNDLE=$PRODUCT_NAME.app\nCOCOSBUILDER_CREATE_DIR=1\n\n\nrm -Rf \"$COCOSBUILDER_REGULAR_DIRECTORY\"\nif [ $COCOSBUILDER_CREATE_DIR == \"1\" ]\nthen\nmkdir -p \"$COCOSBUILDER_REGULAR_DIRECTORY\"\nfi\n\necho \"Copying $COCOSBUILDER_APP_BUNDLE into `cd \\\"$COCOSBUILDER_REGULAR_DIRECTORY\\\"; pwd`\"\n\ncp -r \"$COCOSBUILDER_APP_BUILD_DIRECTORY$COCOSBUILDER_APP_BUNDLE\" \"$COCOSBUILDER_REGULAR_DIRECTORY$COCOSBUILDER_APP_BUNDLE\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -5272,6 +5277,7 @@
 				A09AB6B914E9935F009C8B91 /* ray2.c in Sources */,
 				3032D38C188226560041A187 /* ResourceManagerPreviewView.m in Sources */,
 				A09AB6BA14E9935F009C8B91 /* utility.c in Sources */,
+				3023B4521888B529007E5845 /* ResourceManagerSearch.m in Sources */,
 				A09AB6BB14E9935F009C8B91 /* vec2.c in Sources */,
 				A09AB6BC14E9935F009C8B91 /* vec3.c in Sources */,
 				A09AB6BD14E9935F009C8B91 /* vec4.c in Sources */,

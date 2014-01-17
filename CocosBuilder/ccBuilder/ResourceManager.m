@@ -182,6 +182,7 @@
 @synthesize ttfFonts;
 @synthesize ccbFiles;
 @synthesize audioFiles;
+@synthesize searches;
 
 - (id) init
 {
@@ -196,6 +197,7 @@
     ttfFonts = [[NSMutableArray alloc] init];
     ccbFiles = [[NSMutableArray alloc] init];
     audioFiles = [[NSMutableArray alloc] init];
+    searches = [[NSMutableArray alloc] init];
     
     return self;
 }
@@ -209,6 +211,7 @@
     if (type == kCCBResTypeAnimation) return animations;
     if (type == kCCBResTypeCCBFile) return ccbFiles;
     if (type == kCCBResTypeAudio) return audioFiles;
+    if (type == kCCBResTypeSearch) return searches;
     return NULL;
 }
 
@@ -270,6 +273,7 @@
     [ttfFonts release];
     [ccbFiles release];
     [audioFiles release];
+    [searches release];
     [dirPath release];
     [super dealloc];
 }
