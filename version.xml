@@ -4,6 +4,9 @@
 <link>http://raw2.github.com/kingzeus/CocosBuilder/master/version.xml</link>
 <description>让版本飞起来~~~</description>
 <language>en</language>
+<item><title>Kingzeus Version(4.0.2)</title><description><![CDATA[ <h2>Kingzeus Version(4.0.2)</h2> <blockquote> <p>2014-01-17 09:08:42 +0800</p> </blockquote> <ul> <li><p><strong>[NEW]</strong> 应用图标更新</p></li> <li><p><strong>[NEW]</strong> 增加了资源搜索功能</p></li> </ul> ]]></description>
+<pubDate>2014-01-17 09:08:42 +0800</pubDate>
+<enclosure url="http://raw2.github.com/kingzeus/CocosBuilder/master/archive/CocosBuilder_4.0.2_FULL.zip" sparkle:version="4.0.2" length="19552581" type="application/octet-stream" sparkle:dsaSignature="MCwCFChfL30rEcWNWvY4FWf2+qRSYiP4AhRCS0vH3y7e/yoFc9WAQkvftnHFmA=="/></item>
 <item><title>Kingzeus Version(4.0.1)</title><description><![CDATA[ <h2>Kingzeus Version(4.0.1)</h2> <blockquote> <p>2014-01-15 01:12:47 +0800</p> </blockquote> <ul> <li><p><strong>[FIX]</strong> 修正程序图标不显示</p></li> <li><p><strong>[FIX]</strong> 不进行设备的色域空间转换，设置的颜色值不再发生变化</p></li> </ul> ]]></description>
 <pubDate>2014-01-15 01:12:47 +0800</pubDate>
 <enclosure url="http://raw2.github.com/kingzeus/CocosBuilder/master/archive/CocosBuilder_4.0.1_FULL.zip" sparkle:version="4.0.1" length="19490236" type="application/octet-stream" sparkle:dsaSignature="MC4CFQCRToUdinyq4mBp0/3tRBni5YaEIQIVANkBuM0rLYScb7bQMgrNCfPzPteA"/></item>
