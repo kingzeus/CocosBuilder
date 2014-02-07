@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3023B4521888B529007E5845 /* ResourceManagerSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 3023B4511888B529007E5845 /* ResourceManagerSearch.m */; };
+		3023B4671888F7E5007E5845 /* 51cto.png in Resources */ = {isa = PBXBuildFile; fileRef = 3023B4661888F7E5007E5845 /* 51cto.png */; };
 		3032D38C188226560041A187 /* ResourceManagerPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3032D38A188226560041A187 /* ResourceManagerPreviewView.m */; };
 		3032D38D188226560041A187 /* ResourceManagerPreviewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3032D38B188226560041A187 /* ResourceManagerPreviewView.xib */; };
 		306999A818859EB000D4A6D3 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 77AC50241360A0FB00B04360 /* Icon.icns */; };
@@ -25,6 +26,7 @@
 		308B4E43181E2703001EDEF2 /* UITab.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED8253181A71EA00CBC4AA /* UITab.ccbPlugNode */; };
 		308B4E44181E2703001EDEF2 /* NodeClip.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED8269181A71EA00CBC4AA /* NodeClip.ccbPlugNode */; };
 		308B4E45181E4DBC001EDEF2 /* NodeProgress.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED825F181A71EA00CBC4AA /* NodeProgress.ccbPlugNode */; };
+		308BD0F218A4EBB000810CED /* UIEdit.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED8267181A71EA00CBC4AA /* UIEdit.ccbPlugNode */; };
 		30A0542018840E0600A07FC1 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30A0541F18840E0600A07FC1 /* Sparkle.framework */; };
 		581130601639C52500A86D70 /* seq-startmarker.png in Resources */ = {isa = PBXBuildFile; fileRef = 5811305F1639C52000A86D70 /* seq-startmarker.png */; };
 		581BCFE8162DADE7007DE600 /* CCBSplitHorizontalView.m in Sources */ = {isa = PBXBuildFile; fileRef = 581BCFE7162DADE7007DE600 /* CCBSplitHorizontalView.m */; };
@@ -956,6 +958,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				308BD0F218A4EBB000810CED /* UIEdit.ccbPlugNode in Copy PlugIns */,
 				308B4E45181E4DBC001EDEF2 /* NodeProgress.ccbPlugNode in Copy PlugIns */,
 				308B4E36181E2703001EDEF2 /* UIWidget.ccbPlugNode in Copy PlugIns */,
 				308B4E37181E2703001EDEF2 /* UIWindow.ccbPlugNode in Copy PlugIns */,
@@ -1005,6 +1008,7 @@
 /* Begin PBXFileReference section */
 		3023B4501888B528007E5845 /* ResourceManagerSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManagerSearch.h; sourceTree = "<group>"; };
 		3023B4511888B529007E5845 /* ResourceManagerSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResourceManagerSearch.m; sourceTree = "<group>"; };
+		3023B4661888F7E5007E5845 /* 51cto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 51cto.png; sourceTree = "<group>"; };
 		3032D389188226550041A187 /* ResourceManagerPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManagerPreviewView.h; sourceTree = "<group>"; };
 		3032D38A188226560041A187 /* ResourceManagerPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResourceManagerPreviewView.m; sourceTree = "<group>"; };
 		3032D38B188226560041A187 /* ResourceManagerPreviewView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResourceManagerPreviewView.xib; sourceTree = "<group>"; };
@@ -2359,6 +2363,7 @@
 		776041E61498F7980078095D /* Icons & Logos */ = {
 			isa = PBXGroup;
 			children = (
+				3023B4661888F7E5007E5845 /* 51cto.png */,
 				E3A16D8E156E145700F6C326 /* CocosBuilderPlayerIcon.icns */,
 				E3BF89D8156D36B6001A24CE /* CocosBuilderProjectIcon.icns */,
 				77AC50241360A0FB00B04360 /* Icon.icns */,
@@ -4862,6 +4867,7 @@
 				E34E5D6A153585EC000201FB /* ruler-bg-horizontal.png in Resources */,
 				E34E5D6B153585EC000201FB /* ruler-bg-vertical.png in Resources */,
 				E34E5D6E1535AA78000201FB /* ruler-mark-major.png in Resources */,
+				3023B4671888F7E5007E5845 /* 51cto.png in Resources */,
 				E34E5D6F1535AA78000201FB /* ruler-mark-minor.png in Resources */,
 				E34E5D711535B34F000201FB /* ruler-mark-origin.png in Resources */,
 				E34E5D731535BC5E000201FB /* ruler-numbers.png in Resources */,
