@@ -1,5 +1,4 @@
-- **[NEW]**	更新关于
-- **[NEW]**	更新 bugreport 地址
+- **[NEW]**	
 
-- **[FIX]**	UIEdit插件异常
+- **[FIX]**	
 
