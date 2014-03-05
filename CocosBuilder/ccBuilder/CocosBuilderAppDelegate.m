@@ -3645,107 +3645,6 @@ static BOOL hideAllToNextSeparator;
     return currentDocument.undoManager;
 }
 
-#pragma mark Playback countrols
-
-- (void) playbackStep:(id) sender
-{
-    int frames = [sender intValue];
-    if (!currentDocument)
-    {
-        [self playbackStop:NULL];
-    }
-    
-    if (playingBack)
-    {
-        // Step forward
-        [sequenceHandler.currentSequence stepForward:frames];
-        
-        if (sequenceHandler.currentSequence.timelinePosition >= sequenceHandler.currentSequence.timelineLength)
-        {
-            [self playbackStop:NULL];
-        }
-        else
-        {
-            double thisTime = [NSDate timeIntervalSinceReferenceDate];
-            double requestedDelay = 1/sequenceHandler.currentSequence.timelineResolution;
-            double extraTime = thisTime - (playbackLastFrameTime + requestedDelay);
-            
-            double delayTime = requestedDelay - extraTime;
-            playbackLastFrameTime = thisTime;
-            int nextStep = 1;
-            while (delayTime < 0)
-            {
-                delayTime += requestedDelay;
-                nextStep++;
-                
-            }
-            
-            // Call this method again in a little while
-            [self performSelector:@selector(playbackStep:) withObject:[NSNumber numberWithInt:nextStep] afterDelay:delayTime];
-        }
-    }
-}
-
-- (IBAction)playbackPlay:(id)sender
-{
-    if (!self.hasOpenedDocument) return;
-    if (playingBack) return;
-    
-    // Jump to start of sequence if the end is reached
-    if (sequenceHandler.currentSequence.timelinePosition >= sequenceHandler.currentSequence.timelineLength)
-    {
-        sequenceHandler.currentSequence.timelinePosition = 0;
-    }
-    
-    // Deselect all objects to improve performance
-    self.selectedNodes = NULL;
-    
-    // Start playback
-    playbackLastFrameTime = [NSDate timeIntervalSinceReferenceDate];
-    playingBack = YES;
-    [self playbackStep:[NSNumber numberWithInt:1]];
-}
-
-- (IBAction)playbackStop:(id)sender
-{
-    NSLog(@"playbackStop");
-    playingBack = NO;
-}
-
-- (IBAction)playbackJumpToStart:(id)sender
-{
-    if (!self.hasOpenedDocument) return;
-    sequenceHandler.currentSequence.timelinePosition = 0;
-    [[SequencerHandler sharedHandler] updateScrollerToShowCurrentTime];
-}
-
-- (IBAction)playbackStepBack:(id)sender
-{
-    if (!self.hasOpenedDocument) return;
-    [sequenceHandler.currentSequence stepBack:1];
-}
-
-- (IBAction)playbackStepForward:(id)sender
-{
-    if (!self.hasOpenedDocument) return;
-    [sequenceHandler.currentSequence stepForward:1];
-}
-
-- (IBAction)pressedPlaybackControl:(id)sender
-{
-    NSSegmentedControl* sc = sender;
-    
-    int tag = [sc selectedSegment];
-    if (tag == 0) [self playbackJumpToStart:sender];
-    else if (tag == 1) [self playbackStepBack:sender];
-    else if (tag == 2) [self playbackStepForward:sender];
-    else if (tag == 3) [self playbackStop:sender];
-    else if (tag == 4) [self playbackPlay:sender];
-    else if (tag == -1)
-    {
-        NSLog(@"No selected index!!");
-    }
-}
 
 #pragma mark Delegate methods
 
@@ -3831,5 +3730,161 @@ static BOOL hideAllToNextSeparator;
     
     [super dealloc];
 }
+
+#pragma mark Playback countrols
+
+- (IBAction)togglePlayback:(id)sender {
+    sequenceHandler.loopPlayback = [(NSButton*)sender state] == 1 ? YES : NO;
+}
+
+- (void) updatePlayback
+{
+    
+    if (!currentDocument)
+    {
+        [self playbackStop:NULL];
+    }
+    
+    if (playingBack)
+    {
+        // Step forward
+        
+        double thisTime = [NSDate timeIntervalSinceReferenceDate];
+        double deltaTime = thisTime - playbackLastFrameTime;
+        double frameDelta = 1.0/sequenceHandler.currentSequence.timelineResolution;
+        float targetNewTime =  sequenceHandler.currentSequence.timelinePosition + deltaTime;
+        
+        int steps = (int)(deltaTime/frameDelta);
+        
+        //determine new time in to the future.
+        
+        [sequenceHandler.currentSequence stepForward:steps];
+        
+        if (sequenceHandler.currentSequence.timelinePosition >= sequenceHandler.currentSequence.timelineLength)
+        {
+            //If we loop, calulate the overhang
+            if(targetNewTime >= sequenceHandler.currentSequence.timelinePosition && sequenceHandler.loopPlayback)
+            {
+                [self playbackJumpToStart:nil];
+                steps = (int)((targetNewTime - sequenceHandler.currentSequence.timelineLength)/frameDelta);
+                [sequenceHandler.currentSequence stepForward:steps];
+            }
+            else
+            {
+                [self playbackStop:NULL];
+                return;
+            }
+        }
+        
+        playbackLastFrameTime += steps * frameDelta;
+        
+        // Call this method again in a little while
+        [self performSelector:@selector(updatePlayback) withObject:nil afterDelay:frameDelta];
+        
+    }
+}
+
+- (void) playbackStep:(id) sender
+{
+    int frames = [sender intValue];
+    if (!currentDocument)
+    {
+        [self playbackStop:NULL];
+    }
+    
+    if (playingBack)
+    {
+        // Step forward
+        [sequenceHandler.currentSequence stepForward:frames];
+        
+        if (sequenceHandler.currentSequence.timelinePosition >= sequenceHandler.currentSequence.timelineLength)
+        {
+            [self playbackStop:NULL];
+        }
+        else
+        {
+            double thisTime = [NSDate timeIntervalSinceReferenceDate];
+            double requestedDelay = 1/sequenceHandler.currentSequence.timelineResolution;
+            double extraTime = thisTime - (playbackLastFrameTime + requestedDelay);
+            
+            double delayTime = requestedDelay - extraTime;
+            playbackLastFrameTime = thisTime;
+            int nextStep = 1;
+            while (delayTime < 0)
+            {
+                delayTime += requestedDelay;
+                nextStep++;
+                
+            }
+            
+            // Call this method again in a little while
+            [self performSelector:@selector(playbackStep:) withObject:[NSNumber numberWithInt:nextStep] afterDelay:delayTime];
+        }
+    }
+}
+
+- (IBAction)playbackPlay:(id)sender
+{
+    if (!self.hasOpenedDocument) return;
+    if (playingBack) return;
+    
+    // Jump to start of sequence if the end is reached
+    if (sequenceHandler.currentSequence.timelinePosition >= sequenceHandler.currentSequence.timelineLength)
+    {
+        sequenceHandler.currentSequence.timelinePosition = 0;
+    }
+    
+    // Deselect all objects to improve performance
+    self.selectedNodes = NULL;
+    
+    // Start playback
+    playbackLastFrameTime = [NSDate timeIntervalSinceReferenceDate];
+    playingBack = YES;
+    //    [self playbackStep:[NSNumber numberWithInt:1]];
+    [self updatePlayback];
+}
+
+- (IBAction)playbackStop:(id)sender
+{
+    NSLog(@"playbackStop");
+    playingBack = NO;
+
+}
+
+- (IBAction)playbackJumpToStart:(id)sender
+{
+    if (!self.hasOpenedDocument) return;
+    sequenceHandler.currentSequence.timelinePosition = 0;
+    [[SequencerHandler sharedHandler] updateScrollerToShowCurrentTime];
+}
+
+- (IBAction)playbackStepBack:(id)sender
+{
+    if (!self.hasOpenedDocument) return;
+    [sequenceHandler.currentSequence stepBack:1];
+}
+
+- (IBAction)playbackStepForward:(id)sender
+{
+    if (!self.hasOpenedDocument) return;
+    [sequenceHandler.currentSequence stepForward:1];
+}
+
+- (IBAction)pressedPlaybackControl:(id)sender
+{
+    NSSegmentedControl* sc = sender;
+    
+    int tag = [sc selectedSegment];
+    if (tag == 0) [self playbackJumpToStart:sender];
+    else if (tag == 1) [self playbackStepBack:sender];
+    else if (tag == 2) [self playbackStepForward:sender];
+    else if (tag == 3) [self playbackStop:sender];
+    else if (tag == 4) [self playbackPlay:sender];
+    else if (tag == -1)
+    {
+        NSLog(@"No selected index!!");
+    }
+}
+
 
 @end

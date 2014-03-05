@@ -346,6 +346,8 @@ enum {
 - (IBAction) menuCleanCacheDirectories:(id)sender;
 - (IBAction)menuAbout:(id)sender;
 
+- (IBAction)togglePlayback:(id)sender;
+
 // Undo / Redo
 - (void) updateDirtyMark;
 - (void) saveUndoState;
