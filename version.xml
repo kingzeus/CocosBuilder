@@ -4,6 +4,9 @@
 <link>http://raw2.github.com/kingzeus/CocosBuilder/master/version.xml</link>
 <description>让版本飞起来~~~</description>
 <language>en</language>
+<item><title>Kingzeus Version(4.0.4)</title><description><![CDATA[ <h2>Kingzeus Version(4.0.4)</h2> <blockquote> <p>2014-03-06 11:49:08 +0800</p> </blockquote> <ul> <li><p><strong>[NEW]</strong> 增加时间轴循环播放</p></li> <li><p><strong>[NEW]</strong> 增加部分中文化</p></li> </ul> ]]></description>
+<pubDate>2014-03-06 11:49:08 +0800</pubDate>
+<enclosure url="http://raw2.github.com/kingzeus/CocosBuilder/master/archive/CocosBuilder_4.0.4_FULL.zip" sparkle:version="4.0.4" length="19635280" type="application/octet-stream" sparkle:dsaSignature="MC0CFQDOjpVHbmYUCvjKYUhI6buTH/a7SAIUU7S6rJEpzgHZnS84ItoNq2WR7XU="/></item>
 <item><title>Kingzeus Version(4.0.3)</title><description><![CDATA[ <h2>Kingzeus Version(4.0.3)</h2> <blockquote> <p>2014-02-07 18:48:09 +0800</p> </blockquote> <ul> <li><strong>[NEW]</strong> 更新关于</li> <li><p><strong>[NEW]</strong> 更新 bugreport 地址</p></li> <li><p><strong>[FIX]</strong> UIEdit插件异常</p></li> </ul> ]]></description>
 <pubDate>2014-02-07 18:48:09 +0800</pubDate>
 <enclosure url="http://raw2.github.com/kingzeus/CocosBuilder/master/archive/CocosBuilder_4.0.3_FULL.zip" sparkle:version="4.0.3" length="19547011" type="application/octet-stream" sparkle:dsaSignature="MC0CFGr39ZqxpjpI8HKi9oc4U4/CUJ9hAhUAswgMcZkHp5XmsaWtSiEIWyigkLQ="/></item>
