@@ -769,26 +769,26 @@ CA
                                     <action selector="menuZoomOut:" target="494" id="1300"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Reset View" keyEquivalent="0" id="1268">
+                            <menuItem title="视图重置" keyEquivalent="0" id="1268">
                                 <connections>
                                     <action selector="menuResetView:" target="494" id="1298"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="1269"/>
-                            <menuItem title="Resolution" id="1263">
+                            <menuItem title="屏幕方案" id="1263">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Resolution" id="1264"/>
+                                <menu key="submenu" title="屏幕方案" id="1264"/>
                             </menuItem>
-                            <menuItem title="Edit Resolutions..." id="1471">
+                            <menuItem title="编辑屏幕方案..." id="1471">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="menuEditResolutionSettings:" target="494" id="1473"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="1472"/>
-                            <menuItem title="Stage Border" id="1275">
+                            <menuItem title="场景边框" id="1275">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Stage Border" id="1276">
+                                <menu key="submenu" title="场景边框" id="1276">
                                     <items>
                                         <menuItem title="Device" keyEquivalent="1" id="1277">
                                             <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
@@ -818,7 +818,7 @@ CA
                                 </menu>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="1451"/>
-                            <menuItem title="Show Guides" alternate="YES" keyEquivalent="H" id="1452">
+                            <menuItem title="显示辅助线" alternate="YES" keyEquivalent="H" id="1452">
                                 <connections>
                                     <binding destination="494" name="value" keyPath="showGuides" id="1456"/>
                                 </connections>
@@ -843,7 +843,7 @@ CA
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="1780"/>
-                            <menuItem title="JavaScript Controlled" id="1782">
+                            <menuItem title="使用JavaScript" id="1782">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="menuJavaScriptControlled:" target="494" id="1784"/>
@@ -1579,7 +1579,7 @@ CA
                                     <button verticalHuggingPriority="750" id="G5b-lu-L7A">
                                         <rect key="frame" x="180" y="101" width="36" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="squareTextured" bezelStyle="texturedSquare" image="seq-btn-loop" imagePosition="below" alignment="center" borderStyle="border" allowsMixedState="YES" inset="2" id="UWm-3F-25I">
+                                        <buttonCell key="cell" type="squareTextured" bezelStyle="texturedSquare" image="seq-btn-loop" imagePosition="below" alignment="center" borderStyle="border" inset="2" id="UWm-3F-25I">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                             <connections>

@@ -1579,7 +1579,7 @@ CA
                                     <button verticalHuggingPriority="750" id="G5b-lu-L7A">
                                         <rect key="frame" x="180" y="101" width="36" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="squareTextured" bezelStyle="texturedSquare" image="seq-btn-loop" imagePosition="below" alignment="center" borderStyle="border" allowsMixedState="YES" inset="2" id="UWm-3F-25I">
+                                        <buttonCell key="cell" type="squareTextured" bezelStyle="texturedSquare" image="seq-btn-loop" imagePosition="below" alignment="center" borderStyle="border" inset="2" id="UWm-3F-25I">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                             <connections>
