@@ -4,6 +4,9 @@
 <link>http://raw2.github.com/kingzeus/CocosBuilder/master/version.xml</link>
 <description>让版本飞起来~~~</description>
 <language>en</language>
+<item><title>Kingzeus Version(4.0.5)</title><description><![CDATA[ <h2>Kingzeus Version(4.0.5)</h2> <blockquote> <p>2014-03-06 13:10:31 +0800</p> </blockquote> <ul> <li><p><strong>[NEW]</strong> 增加中文化</p></li> <li><p><strong>[FIX]</strong> 修正时间轴循环播放按钮状态不正常</p></li> </ul> ]]></description>
+<pubDate>2014-03-06 13:10:31 +0800</pubDate>
+<enclosure url="http://raw2.github.com/kingzeus/CocosBuilder/master/archive/CocosBuilder_4.0.5_FULL.zip" sparkle:version="4.0.5" length="19690425" type="application/octet-stream" sparkle:dsaSignature="MC0CFB+CIMiJoRq27uuHp4GsCyyp2+4zAhUA5UhHZXW0qhLBXfrK5GPvkx/WyXk="/></item>
 <item><title>Kingzeus Version(4.0.4)</title><description><![CDATA[ <h2>Kingzeus Version(4.0.4)</h2> <blockquote> <p>2014-03-06 11:49:08 +0800</p> </blockquote> <ul> <li><p><strong>[NEW]</strong> 增加时间轴循环播放</p></li> <li><p><strong>[NEW]</strong> 增加部分中文化</p></li> </ul> ]]></description>
 <pubDate>2014-03-06 11:49:08 +0800</pubDate>
 <enclosure url="http://raw2.github.com/kingzeus/CocosBuilder/master/archive/CocosBuilder_4.0.4_FULL.zip" sparkle:version="4.0.4" length="19635280" type="application/octet-stream" sparkle:dsaSignature="MC0CFQDOjpVHbmYUCvjKYUhI6buTH/a7SAIUU7S6rJEpzgHZnS84ItoNq2WR7XU="/></item>
