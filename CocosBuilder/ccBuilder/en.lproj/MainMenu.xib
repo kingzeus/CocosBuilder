@@ -1767,89 +1767,89 @@ CA
         </menu>
         <menu title="KeyframeInterpolation" autoenablesItems="NO" id="1604">
             <items>
-                <menuItem title="Instant" id="1605">
+                <menuItem title="Instant" image="instant" id="1605">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="menuSetEasing:" target="494" id="1618"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Linear" tag="1" id="1606">
+                <menuItem title="Linear" image="linear" tag="1" id="1606">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="menuSetEasing:" target="494" id="1619"/>
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="1617"/>
-                <menuItem title="Ease In" tag="2" id="1607">
+                <menuItem title="Ease In" image="easein" tag="2" id="1607">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="menuSetEasing:" target="494" id="1620"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Ease Out" tag="3" id="1608">
+                <menuItem title="Ease Out" image="easeout" tag="3" id="1608">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="menuSetEasing:" target="494" id="1621"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Ease In/Out" tag="4" id="1609">
+                <menuItem title="Ease In/Out" image="easeinout" tag="4" id="1609">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="menuSetEasing:" target="494" id="1622"/>
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="1623"/>
-                <menuItem title="Elastic In" tag="5" id="1624">
+                <menuItem title="Elastic In" image="elasticin" tag="5" id="1624">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="menuSetEasing:" target="494" id="1635"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Elastic Out" tag="6" id="1625">
+                <menuItem title="Elastic Out" image="elasticout" tag="6" id="1625">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="menuSetEasing:" target="494" id="1636"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Elastic In/Out" tag="7" id="1626">
+                <menuItem title="Elastic In/Out" image="elasticinout" tag="7" id="1626">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="menuSetEasing:" target="494" id="1637"/>
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="1627"/>
-                <menuItem title="Bounce In" tag="8" id="1628">
+                <menuItem title="Bounce In" image="bouncein" tag="8" id="1628">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="menuSetEasing:" target="494" id="1638"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Bounce Out" tag="9" id="1630">
+                <menuItem title="Bounce Out" image="bounceout" tag="9" id="1630">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="menuSetEasing:" target="494" id="1639"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Bounce In/Out" tag="10" id="1629">
+                <menuItem title="Bounce In/Out" image="bounceinout" tag="10" id="1629">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="menuSetEasing:" target="494" id="1640"/>
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="1631"/>
-                <menuItem title="Back In" tag="11" id="1632">
+                <menuItem title="Back In" image="backin" tag="11" id="1632">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="menuSetEasing:" target="494" id="1641"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Back Out" tag="12" id="1633">
+                <menuItem title="Back Out" image="backout" tag="12" id="1633">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="menuSetEasing:" target="494" id="1642"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Back In/Out" tag="13" id="1634">
+                <menuItem title="Back In/Out" image="backinout" tag="13" id="1634">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="menuSetEasing:" target="494" id="1643"/>
@@ -1926,8 +1926,22 @@ CA
         <image name="TB_rightPanel" width="25" height="22"/>
         <image name="TB_zoomIn" width="29" height="16"/>
         <image name="TB_zoomOut" width="29" height="9"/>
+        <image name="backin" width="16" height="16"/>
+        <image name="backinout" width="16" height="16"/>
+        <image name="backout" width="16" height="16"/>
+        <image name="bouncein" width="16" height="16"/>
+        <image name="bounceinout" width="16" height="16"/>
+        <image name="bounceout" width="16" height="16"/>
         <image name="btn-dropdown-arrows" width="16" height="9"/>
+        <image name="easein" width="16" height="16"/>
+        <image name="easeinout" width="16" height="16"/>
+        <image name="easeout" width="16" height="16"/>
+        <image name="elasticin" width="16" height="16"/>
+        <image name="elasticinout" width="16" height="16"/>
+        <image name="elasticout" width="16" height="16"/>
         <image name="header-bg" width="19" height="17"/>
+        <image name="instant" width="16" height="16"/>
+        <image name="linear" width="16" height="16"/>
         <image name="seq-btn-loop" width="22" height="16"/>
         <image name="seq-btn-play" width="22" height="16"/>
         <image name="seq-btn-restart" width="22" height="16"/>
