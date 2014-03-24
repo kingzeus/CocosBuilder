@@ -1312,12 +1312,15 @@ CA
                                     <popUpButton verticalHuggingPriority="750" id="1573">
                                         <rect key="frame" x="-3" y="83" width="256" height="15"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <popUpButtonCell key="cell" type="smallSquare" title="时间轴" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" borderStyle="border" transparent="YES" inset="2" pullsDown="YES" id="1574">
+                                        <popUpButtonCell key="cell" type="smallSquare" title="dummy" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" borderStyle="border" transparent="YES" inset="2" pullsDown="YES" selectedItem="fax-pb-esi" id="1574">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="menu"/>
                                             <menu key="menu" title="其他界面" id="1575">
                                                 <items>
-                                                    <menuItem title="时间轴" hidden="YES" id="SsZ-7K-fUb">
+                                                    <menuItem title="dummy" hidden="YES" id="fax-pb-esi">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                    </menuItem>
+                                                    <menuItem title="时间轴" id="SsZ-7K-fUb">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <menu key="submenu" title="时间轴" id="ka0-Uk-bdj">
                                                             <items>
