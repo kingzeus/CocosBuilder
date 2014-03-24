@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -179,9 +179,9 @@
                                     <action selector="menuPublishProjectAndRun:" target="494" id="1517"/>
                                     <binding destination="494" name="enabled3" keyPath="connection.connected" previousBinding="1529" id="1810">
                                         <dictionary key="options">
-                                            <integer key="NSNotApplicablePlaceholder" value="-1"/>
-                                            <integer key="NSNoSelectionPlaceholder" value="-1"/>
                                             <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                            <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                            <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                             <integer key="NSNullPlaceholder" value="-1"/>
                                         </dictionary>
                                     </binding>
@@ -192,9 +192,9 @@
                                     </binding>
                                     <binding destination="494" name="enabled2" keyPath="projectSettings.javascriptBased" previousBinding="1521" id="1529">
                                         <dictionary key="options">
-                                            <integer key="NSNotApplicablePlaceholder" value="-1"/>
-                                            <integer key="NSNoSelectionPlaceholder" value="-1"/>
                                             <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                            <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                            <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                             <integer key="NSNullPlaceholder" value="-1"/>
                                         </dictionary>
                                     </binding>
@@ -214,25 +214,25 @@
                                                 </binding>
                                                 <binding destination="494" name="enabled4" keyPath="projectSettings.isSafariExist" previousBinding="1873" id="1901">
                                                     <dictionary key="options">
-                                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
-                                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
                                                         <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                                         <integer key="NSNullPlaceholder" value="-1"/>
                                                     </dictionary>
                                                 </binding>
                                                 <binding destination="494" name="enabled2" keyPath="projectSettings.javascriptBased" previousBinding="1871" id="1872">
                                                     <dictionary key="options">
-                                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
-                                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
                                                         <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                                         <integer key="NSNullPlaceholder" value="-1"/>
                                                     </dictionary>
                                                 </binding>
                                                 <binding destination="494" name="enabled3" keyPath="projectSettings.publishEnabledHTML5" previousBinding="1872" id="1873">
                                                     <dictionary key="options">
-                                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
-                                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
                                                         <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                                         <integer key="NSNullPlaceholder" value="-1"/>
                                                     </dictionary>
                                                 </binding>
@@ -249,25 +249,25 @@
                                                 </binding>
                                                 <binding destination="494" name="enabled4" keyPath="projectSettings.isChromeExist" previousBinding="1879" id="1904">
                                                     <dictionary key="options">
-                                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
-                                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
                                                         <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                                         <integer key="NSNullPlaceholder" value="-1"/>
                                                     </dictionary>
                                                 </binding>
                                                 <binding destination="494" name="enabled2" keyPath="projectSettings.javascriptBased" previousBinding="1877" id="1878">
                                                     <dictionary key="options">
-                                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
-                                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
                                                         <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                                         <integer key="NSNullPlaceholder" value="-1"/>
                                                     </dictionary>
                                                 </binding>
                                                 <binding destination="494" name="enabled3" keyPath="projectSettings.publishEnabledHTML5" previousBinding="1878" id="1879">
                                                     <dictionary key="options">
-                                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
-                                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
                                                         <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                                         <integer key="NSNullPlaceholder" value="-1"/>
                                                     </dictionary>
                                                 </binding>
@@ -284,25 +284,25 @@
                                                 </binding>
                                                 <binding destination="494" name="enabled4" keyPath="projectSettings.isFirefoxExist" previousBinding="1884" id="1907">
                                                     <dictionary key="options">
-                                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
-                                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
                                                         <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                                         <integer key="NSNullPlaceholder" value="-1"/>
                                                     </dictionary>
                                                 </binding>
                                                 <binding destination="494" name="enabled2" keyPath="projectSettings.javascriptBased" previousBinding="1882" id="1883">
                                                     <dictionary key="options">
-                                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
-                                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
                                                         <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                                         <integer key="NSNullPlaceholder" value="-1"/>
                                                     </dictionary>
                                                 </binding>
                                                 <binding destination="494" name="enabled3" keyPath="projectSettings.publishEnabledHTML5" previousBinding="1883" id="1884">
                                                     <dictionary key="options">
-                                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
-                                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
                                                         <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                                        <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                                        <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                                         <integer key="NSNullPlaceholder" value="-1"/>
                                                     </dictionary>
                                                 </binding>
@@ -1312,42 +1312,42 @@ CA
                                     <popUpButton verticalHuggingPriority="750" id="1573">
                                         <rect key="frame" x="-3" y="83" width="256" height="15"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <popUpButtonCell key="cell" type="smallSquare" title="Timelines" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" borderStyle="border" transparent="YES" inset="2" pullsDown="YES" selectedItem="1580" id="1574">
+                                        <popUpButtonCell key="cell" type="smallSquare" title="时间轴" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" borderStyle="border" transparent="YES" inset="2" pullsDown="YES" id="1574">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="menu"/>
-                                            <menu key="menu" title="OtherViews" id="1575">
+                                            <menu key="menu" title="其他界面" id="1575">
                                                 <items>
-                                                    <menuItem title="Timelines" hidden="YES" id="1580">
+                                                    <menuItem title="时间轴" hidden="YES" id="SsZ-7K-fUb">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <menu key="submenu" title="Timelines" id="1581">
+                                                        <menu key="submenu" title="时间轴" id="ka0-Uk-bdj">
                                                             <items>
-                                                                <menuItem title="Item" id="1582">
+                                                                <menuItem title="条目" id="CL4-Wu-AOd">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
                                                             </items>
                                                         </menu>
                                                     </menuItem>
                                                     <menuItem isSeparatorItem="YES" id="1583"/>
-                                                    <menuItem title="Edit Timelines..." id="1577">
+                                                    <menuItem title="编辑时间轴..." id="1577">
                                                         <connections>
                                                             <action selector="menuTimelineSettings:" target="494" id="1589"/>
                                                         </connections>
                                                     </menuItem>
                                                     <menuItem isSeparatorItem="YES" id="1590"/>
-                                                    <menuItem title="New Timeline" id="1591">
+                                                    <menuItem title="新建时间轴" id="1591">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="menuTimelineNew:" target="494" id="1660"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Duplicate Timeline" id="1592">
+                                                    <menuItem title="复制时间轴" id="1592">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="menuTimelineDuplicate:" target="494" id="1661"/>
                                                         </connections>
                                                     </menuItem>
                                                     <menuItem isSeparatorItem="YES" id="1593"/>
-                                                    <menuItem title="Set Timeline Duration..." id="1594">
+                                                    <menuItem title="设置时间轴长度..." id="1594">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="menuTimelineDuration:" target="494" id="1595"/>
@@ -1360,10 +1360,10 @@ CA
                                     <popUpButton verticalHuggingPriority="750" id="1668">
                                         <rect key="frame" x="-3" y="0.0" width="256" height="15"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <popUpButtonCell key="cell" type="smallSquare" title="No Chained Sequence" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" borderStyle="border" transparent="YES" inset="2" pullsDown="YES" selectedItem="1678" id="1669">
+                                        <popUpButtonCell key="cell" type="smallSquare" title="No Chained Sequence" bezelStyle="smallSquare" alignment="center" lineBreakMode="truncatingTail" borderStyle="border" transparent="YES" inset="2" pullsDown="YES" id="1669">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="menu"/>
-                                            <menu key="menu" title="OtherViews" id="1670">
+                                            <menu key="menu" title="其他界面" id="1670">
                                                 <items>
                                                     <menuItem title="No Chained Sequence" hidden="YES" id="1678">
                                                         <connections>
@@ -1726,7 +1726,7 @@ CA
                 <outlet property="menuItemJSControlled" destination="1782" id="1783"/>
                 <outlet property="menuItemSafari" destination="1870" id="1896"/>
                 <outlet property="menuResolution" destination="1264" id="1474"/>
-                <outlet property="menuTimeline" destination="1581" id="1585"/>
+                <outlet property="menuTimeline" destination="ka0-Uk-bdj" id="1tF-96-7Vk"/>
                 <outlet property="menuTimelineChained" destination="1670" id="1685"/>
                 <outlet property="menuTimelineChainedPopup" destination="1668" id="1686"/>
                 <outlet property="menuTimelinePopup" destination="1573" id="1588"/>
