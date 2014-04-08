@@ -448,6 +448,7 @@
     }
     else if ([ext isEqualToString:@"png"]
         || [ext isEqualToString:@"jpg"]
+        || [ext isEqualToString:@"webp"]
         || [ext isEqualToString:@"jpeg"])
     {
         return kCCBResTypeImage;

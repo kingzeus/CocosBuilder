@@ -57,7 +57,7 @@
     warnings = [w retain];
     
     // Setup extensions to copy
-    copyExtensions = [[NSArray alloc] initWithObjects:@"jpg",@"png", @"pvr", @"ccz", @"plist", @"fnt", @"ttf",@"js", @"json", @"wav",@"mp3",@"m4a",@"caf", nil];
+    copyExtensions = [[NSArray alloc] initWithObjects:@"jpg",@"png",@"webp", @"pvr", @"ccz", @"plist", @"fnt", @"ttf",@"js", @"json", @"wav",@"mp3",@"m4a",@"caf", nil];
     
     // Set format to use for exports
     self.publishFormat = projectSettings.exporter;
@@ -426,7 +426,7 @@
             for (NSString* ext in copyExtensions)
             {
                 // Skip non png files for generated sprite sheets
-                if (isGeneratedSpriteSheet && ![ext isEqualToString:@"png"]) continue;
+                if (isGeneratedSpriteSheet && (![ext isEqualToString:@"png"]||![ext isEqualToString:@"webp"])) continue;
                 
                 if ([[fileName lowercaseString] hasSuffix:ext] && !projectSettings.onlyPublishCCBs)
                 {
@@ -773,6 +773,7 @@
             
             if ([ext isEqualToString:@"plist"]) type = @"plist";
             else if ([ext isEqualToString:@"png"]) type = @"image";
+            else if ([ext isEqualToString:@"webp"]) type = @"image";
             else if ([ext isEqualToString:@"jpg"]) type = @"image";
             else if ([ext isEqualToString:@"jpeg"]) type = @"image";
             else if ([ext isEqualToString:@"mp3"]) type = @"sound";
