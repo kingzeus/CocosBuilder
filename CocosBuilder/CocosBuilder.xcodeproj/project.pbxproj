@@ -25,6 +25,10 @@
 		304766A418D04465002DDDA4 /* backin.png in Resources */ = {isa = PBXBuildFile; fileRef = 304766A218D04465002DDDA4 /* backin.png */; };
 		304766A518D04465002DDDA4 /* easein.png in Resources */ = {isa = PBXBuildFile; fileRef = 304766A318D04465002DDDA4 /* easein.png */; };
 		306999A818859EB000D4A6D3 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 77AC50241360A0FB00B04360 /* Icon.icns */; };
+		306CFA7E18F4EE1D00D07938 /* InspectorCodeConnections.xib in Resources */ = {isa = PBXBuildFile; fileRef = 306CFA8018F4EE1D00D07938 /* InspectorCodeConnections.xib */; };
+		306CFA9318F4EF4400D07938 /* InspectorCodeConnectionsJS.xib in Resources */ = {isa = PBXBuildFile; fileRef = 306CFA9518F4EF4400D07938 /* InspectorCodeConnectionsJS.xib */; };
+		306CFA9718F4F1C500D07938 /* InspectorCustomEdit.xib in Resources */ = {isa = PBXBuildFile; fileRef = 306CFA9918F4F1C500D07938 /* InspectorCustomEdit.xib */; };
+		306CFA9B18F4F21C00D07938 /* CustomPropSettingsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 306CFA9D18F4F21C00D07938 /* CustomPropSettingsWindow.xib */; };
 		308B4E36181E2703001EDEF2 /* UIWidget.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED824F181A71EA00CBC4AA /* UIWidget.ccbPlugNode */; };
 		308B4E37181E2703001EDEF2 /* UIWindow.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED8251181A71EA00CBC4AA /* UIWindow.ccbPlugNode */; };
 		308B4E38181E2703001EDEF2 /* UIButton.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = 30ED8255181A71EA00CBC4AA /* UIButton.ccbPlugNode */; };
@@ -193,13 +197,11 @@
 		E312973816CC67CB00A09155 /* SequencerPopoverSound.m in Sources */ = {isa = PBXBuildFile; fileRef = E312973716CC67CA00A09155 /* SequencerPopoverSound.m */; };
 		E312EDC616AF71FE000778C8 /* CCBReaderInternalRenamedProps.plist in Resources */ = {isa = PBXBuildFile; fileRef = E312EDC516AF71FE000778C8 /* CCBReaderInternalRenamedProps.plist */; };
 		E318CB3916D83F3B00348E0D /* InspectorPopoverFloatXY.xib in Resources */ = {isa = PBXBuildFile; fileRef = E318CB3816D83F3B00348E0D /* InspectorPopoverFloatXY.xib */; };
-		E3214C4115D3BF4D002413A7 /* CustomPropSettingsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = E3214C4015D3BF4D002413A7 /* CustomPropSettingsWindow.xib */; };
 		E3214C4415D3C29D002413A7 /* CustomPropSettingsWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = E3214C4315D3C29D002413A7 /* CustomPropSettingsWindow.m */; };
 		E3214C4715D3C3AF002413A7 /* CustomPropSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = E3214C4615D3C3AF002413A7 /* CustomPropSetting.m */; };
 		E3214C4B15D40F01002413A7 /* InspectorCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = E3214C4915D40F01002413A7 /* InspectorCustom.m */; };
 		E3214C4C15D40F01002413A7 /* InspectorCustom.xib in Resources */ = {isa = PBXBuildFile; fileRef = E3214C4A15D40F01002413A7 /* InspectorCustom.xib */; };
 		E3214C5D15D54356002413A7 /* InspectorCustomEdit.m in Sources */ = {isa = PBXBuildFile; fileRef = E3214C5B15D54355002413A7 /* InspectorCustomEdit.m */; };
-		E3214C5E15D54356002413A7 /* InspectorCustomEdit.xib in Resources */ = {isa = PBXBuildFile; fileRef = E3214C5C15D54355002413A7 /* InspectorCustomEdit.xib */; };
 		E325F64514F531F500D29BCF /* InspectorFloatVar.xib in Resources */ = {isa = PBXBuildFile; fileRef = E325F64414F531F500D29BCF /* InspectorFloatVar.xib */; };
 		E325F64814F5336E00D29BCF /* InspectorFloatVar.m in Sources */ = {isa = PBXBuildFile; fileRef = E325F64714F5336E00D29BCF /* InspectorFloatVar.m */; };
 		E325F64A14F53FD000D29BCF /* InspectorColor4FVar.xib in Resources */ = {isa = PBXBuildFile; fileRef = E325F64914F53FD000D29BCF /* InspectorColor4FVar.xib */; };
@@ -213,7 +215,6 @@
 		E325F66A14F6611F00D29BCF /* CCMenuItemImage.ccbPlugNode in Copy PlugIns */ = {isa = PBXBuildFile; fileRef = E325F65A14F65C8E00D29BCF /* CCMenuItemImage.ccbPlugNode */; };
 		E326EFB615C84123006D6CE6 /* seq-endmarker.png in Resources */ = {isa = PBXBuildFile; fileRef = E326EFB515C84123006D6CE6 /* seq-endmarker.png */; };
 		E32BBCB11561361200C58395 /* HashValue.m in Sources */ = {isa = PBXBuildFile; fileRef = E32BBCB01561361200C58395 /* HashValue.m */; };
-		E32D8CC514EC257000F4BD5E /* InspectorCodeConnections.xib in Resources */ = {isa = PBXBuildFile; fileRef = E32D8CC414EC257000F4BD5E /* InspectorCodeConnections.xib */; };
 		E32D8CC814EC25D800F4BD5E /* InspectorCodeConnections.m in Sources */ = {isa = PBXBuildFile; fileRef = E32D8CC714EC25D800F4BD5E /* InspectorCodeConnections.m */; };
 		E32FA2F816D5781600254653 /* seq-row-channel-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = E32FA2F716D5781600254653 /* seq-row-channel-bg.png */; };
 		E334069715517225000FBD0B /* InspectorFloatScale.xib in Resources */ = {isa = PBXBuildFile; fileRef = E334069615517225000FBD0B /* InspectorFloatScale.xib */; };
@@ -590,7 +591,6 @@
 		E3C65126151BBB0F00D639C0 /* CCBPProperties.plist in Resources */ = {isa = PBXBuildFile; fileRef = E3C65125151BBB0F00D639C0 /* CCBPProperties.plist */; };
 		E3C65128151C7B9000D639C0 /* InspectorBlockCCControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = E3C65127151C7B8F00D639C0 /* InspectorBlockCCControl.xib */; };
 		E3C6512B151C7E3700D639C0 /* InspectorBlockCCControl.m in Sources */ = {isa = PBXBuildFile; fileRef = E3C6512A151C7E3600D639C0 /* InspectorBlockCCControl.m */; };
-		E3C9CCB8161D08B8008A3784 /* InspectorCodeConnectionsJS.xib in Resources */ = {isa = PBXBuildFile; fileRef = E3C9CCB7161D08B8008A3784 /* InspectorCodeConnectionsJS.xib */; };
 		E3C9CCBB161D0BBF008A3784 /* InspectorCodeConnectionsJS.m in Sources */ = {isa = PBXBuildFile; fileRef = E3C9CCBA161D0BBF008A3784 /* InspectorCodeConnectionsJS.m */; };
 		E3D59122150F5367004180CA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7789ABC2133AA82000CEFCC7 /* Cocoa.framework */; };
 		E3D59128150F5367004180CA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E3D59126150F5367004180CA /* InfoPlist.strings */; };
@@ -1040,6 +1040,14 @@
 		3032D38B188226560041A187 /* ResourceManagerPreviewView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResourceManagerPreviewView.xib; sourceTree = "<group>"; };
 		304766A218D04465002DDDA4 /* backin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = backin.png; path = ease/backin.png; sourceTree = "<group>"; };
 		304766A318D04465002DDDA4 /* easein.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = easein.png; path = ease/easein.png; sourceTree = "<group>"; };
+		306CFA7F18F4EE1D00D07938 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/InspectorCodeConnections.xib"; sourceTree = "<group>"; };
+		306CFA9218F4EE2A00D07938 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/InspectorCodeConnections.xib; sourceTree = "<group>"; };
+		306CFA9418F4EF4400D07938 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/InspectorCodeConnectionsJS.xib; sourceTree = "<group>"; };
+		306CFA9618F4EF4700D07938 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/InspectorCodeConnectionsJS.xib"; sourceTree = "<group>"; };
+		306CFA9818F4F1C500D07938 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/InspectorCustomEdit.xib; sourceTree = "<group>"; };
+		306CFA9A18F4F1CE00D07938 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/InspectorCustomEdit.xib"; sourceTree = "<group>"; };
+		306CFA9C18F4F21C00D07938 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CustomPropSettingsWindow.xib; sourceTree = "<group>"; };
+		306CFA9E18F4F22000D07938 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/CustomPropSettingsWindow.xib"; sourceTree = "<group>"; };
 		30988AE417842DE100CB8258 /* ui.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ui.xcodeproj; path = "../../../../../Volumes/D/project/kzlibplus/tools/ccbplugin/PlugIn Nodes/ui/ui.xcodeproj"; sourceTree = "<group>"; };
 		30A0541F18840E0600A07FC1 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		30A0AA3218C78FA4008B7568 /* seq-btn-loop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "seq-btn-loop.png"; sourceTree = "<group>"; };
@@ -1305,7 +1313,6 @@
 		E312973716CC67CA00A09155 /* SequencerPopoverSound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SequencerPopoverSound.m; sourceTree = "<group>"; };
 		E312EDC516AF71FE000778C8 /* CCBReaderInternalRenamedProps.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CCBReaderInternalRenamedProps.plist; sourceTree = "<group>"; };
 		E318CB3816D83F3B00348E0D /* InspectorPopoverFloatXY.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InspectorPopoverFloatXY.xib; sourceTree = "<group>"; };
-		E3214C4015D3BF4D002413A7 /* CustomPropSettingsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomPropSettingsWindow.xib; sourceTree = "<group>"; };
 		E3214C4215D3C29D002413A7 /* CustomPropSettingsWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomPropSettingsWindow.h; sourceTree = "<group>"; };
 		E3214C4315D3C29D002413A7 /* CustomPropSettingsWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomPropSettingsWindow.m; sourceTree = "<group>"; };
 		E3214C4515D3C3AF002413A7 /* CustomPropSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomPropSetting.h; sourceTree = "<group>"; };
@@ -1315,7 +1322,6 @@
 		E3214C4A15D40F01002413A7 /* InspectorCustom.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InspectorCustom.xib; sourceTree = "<group>"; };
 		E3214C5A15D54355002413A7 /* InspectorCustomEdit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InspectorCustomEdit.h; sourceTree = "<group>"; };
 		E3214C5B15D54355002413A7 /* InspectorCustomEdit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InspectorCustomEdit.m; sourceTree = "<group>"; };
-		E3214C5C15D54355002413A7 /* InspectorCustomEdit.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InspectorCustomEdit.xib; sourceTree = "<group>"; };
 		E325F64414F531F500D29BCF /* InspectorFloatVar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InspectorFloatVar.xib; sourceTree = "<group>"; };
 		E325F64614F5336E00D29BCF /* InspectorFloatVar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InspectorFloatVar.h; sourceTree = "<group>"; };
 		E325F64714F5336E00D29BCF /* InspectorFloatVar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InspectorFloatVar.m; sourceTree = "<group>"; };
@@ -1335,7 +1341,6 @@
 		E326EFB515C84123006D6CE6 /* seq-endmarker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "seq-endmarker.png"; sourceTree = "<group>"; };
 		E32BBCAF1561361200C58395 /* HashValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HashValue.h; path = HashValue/HashValue.h; sourceTree = "<group>"; };
 		E32BBCB01561361200C58395 /* HashValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HashValue.m; path = HashValue/HashValue.m; sourceTree = "<group>"; };
-		E32D8CC414EC257000F4BD5E /* InspectorCodeConnections.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InspectorCodeConnections.xib; sourceTree = "<group>"; };
 		E32D8CC614EC25D800F4BD5E /* InspectorCodeConnections.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InspectorCodeConnections.h; sourceTree = "<group>"; };
 		E32D8CC714EC25D800F4BD5E /* InspectorCodeConnections.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InspectorCodeConnections.m; sourceTree = "<group>"; };
 		E32FA2F716D5781600254653 /* seq-row-channel-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "seq-row-channel-bg.png"; sourceTree = "<group>"; };
@@ -1967,7 +1972,6 @@
 		E3C65127151C7B8F00D639C0 /* InspectorBlockCCControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InspectorBlockCCControl.xib; sourceTree = "<group>"; };
 		E3C65129151C7E3600D639C0 /* InspectorBlockCCControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InspectorBlockCCControl.h; sourceTree = "<group>"; };
 		E3C6512A151C7E3600D639C0 /* InspectorBlockCCControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InspectorBlockCCControl.m; sourceTree = "<group>"; };
-		E3C9CCB7161D08B8008A3784 /* InspectorCodeConnectionsJS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InspectorCodeConnectionsJS.xib; sourceTree = "<group>"; };
 		E3C9CCB9161D0BBF008A3784 /* InspectorCodeConnectionsJS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InspectorCodeConnectionsJS.h; sourceTree = "<group>"; };
 		E3C9CCBA161D0BBF008A3784 /* InspectorCodeConnectionsJS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InspectorCodeConnectionsJS.m; sourceTree = "<group>"; };
 		E3D08A321524581100E55891 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -3090,7 +3094,7 @@
 		E3214C3F15D3B9D0002413A7 /* Custom Properties */ = {
 			isa = PBXGroup;
 			children = (
-				E3214C4015D3BF4D002413A7 /* CustomPropSettingsWindow.xib */,
+				306CFA9D18F4F21C00D07938 /* CustomPropSettingsWindow.xib */,
 				E3214C4215D3C29D002413A7 /* CustomPropSettingsWindow.h */,
 				E3214C4315D3C29D002413A7 /* CustomPropSettingsWindow.m */,
 				E3214C4515D3C3AF002413A7 /* CustomPropSetting.h */,
@@ -3975,11 +3979,11 @@
 				E3214C4A15D40F01002413A7 /* InspectorCustom.xib */,
 				E3214C5A15D54355002413A7 /* InspectorCustomEdit.h */,
 				E3214C5B15D54355002413A7 /* InspectorCustomEdit.m */,
-				E3214C5C15D54355002413A7 /* InspectorCustomEdit.xib */,
-				E32D8CC414EC257000F4BD5E /* InspectorCodeConnections.xib */,
+				306CFA9918F4F1C500D07938 /* InspectorCustomEdit.xib */,
+				306CFA8018F4EE1D00D07938 /* InspectorCodeConnections.xib */,
 				E32D8CC614EC25D800F4BD5E /* InspectorCodeConnections.h */,
 				E32D8CC714EC25D800F4BD5E /* InspectorCodeConnections.m */,
-				E3C9CCB7161D08B8008A3784 /* InspectorCodeConnectionsJS.xib */,
+				306CFA9518F4EF4400D07938 /* InspectorCodeConnectionsJS.xib */,
 				E3C9CCB9161D0BBF008A3784 /* InspectorCodeConnectionsJS.h */,
 				E3C9CCBA161D0BBF008A3784 /* InspectorCodeConnectionsJS.m */,
 				E3B4223314E5E68A004547D6 /* InspectorSeparator.xib */,
@@ -4926,7 +4930,7 @@
 				A09AB6B014E9935F009C8B91 /* ChangeLog in Resources */,
 				A09AB6B114E9935F009C8B91 /* CMakeLists.txt in Resources */,
 				A09AB6F714E993AA009C8B91 /* fps_images.png in Resources */,
-				E32D8CC514EC257000F4BD5E /* InspectorCodeConnections.xib in Resources */,
+				306CFA7E18F4EE1D00D07938 /* InspectorCodeConnections.xib in Resources */,
 				E35DBBBF14F29E9D0070A6E4 /* InspectorFntFile.xib in Resources */,
 				E35DBBC414F2A2900070A6E4 /* InspectorText.xib in Resources */,
 				E35DBBDF14F3D1B60070A6E4 /* FontListTTF.plist in Resources */,
@@ -5034,9 +5038,9 @@
 				E326EFB615C84123006D6CE6 /* seq-endmarker.png in Resources */,
 				E33C2AB515CAE2590043EF9B /* SequencerStretchWindow.xib in Resources */,
 				E33C2ABA15CBF2580043EF9B /* seq-keyframe-hint.png in Resources */,
-				E3214C4115D3BF4D002413A7 /* CustomPropSettingsWindow.xib in Resources */,
+				306CFA9B18F4F21C00D07938 /* CustomPropSettingsWindow.xib in Resources */,
 				E3214C4C15D40F01002413A7 /* InspectorCustom.xib in Resources */,
-				E3214C5E15D54356002413A7 /* InspectorCustomEdit.xib in Resources */,
+				306CFA9718F4F1C500D07938 /* InspectorCustomEdit.xib in Resources */,
 				E3B7BC9C15E3B7F100CF95EF /* NodePlugInsList.plist in Resources */,
 				E3B7BCBE15E505CC00CF95EF /* TB_plugins.png in Resources */,
 				E3B19F6D15E65229000B023E /* DefaultResourcesList.plist in Resources */,
@@ -5047,7 +5051,7 @@
 				E3AF6CE115F0CFAE0048DB2A /* Documentation in Resources */,
 				E3AF6CE615F0F5760048DB2A /* help-logo.png in Resources */,
 				E3DFE831160226760068CB50 /* frame-iphone5.png in Resources */,
-				E3C9CCB8161D08B8008A3784 /* InspectorCodeConnectionsJS.xib in Resources */,
+				306CFA9318F4EF4400D07938 /* InspectorCodeConnectionsJS.xib in Resources */,
 				58FA2034162D73F3006B8856 /* TB_bottomPanel.png in Resources */,
 				58FA2035162D73F3006B8856 /* TB_leftPanel.png in Resources */,
 				58FA2036162D73F3006B8856 /* TB_rightPanel.png in Resources */,
@@ -5837,6 +5841,42 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		306CFA8018F4EE1D00D07938 /* InspectorCodeConnections.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				306CFA7F18F4EE1D00D07938 /* zh-Hans */,
+				306CFA9218F4EE2A00D07938 /* en */,
+			);
+			name = InspectorCodeConnections.xib;
+			sourceTree = "<group>";
+		};
+		306CFA9518F4EF4400D07938 /* InspectorCodeConnectionsJS.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				306CFA9418F4EF4400D07938 /* en */,
+				306CFA9618F4EF4700D07938 /* zh-Hans */,
+			);
+			name = InspectorCodeConnectionsJS.xib;
+			sourceTree = "<group>";
+		};
+		306CFA9918F4F1C500D07938 /* InspectorCustomEdit.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				306CFA9818F4F1C500D07938 /* en */,
+				306CFA9A18F4F1CE00D07938 /* zh-Hans */,
+			);
+			name = InspectorCustomEdit.xib;
+			sourceTree = "<group>";
+		};
+		306CFA9D18F4F21C00D07938 /* CustomPropSettingsWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				306CFA9C18F4F21C00D07938 /* en */,
+				306CFA9E18F4F22000D07938 /* zh-Hans */,
+			);
+			name = CustomPropSettingsWindow.xib;
+			sourceTree = "<group>";
+		};
 		30C81B1C18C82DCD00F77E9B /* NewDocWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (

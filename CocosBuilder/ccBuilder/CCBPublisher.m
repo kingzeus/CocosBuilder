@@ -359,10 +359,12 @@
     // Create the directory if it doesn't exist
     if (!isGeneratedSpriteSheet)
     {
-        BOOL createdDirs = [fm createDirectoryAtPath:outDir withIntermediateDirectories:YES attributes:NULL error:NULL];
+        NSError * error= nil;
+        BOOL createdDirs = [fm createDirectoryAtPath:outDir withIntermediateDirectories:YES attributes:NULL error:&error];
         if (!createdDirs)
         {
-            [warnings addWarningWithDescription:@"Failed to create output directory %@" isFatal:YES];
+            NSString *str = [NSString stringWithFormat:@"Failed to create output directory %@ ,error:%@",outDir,[error localizedDescription]];
+            [warnings addWarningWithDescription:str isFatal:YES];
             return NO;
         }
     }
