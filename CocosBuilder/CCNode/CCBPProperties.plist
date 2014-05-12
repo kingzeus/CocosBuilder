@@ -39,7 +39,7 @@
 			<key>name</key>
 			<string>visible</string>
 			<key>displayName</key>
-			<string>Visible</string>
+			<string>显示</string>
 		</dict>
 		<dict>
 			<key>defaultSerialization</key>
@@ -55,7 +55,7 @@
 			<key>type</key>
 			<string>Position</string>
 			<key>name</key>
-			<string>position</string>
+			<string>位置</string>
 		</dict>
 		<dict>
 			<key>defaultSerialization</key>
@@ -74,7 +74,7 @@
 			<key>name</key>
 			<string>contentSize</string>
 			<key>displayName</key>
-			<string>Content size</string>
+			<string>尺寸</string>
 		</dict>
 		<dict>
 			<key>type</key>
@@ -82,7 +82,7 @@
 			<key>name</key>
 			<string>anchorPoint</string>
 			<key>displayName</key>
-			<string>Anchor point</string>
+			<string>锚点</string>
 		</dict>
 		<dict>
 			<key>defaultSerialization</key>
@@ -98,7 +98,7 @@
 			<key>name</key>
 			<string>scale</string>
 			<key>displayName</key>
-			<string>Scale</string>
+			<string>缩放</string>
 		</dict>
 		<dict>
 			<key>defaultSerialization</key>
@@ -110,7 +110,7 @@
 			<key>name</key>
 			<string>rotation</string>
 			<key>displayName</key>
-			<string>Rotation</string>
+			<string>旋转</string>
 		</dict>
 		<dict>
 			<key>defaultSerialization</key>
@@ -122,7 +122,7 @@
 			<key>name</key>
 			<string>rotationX</string>
 			<key>displayName</key>
-			<string>RotationX</string>
+			<string>旋转-X</string>
 		</dict>
 		<dict>
 			<key>defaultSerialization</key>
@@ -134,7 +134,7 @@
 			<key>name</key>
 			<string>rotationY</string>
 			<key>displayName</key>
-			<string>RotationY</string>
+			<string>旋转-Y</string>
 		</dict>
 		<dict>
 			<key>animatable</key>

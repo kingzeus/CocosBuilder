@@ -33,7 +33,7 @@
 			<key>name</key>
 			<string>anchorPoint</string>
 			<key>displayName</key>
-			<string>Anchor point</string>
+			<string>锚点</string>
 		</dict>
 		<dict>
 			<key>readOnly</key>
@@ -43,7 +43,7 @@
 			<key>name</key>
 			<string>contentSize</string>
 			<key>displayName</key>
-			<string>Content size</string>
+			<string>尺寸</string>
 		</dict>
 	</array>
 	<key>editorClassName</key>
@@ -67,7 +67,7 @@
 				<string>contentSize</string>
 			</array>
 			<key>displayName</key>
-			<string>CCB File</string>
+			<string>CCB 文件</string>
 			<key>type</key>
 			<string>CCBFile</string>
 			<key>name</key>
