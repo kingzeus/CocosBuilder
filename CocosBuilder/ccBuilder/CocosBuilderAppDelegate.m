@@ -3709,7 +3709,10 @@ static BOOL hideAllToNextSeparator;
 {
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/kingzeus/CocosBuilder/issues"]];
 }
-
+- (IBAction)versionList:(id)sender
+{
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://http://pan.baidu.com/s/1o6lt7nG"]];
+}
 - (IBAction)visitCommunity:(id)sender
 {
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://www.cocos2d-iphone.org/forum/forum/16"]];

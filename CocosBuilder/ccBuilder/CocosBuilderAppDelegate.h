@@ -297,6 +297,8 @@ enum {
 - (void) openJSFile:(NSString*) fileName highlightLine:(int)line;
 - (void) resetJSFilesLineHighlight;
 
+- (IBAction)versionList:(id)sender;
+
 // Menu options
 - (IBAction)searchRes:(id)sender;
 -(void) setResType:(int)type;
