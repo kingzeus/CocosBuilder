@@ -3711,7 +3711,7 @@ static BOOL hideAllToNextSeparator;
 }
 - (IBAction)versionList:(id)sender
 {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://http://pan.baidu.com/s/1o6lt7nG"]];
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://pan.baidu.com/s/1o6lt7nG"]];
 }
 - (IBAction)visitCommunity:(id)sender
 {

@@ -51,11 +51,11 @@
 			<key>animatable</key>
 			<true/>
 			<key>displayName</key>
-			<string>Position</string>
+			<string>位置</string>
 			<key>type</key>
 			<string>Position</string>
 			<key>name</key>
-			<string>位置</string>
+			<string>position</string>
 		</dict>
 		<dict>
 			<key>defaultSerialization</key>
