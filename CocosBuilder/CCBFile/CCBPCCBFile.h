@@ -24,7 +24,7 @@
 
 #import "cocos2d.h"
 
-@interface CCBPCCBFile : CCNode
+@interface CCBPCCBFile : CCNodeRGBA
 {
     CCNode* ccbFile;
 }
