@@ -4,6 +4,9 @@
 <link>http://raw2.github.com/kingzeus/CocosBuilder/master/version.xml</link>
 <description>让版本飞起来~~</description>
 <language>en</language>
+<item><title>Kingzeus Version(4.1.2)</title><description><![CDATA[ <h2>Kingzeus Version(4.1.2)</h2> <blockquote> <p>2014-05-15 17:18:21 +0800</p> </blockquote> ]]></description>
+<pubDate>2014-05-15 17:18:21 +0800</pubDate>
+<enclosure url="http://raw2.github.com/kingzeus/CocosBuilder/master/archive/CocosBuilder_4.1.2_FULL.zip" sparkle:version="4.1.2" length="19758818" type="application/octet-stream" sparkle:dsaSignature="MC4CFQDqdrnVdjNpsAnqtIFQ6ToDIAdfGgIVAKUBNcFmS1EWPW9f2cq0Azzo4KYK"/></item>
 <item><title>Kingzeus Version(4.1.1)</title><description><![CDATA[ <h2>Kingzeus Version(4.1.1)</h2> <blockquote> <p>2014-05-12 14:04:48 +0800</p> </blockquote> <ul> <li><p><strong>[NEW]</strong></p></li> <li><p><strong>[FIX]</strong></p></li> </ul> ]]></description>
 <pubDate>2014-05-12 14:04:48 +0800</pubDate>
 <enclosure url="http://raw2.github.com/kingzeus/CocosBuilder/master/archive/CocosBuilder_4.1.1_FULL.zip" sparkle:version="4.1.1" length="19759392" type="application/octet-stream" sparkle:dsaSignature="MCwCFDtXXfZY1dA/jDMOTDcLxLvAtN5uAhRDNOa6G60xuQD/1MNQDMidsNjhLQ=="/></item>
