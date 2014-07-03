@@ -728,11 +728,12 @@
 
 - (void) addDirectory:(NSString *)dirPath
 {
-    if ([directories count] > kCCBMaxTrackedDirectories)
-    {
-        tooManyDirectoriesAdded = YES;
-        return;
-    }
+//      去掉了目录数量限制
+//    if ([directories count] > kCCBMaxTrackedDirectories)
+//    {
+//        tooManyDirectoriesAdded = YES;
+//        return;
+//    }
     
     // Check if directory is already added (then add to its count)
     RMDirectory* dir = [directories objectForKey:dirPath];
