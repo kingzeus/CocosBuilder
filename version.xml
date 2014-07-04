@@ -4,6 +4,9 @@
 <link>http://raw2.github.com/kingzeus/CocosBuilder/master/version.xml</link>
 <description>让版本飞起来~~</description>
 <language>en</language>
+<item><title>Kingzeus Version(4.1.4)</title><description><![CDATA[ <h2>Kingzeus Version(4.1.4)</h2> <blockquote> <p>2014-07-04 12:43:17 +0800</p> </blockquote> <ul> <li><strong>[FIX]</strong> 兼容性修正</li> </ul> ]]></description>
+<pubDate>2014-07-04 12:43:17 +0800</pubDate>
+<enclosure url="http://raw2.github.com/kingzeus/CocosBuilder/master/archive/CocosBuilder_4.1.4_FULL.zip" sparkle:version="4.1.4" length="19759352" type="application/octet-stream" sparkle:dsaSignature="MC0CFQDZ3iObX2rN95tQc/UpcVYOz2xaWwIUIo7x26z1yU+RujqGkBg3DdIRkis="/></item>
 <item><title>Kingzeus Version(4.1.3)</title><description><![CDATA[ <h2>Kingzeus Version(4.1.3)</h2> <blockquote> <p>2014-07-03 22:57:21 +0800</p> </blockquote> <ul> <li><strong>[UPD]</strong> 去除目录数量限制</li> <li><strong>[FIX]</strong> 修正一个版本兼容性导致的ccb不能打开</li> </ul> ]]></description>
 <pubDate>2014-07-03 22:57:21 +0800</pubDate>
 <enclosure url="http://raw2.github.com/kingzeus/CocosBuilder/master/archive/CocosBuilder_4.1.3_FULL.zip" sparkle:version="4.1.3" length="19758891" type="application/octet-stream" sparkle:dsaSignature="MC0CFDb4KYBij/YOFbfzqk1eV+JDFW2ZAhUAzQztpqt1IFPeDdT2nX7k3LdhNX8="/></item>
