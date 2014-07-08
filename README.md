@@ -2,7 +2,7 @@
 
 CocosBuilder is a free tool (released under MIT-licence) for rapidly developing games and apps. CocosBuilder is built for Cocos2d's Javascript bindings, which means that your code, animations, and interfaces will run unmodified on iPhone, Android and HTML 5. If you prefer to go native all the way, there are readers available for cocos2d-iphone and cocos2d-x.
 
-For more info and binary downloads, please visit [cocosbuilder.com](http://cocosbuilder.com).
+For more info and binary downloads, please visit [cocosbuilder.com](http://cocosbuilder.com) **no longer maintained**
 
 
 ## kingzeus version
@@ -11,6 +11,11 @@ For more info and binary downloads, please visit [cocosbuilder.com](http://cocos
                     by [cocosbuilder.com](http://cocosbuilder.com).
 
 CocosBuilder is a very useful tool, but it is a pity that officials have stopped maintenance. Many projects still using this software, so, I offer a new version, continue to maintain the project.
+
+## download (kingzeus version)
+ -  lastest release [4.1.4](http://raw2.github.com/kingzeus/CocosBuilder/master/archive/CocosBuilder_4.1.4_FULL.zip) on 2014-7-4
+ -  [version list](http://pan.baidu.com/s/1o6lt7nG) 
+
 
 
 ## Getting started with the source
