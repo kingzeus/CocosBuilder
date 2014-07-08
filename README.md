@@ -4,6 +4,15 @@ CocosBuilder is a free tool (released under MIT-licence) for rapidly developing 
 
 For more info and binary downloads, please visit [cocosbuilder.com](http://cocosbuilder.com).
 
+
+## kingzeus version
+
+    CocosBuilder is no longer maintained .
+                    by [cocosbuilder.com](http://cocosbuilder.com).
+
+CocosBuilder is a very useful tool, but it is a pity that officials have stopped maintenance. Many projects still using this software, so, I offer a new version, continue to maintain the project.
+
+
 ## Getting started with the source
 
 Cocos2d and other extensions are provided as a submodules to this project. To be able to compile the source code you need first check out the module. Change directory into the top (this) directory of CocosBuilder and run:
@@ -32,6 +41,8 @@ To install CocosPlayer on your device (or in Simulator) you need to get the sour
 Copyright (c) 2011 Viktor Lidholt
 
 Copyright (c) 2012 Zynga Inc.
+
+Copyright (c) 2014 kingzeus
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
