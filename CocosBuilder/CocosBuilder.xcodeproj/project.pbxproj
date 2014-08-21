@@ -505,10 +505,6 @@
 		E3A4747816D43B5800DB0D61 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3A4747716D43B5800DB0D61 /* AudioToolbox.framework */; };
 		E3A4747A16D43BEA00DB0D61 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3A4747916D43BEA00DB0D61 /* OpenAL.framework */; };
 		E3A4747C16D43BF300DB0D61 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3A4747B16D43BF300DB0D61 /* AVFoundation.framework */; };
-		E3AF6CD815F0A7E10048DB2A /* HelpWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = E3AF6CD715F0A7E10048DB2A /* HelpWindow.xib */; };
-		E3AF6CDB15F0A9BC0048DB2A /* HelpWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = E3AF6CDA15F0A9BC0048DB2A /* HelpWindow.m */; };
-		E3AF6CDF15F0CF8B0048DB2A /* libMMMarkdown-Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E3AF6CDD15F0CF8B0048DB2A /* libMMMarkdown-Mac.a */; };
-		E3AF6CE115F0CFAE0048DB2A /* Documentation in Resources */ = {isa = PBXBuildFile; fileRef = E3AF6CE015F0CFAE0048DB2A /* Documentation */; };
 		E3AF6CE415F0DBA90048DB2A /* HelpPage.m in Sources */ = {isa = PBXBuildFile; fileRef = E3AF6CE315F0DBA90048DB2A /* HelpPage.m */; };
 		E3AF6CE615F0F5760048DB2A /* help-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = E3AF6CE515F0F5760048DB2A /* help-logo.png */; };
 		E3B19F6B15E62ADA000B023E /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3B19F6A15E62ADA000B023E /* Carbon.framework */; };
@@ -1847,11 +1843,6 @@
 		E3A4747716D43B5800DB0D61 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		E3A4747916D43BEA00DB0D61 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		E3A4747B16D43BF300DB0D61 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		E3AF6CD715F0A7E10048DB2A /* HelpWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HelpWindow.xib; sourceTree = "<group>"; };
-		E3AF6CD915F0A9BC0048DB2A /* HelpWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpWindow.h; sourceTree = "<group>"; };
-		E3AF6CDA15F0A9BC0048DB2A /* HelpWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpWindow.m; sourceTree = "<group>"; };
-		E3AF6CDD15F0CF8B0048DB2A /* libMMMarkdown-Mac.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libMMMarkdown-Mac.a"; path = "MMMarkdown/libMMMarkdown-Mac.a"; sourceTree = "<group>"; };
-		E3AF6CDE15F0CF8B0048DB2A /* MMMarkdown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMMarkdown.h; path = MMMarkdown/MMMarkdown.h; sourceTree = "<group>"; };
 		E3AF6CE015F0CFAE0048DB2A /* Documentation */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Documentation; path = ../../Documentation; sourceTree = "<group>"; };
 		E3AF6CE215F0DBA90048DB2A /* HelpPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpPage.h; sourceTree = "<group>"; };
 		E3AF6CE315F0DBA90048DB2A /* HelpPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpPage.m; sourceTree = "<group>"; };
@@ -2142,7 +2133,6 @@
 				7789ABE8133AB10500CEFCC7 /* ApplicationServices.framework in Frameworks */,
 				7789ABC3133AA82000CEFCC7 /* Cocoa.framework in Frameworks */,
 				E33BC1971510B8D0009AE29A /* Sparkle.framework in Frameworks */,
-				E3AF6CDF15F0CF8B0048DB2A /* libMMMarkdown-Mac.a in Frameworks */,
 				E380B2511642FC3C0006D31C /* libPVRTC.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2801,7 +2791,6 @@
 				A09AB68C14E9935F009C8B91 /* kazmath */,
 				77E198DB13858CD1006C361B /* TabBar */,
 				E36F3C3A152C756D00AAD805 /* RelativePath */,
-				E3AF6CDC15F0CF6C0048DB2A /* MMMarkdown */,
 			);
 			path = libs;
 			sourceTree = "<group>";
@@ -3904,9 +3893,6 @@
 		E3AF6CD615F0A77F0048DB2A /* Help */ = {
 			isa = PBXGroup;
 			children = (
-				E3AF6CD715F0A7E10048DB2A /* HelpWindow.xib */,
-				E3AF6CD915F0A9BC0048DB2A /* HelpWindow.h */,
-				E3AF6CDA15F0A9BC0048DB2A /* HelpWindow.m */,
 				E3AF6CE215F0DBA90048DB2A /* HelpPage.h */,
 				E3AF6CE315F0DBA90048DB2A /* HelpPage.m */,
 				E3347419169DC5A6000737CC /* APIDocsWindow.h */,
@@ -3914,15 +3900,6 @@
 				E334741B169DC5A6000737CC /* APIDocsWindow.xib */,
 			);
 			name = Help;
-			sourceTree = "<group>";
-		};
-		E3AF6CDC15F0CF6C0048DB2A /* MMMarkdown */ = {
-			isa = PBXGroup;
-			children = (
-				E3AF6CDD15F0CF8B0048DB2A /* libMMMarkdown-Mac.a */,
-				E3AF6CDE15F0CF8B0048DB2A /* MMMarkdown.h */,
-			);
-			name = MMMarkdown;
 			sourceTree = "<group>";
 		};
 		E3B7AEC714E3193500DFD402 /* CCNode */ = {
@@ -5047,8 +5024,6 @@
 				3009996E18D0416700744F36 /* elasticout.png in Resources */,
 				E360789015EBA5420040A172 /* sel-frame.png in Resources */,
 				E36078BC15EE0B2C0040A172 /* sel-round.png in Resources */,
-				E3AF6CD815F0A7E10048DB2A /* HelpWindow.xib in Resources */,
-				E3AF6CE115F0CFAE0048DB2A /* Documentation in Resources */,
 				E3AF6CE615F0F5760048DB2A /* help-logo.png in Resources */,
 				E3DFE831160226760068CB50 /* frame-iphone5.png in Resources */,
 				306CFA9318F4EF4400D07938 /* InspectorCodeConnectionsJS.xib in Resources */,
@@ -5557,7 +5532,6 @@
 				E3214C4B15D40F01002413A7 /* InspectorCustom.m in Sources */,
 				E3214C5D15D54356002413A7 /* InspectorCustomEdit.m in Sources */,
 				E3B7BCA015E3BCFE00CF95EF /* MainToolbarDelegate.m in Sources */,
-				E3AF6CDB15F0A9BC0048DB2A /* HelpWindow.m in Sources */,
 				E3AF6CE415F0DBA90048DB2A /* HelpPage.m in Sources */,
 				E3C9CCBB161D0BBF008A3784 /* InspectorCodeConnectionsJS.m in Sources */,
 				E34039BE1624BF610067C7B8 /* CCBDocumentController.m in Sources */,
@@ -6195,7 +6169,6 @@
 				INFOPLIST_FILE = "ccBuilder/CocosBuilder-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/libs/MMMarkdown\"",
 					"\"$(SRCROOT)/libs/Tupac\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
@@ -6233,7 +6206,6 @@
 				INFOPLIST_FILE = "ccBuilder/CocosBuilder-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/libs/MMMarkdown\"",
 					"\"$(SRCROOT)/libs/Tupac\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;

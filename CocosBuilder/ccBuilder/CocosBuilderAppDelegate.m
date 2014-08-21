@@ -85,7 +85,7 @@
 #import "CustomPropSetting.h"
 #import "MainToolbarDelegate.h"
 #import "InspectorSeparator.h"
-#import "HelpWindow.h"
+
 #import "APIDocsWindow.h"
 #import "NodeGraphPropertySetter.h"
 #import "CCBSplitHorizontalView.h"
@@ -3687,12 +3687,7 @@ static BOOL hideAllToNextSeparator;
 
 - (IBAction)showHelp:(id)sender
 {
-    if(!helpWindow)
-    {
-        helpWindow = [[HelpWindow alloc] initWithWindowNibName:@"HelpWindow"];
-    }
-    
-    [[helpWindow window] makeKeyAndOrderFront:self];
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/kingzeus/CocosBuilder/wiki/1.-Getting-Started"]];
 }
 
 - (IBAction)showAPIDocs:(id)sender
