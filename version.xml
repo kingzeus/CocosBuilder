@@ -4,6 +4,9 @@
 <link>http://raw2.github.com/kingzeus/CocosBuilder/master/version.xml</link>
 <description>让版本飞起来~~</description>
 <language>en</language>
+<item><title>Kingzeus Version(4.1.5)</title><description><![CDATA[ <h2>Kingzeus Version(4.1.5)</h2> <blockquote> <p>2014-08-21 17:06:30 +0800</p> </blockquote> <ul> <li><p><strong>[NEW]</strong> 去除自带的帮助，改为 github 的 wiki 链接</p></li> <li><p><strong>[UPD]</strong> 优化图片大小</p></li> </ul> ]]></description>
+<pubDate>2014-08-21 17:06:30 +0800</pubDate>
+<enclosure url="http://raw2.github.com/kingzeus/CocosBuilder/master/archive/CocosBuilder_4.1.5_FULL.zip" sparkle:version="4.1.5" length="18356302" type="application/octet-stream" sparkle:dsaSignature="MC0CFGbqUq36bHpS44KCMrEosJ6hrcr7AhUA03TptkNHw6FYo1K4yDRNx5v5CKY="/></item>
 <item><title>Kingzeus Version(4.1.4)</title><description><![CDATA[ <h2>Kingzeus Version(4.1.4)</h2> <blockquote> <p>2014-07-04 12:43:17 +0800</p> </blockquote> <ul> <li><strong>[FIX]</strong> 兼容性修正</li> </ul> ]]></description>
 <pubDate>2014-07-04 12:43:17 +0800</pubDate>
 <enclosure url="http://raw2.github.com/kingzeus/CocosBuilder/master/archive/CocosBuilder_4.1.4_FULL.zip" sparkle:version="4.1.4" length="19759352" type="application/octet-stream" sparkle:dsaSignature="MC0CFQDZ3iObX2rN95tQc/UpcVYOz2xaWwIUIo7x26z1yU+RujqGkBg3DdIRkis="/></item>
